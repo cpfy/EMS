@@ -17,7 +17,7 @@
       <input type="text"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_user qxs-icon" placeholder="用户名" v-model="userName">
-      <input type="text"
+      <input type="password"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_password qxs-icon" placeholder="密码" v-model="password">
       <br/>
@@ -32,7 +32,7 @@
       <el-button class="login_btn" @click.native="login" type="primary" round :loading="isBtnLoading">登录</el-button>
     </div>
 
-    <div v-else style="position:absolute; top:20%;width: 500px; ">
+    <div v-else style="position:absolute; top:15%;width: 500px; ">
       <h1 style="font-family: font1,serif">用户注册</h1>
       <input type="text"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
@@ -40,14 +40,16 @@
       <input type="text"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_user qxs-icon" placeholder="用户名" v-model="reg_userName">
-      <input type="text"
+      <input type="password"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_password0 qxs-icon" placeholder="密码" v-model="reg_password">
-      <input type="text"
+      <input type="password"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_password qxs-icon" placeholder="确认密码" v-model="reg_password0">
+      <p>注：用户名为自己选定，方便以后登录</p>
+      <el-button class="login_btn" @click.native="backLogin" type="primary" round :loading="isBtnLoading">已有账号？立即登录
+      </el-button>
       <el-button class="login_btn" @click="register" type="primary" round>注册</el-button>
-      <el-button class="login_btn" @click.native="backLogin" type="primary" round :loading="isBtnLoading">已有账号？立即登录</el-button>
       <br/>
     </div>
 
@@ -66,23 +68,31 @@ export default {
       password: '',
       userType: "学生",
       isBtnLoading: false,
-      reg_scNum:'',
-      reg_userName:'',
-      reg_password:'',
-      reg_password0:''
+      reg_scNum: '',
+      reg_userName: '',
+      reg_password: '',
+      reg_password0: ''
     };
   },
   methods: {
-    register(){
-      if (this.reg_password!==this.reg_password0){
+    register() {
+      if (!this.reg_scNum) {
+        this.$message.error('请输入学号');
+      } else if (!this.reg_userName) {
+        this.$message.error('请输入用户名');
+      } else if (!this.reg_password) {
+        this.$message.error('请输入密码');
+      } else if (!this.reg_password0) {
+        this.$message.error('请输入确认密码');
+      } else if (this.reg_password !== this.reg_password0) {
         this.$message.error('两次密码输入不一致');
-      }else {
-        const self=this;
+      } else {
+        const self = this;
         self.axios({
           method: 'post',
           url: '/register/',
           data: {
-            'studentid':this.reg_scNum,
+            'studentId': this.reg_scNum,
             'userName': this.reg_userName,
             'password': this.reg_password,
           },
@@ -108,8 +118,7 @@ export default {
         if (!this.userType) {
           this.$message.error('请选择登录方式');
         } else {
-          alert(this.userType);
-          const self=this;
+          const self = this;
           self.axios({
             method: 'post',
             url: '/login/',
@@ -188,7 +197,6 @@ export default {
   background: url("../assets/key.png") no-repeat 6px 6px;
   background-size: 28px;
 }
-
 
 
 .qxs-icon {
