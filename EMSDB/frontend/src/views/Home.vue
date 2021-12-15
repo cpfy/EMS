@@ -1,8 +1,8 @@
 <template>
 
   <!--  image-->
-  <div class="mainBuilding" style=" ">
-    <img src="../assets/mainBuilding.png" style="position: absolute;left: 0;top:20px;height: 100vh;width: 100%"
+  <div class="login_background" style=" ">
+    <img src="../assets/login_background.png" style="position: absolute;left: 0;top:20px;height: 100vh;width: 100%"
          alt="no image">
   </div>
 
@@ -14,14 +14,14 @@
 
     <div class="login" style="position:absolute; top:25%;width: 500px; ">
       <h1 style="font-family: font1,serif">用户登录</h1>
-      <input type="text" style="zoom: 150%;background-color: rgba(158,207,240,40%);" class="class_user qxs-icon" placeholder="用户名" v-model="userName">
-      <input type="text" style="zoom: 150%;background-color: rgba(158,207,240,40%);" class="class_password qxs-icon" placeholder="密码" v-model="password">
+      <input type="text" style="box-shadow: 0px 0px 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);" class="class_user qxs-icon" placeholder="用户名" v-model="userName">
+      <input type="text" style="box-shadow: 0px 0px 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);" class="class_password qxs-icon" placeholder="密码" v-model="password">
       <br/>
       <div>
         <el-radio-group v-model="userType">
-          <el-radio :label="1" style="zoom:120%">学生登录</el-radio>
-          <el-radio :label="2" style="zoom:120%">教师登录</el-radio>
-          <el-radio :label="3" style="zoom:120%">管理员登录</el-radio>
+          <el-radio label='学生' style="zoom:120%">学生登录</el-radio>
+          <el-radio label='教师' style="zoom:120%">教师登录</el-radio>
+          <el-radio label='管理员' style="zoom:120%">管理员登录</el-radio>
         </el-radio-group>
       </div>
 
@@ -40,7 +40,7 @@ export default {
     return {
       userName: '',
       password: '',
-      userType: '',
+      userType: "学生",
       isBtnLoading: false
     };
   },
@@ -56,6 +56,7 @@ export default {
         if (!this.userType) {
           this.$message.error('请选择登录方式');
         } else {
+          alert(this.userType);
           this.$router.push("/about");
           self.axios({
             method: 'post',
@@ -110,13 +111,13 @@ export default {
 }
 
 .class_user {
-  background: url("../assets/user.png") no-repeat 2px 7px;
-  background-size: 28px;
+  background: url("../assets/user.png") no-repeat 7px 9px;
+  background-size: 24px;
 }
 
 .class_password {
-  background: url("../assets/lock.png") no-repeat 2px 7px;
-  background-size: 26px;
+  background: url("../assets/lock.png") no-repeat 8px 9px;
+  background-size: 22px;
 }
 
 .qxs-icon {
