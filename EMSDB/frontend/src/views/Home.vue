@@ -12,10 +12,14 @@
   <div class="sign " style="position: absolute;top:0;right: 0;width: 500px;">
 
 
-    <div class="login" style="position:absolute; top:25%;width: 500px; ">
+    <div v-if="isLogin===1" class="login" style="position:absolute; top:25%;width: 500px; ">
       <h1 style="font-family: font1,serif">用户登录</h1>
-      <input type="text" style="box-shadow: 0px 0px 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);" class="class_user qxs-icon" placeholder="用户名" v-model="userName">
-      <input type="text" style="box-shadow: 0px 0px 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);" class="class_password qxs-icon" placeholder="密码" v-model="password">
+      <input type="text"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             class="class_user qxs-icon" placeholder="用户名" v-model="userName">
+      <input type="text"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             class="class_password qxs-icon" placeholder="密码" v-model="password">
       <br/>
       <div>
         <el-radio-group v-model="userType">
@@ -24,10 +28,29 @@
           <el-radio label='管理员' style="zoom:120%">管理员登录</el-radio>
         </el-radio-group>
       </div>
-
-      <el-button class="login_btn" type="primary" round>注册</el-button>
+      <el-button class="login_btn" @click="toRegister" type="primary" round>注册</el-button>
       <el-button class="login_btn" @click.native="login" type="primary" round :loading="isBtnLoading">登录</el-button>
     </div>
+
+    <div v-else style="position:absolute; top:20%;width: 500px; ">
+      <h1 style="font-family: font1,serif">用户注册</h1>
+      <input type="text"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             class="class_id qxs-icon" placeholder="学号" v-model="reg_scNum">
+      <input type="text"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             class="class_user qxs-icon" placeholder="用户名" v-model="reg_userName">
+      <input type="text"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             class="class_password0 qxs-icon" placeholder="密码" v-model="reg_password">
+      <input type="text"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             class="class_password qxs-icon" placeholder="确认密码" v-model="reg_password0">
+      <el-button class="login_btn" @click="register" type="primary" round>注册</el-button>
+      <el-button class="login_btn" @click.native="backLogin" type="primary" round :loading="isBtnLoading">已有账号？立即登录</el-button>
+      <br/>
+    </div>
+
 
   </div>
 </template>
@@ -38,13 +61,42 @@
 export default {
   data() {
     return {
+      isLogin: 1,
       userName: '',
       password: '',
       userType: "学生",
-      isBtnLoading: false
+      isBtnLoading: false,
+      reg_scNum:'',
+      reg_userName:'',
+      reg_password:'',
+      reg_password0:''
     };
   },
   methods: {
+    register(){
+      if (this.reg_password!==this.reg_password0){
+        this.$message.error('两次密码输入不一致');
+      }else {
+        const self=this;
+        self.axios({
+          method: 'post',
+          url: '/register/',
+          data: {
+            'studentid':this.reg_scNum,
+            'userName': this.reg_userName,
+            'password': this.reg_password,
+          },
+          headers: {
+            'X-CSRFToken': this.getCookie('csrftoken')
+          },
+        }).then(res => {
+          var obj1 = JSON.parse(res.data);
+          //判断用户名是否已经存在过
+          //判断学号是否已经被注册过
+          //注册成功直接跳转
+        })
+      }
+    },
     login() {
       if (!this.userName && !this.password) {
         this.$message.error('请输入用户名与密码');
@@ -57,7 +109,7 @@ export default {
           this.$message.error('请选择登录方式');
         } else {
           alert(this.userType);
-          this.$router.push("/about");
+          const self=this;
           self.axios({
             method: 'post',
             url: '/login/',
@@ -76,6 +128,12 @@ export default {
         }
       }
 
+    },
+    toRegister() {
+      this.isLogin = 0;
+    },
+    backLogin() {
+      this.isLogin = 1;
     }
   },
   getCookie(name) {
@@ -90,6 +148,7 @@ export default {
 
 <style>
 @import "../font-style/font.css";
+
 .sign {
   font-size: 22px;
   color: #333333;
@@ -107,7 +166,12 @@ export default {
   position: absolute;
   object-fit: cover;
   -webkit-filter: blur(10px);
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.class_id {
+  background: url("../assets/id.png") no-repeat 7px 9px;
+  background-size: 25px;
 }
 
 .class_user {
@@ -119,6 +183,13 @@ export default {
   background: url("../assets/lock.png") no-repeat 8px 9px;
   background-size: 22px;
 }
+
+.class_password0 {
+  background: url("../assets/key.png") no-repeat 6px 6px;
+  background-size: 28px;
+}
+
+
 
 .qxs-icon {
   height: 40px;
