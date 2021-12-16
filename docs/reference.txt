@@ -1,0 +1,6 @@
+
+#每一些模块的参考资料
+
+后端
+登录部分
+* https://www.dusaiphoto.com/article/31/   Django搭建个人博客：用户的登录和登出
