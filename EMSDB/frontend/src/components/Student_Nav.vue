@@ -60,6 +60,20 @@
 
     </div>
 
+    <el-dialog
+        v-model="dialogVisible"
+        title="提示"
+        width="30%"
+    >
+      <span>您确定要退出吗？</span>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="confirmLogout">确定</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+      </span>
+      </template>
+    </el-dialog>
+
   </div>
 
 
@@ -72,13 +86,19 @@ export default {
   name: "stu",
   data() {
     return {
-
+      dialogVisible: false,
       activeIndex2: ""
     }
   },
   methods: {
     handleSelect(index, indexPath) {
-      alert(index)
+      if (index==='7-3') {
+        this.dialogVisible  = true
+      }
+    },
+    confirmLogout() {
+      this.$router.push('/')
+      this.dialogVisible = false
     },
   }
 }

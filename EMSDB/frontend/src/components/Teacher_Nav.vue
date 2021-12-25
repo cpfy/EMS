@@ -55,10 +55,25 @@
           </template>
           <el-menu-item index="6-1">个人信息</el-menu-item>
           <el-menu-item index="6-2">修改密码</el-menu-item>
-          <el-menu-item index="6-2">退出登录</el-menu-item>
+          <el-menu-item index="6-3">退出登录</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
+
+    <el-dialog
+        v-model="dialogVisible"
+        title="提示"
+        width="30%"
+    >
+      <span>您确定要退出吗？</span>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="confirmLogout">确定</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+      </span>
+      </template>
+    </el-dialog>
+
   </div>
 
 </template>
@@ -68,13 +83,19 @@ export default {
   name: "tea",
   data() {
     return {
-
+      dialogVisible: false,
       activeIndex2: ""
     }
   },
   methods: {
     handleSelect(index, indexPath) {
-      alert(index)
+      if(index==='6-3') {
+        this.dialogVisible = true
+      }
+    },
+    confirmLogout() {
+      this.$router.push('/')
+      this.dialogVisible = false
     },
   }
 }

@@ -120,7 +120,13 @@ export default {
         if (!this.userType) {
           this.$message.error('请选择登录方式');
         } else {
-          router.push('/Student');
+          if (this.userType==='学生') {
+            this.$router.push('/studentHome');
+          } else if (this.userType==='教师') {
+            this.$router.push('/teacherHome');
+          } else if (this.userType==='管理员') {
+            this.$router.push('/adminHome');
+          }
           const self = this;
           self.axios({
             method: 'post',

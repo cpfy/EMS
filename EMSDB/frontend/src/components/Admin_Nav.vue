@@ -32,7 +32,8 @@
           <el-menu-item index="3-2">教室信息管理</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="4">
-          <template #title><img style="height: 26px; margin-right: 8px" src="../assets/homePage/message.png" alt="img failed">
+          <template #title><img style="height: 26px; margin-right: 8px" src="../assets/homePage/message.png"
+                                alt="img failed">
             消息反馈
           </template>
           <el-menu-item index="4-1">发布通知</el-menu-item>
@@ -41,7 +42,8 @@
         </el-sub-menu>
 
         <el-sub-menu index="5">
-          <template #title><img style="height: 28px;margin-right: 5px;" src="../assets/homePage/person.png" alt="img failed">
+          <template #title><img style="height: 28px;margin-right: 5px;" src="../assets/homePage/person.png"
+                                alt="img failed">
             个人中心
           </template>
           <el-menu-item index="5-1">个人信息</el-menu-item>
@@ -50,7 +52,24 @@
         </el-sub-menu>
       </el-menu>
     </div>
+
+    <el-dialog
+        v-model="dialogVisible"
+        title="提示"
+        width="30%"
+    >
+      <span>您确定要退出吗？</span>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="confirmLogout">确定</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+      </span>
+      </template>
+    </el-dialog>
+
+
   </div>
+
 </template>
 
 <script>
@@ -58,13 +77,20 @@ export default {
   name: "admin",
   data() {
     return {
-
+      dialogVisible: false,
       activeIndex2: ""
     }
   },
   methods: {
     handleSelect(index, indexPath) {
-      alert(index)
+      if (index === '5-3') {
+        this.dialogVisible = true
+      }
+      //alert(index)
+    },
+    confirmLogout() {
+      this.$router.push('/')
+      this.dialogVisible = false
     },
   }
 }
@@ -81,8 +107,8 @@ html, body {
   width: 100%;
   height: 100%;
   position: fixed;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   background-size: 100% 100%;
 }
 
@@ -91,10 +117,10 @@ html, body {
   height: 60px;
   width: 100%;
 }
+
 .Nav {
   top: 60px;
 }
-
 
 
 </style>
