@@ -11,7 +11,7 @@ import VueAxios from 'vue-axios'
 axios.defaults.baseURL = 'http://127.0.0.1:8000/'
 
 // 挂载到vue
-Vue.prototype.$http = axios
+// Vue.prototype.$http = axios
 
 createApp(App).use(store).use(router).use(ElementPlus).use(VueAxios,axios).mount('#app')
 

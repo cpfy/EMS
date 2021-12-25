@@ -60,6 +60,8 @@
 
 <script>
 
+import router from "../router";
+
 export default {
   data() {
     return {
@@ -118,6 +120,7 @@ export default {
         if (!this.userType) {
           this.$message.error('请选择登录方式');
         } else {
+          router.push('/Student');
           const self = this;
           self.axios({
             method: 'post',
@@ -134,6 +137,7 @@ export default {
             var obj1 = JSON.parse(res.data);
 
           })
+
         }
       }
 
