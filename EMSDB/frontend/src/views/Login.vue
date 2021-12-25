@@ -121,11 +121,11 @@ export default {
           this.$message.error('请选择登录方式');
         } else {
           if (this.userType==='学生') {
-            this.$router.push('/studentHome');
+            this.$router.push('/student');
           } else if (this.userType==='教师') {
-            this.$router.push('/teacherHome');
+            this.$router.push('/teacher');
           } else if (this.userType==='管理员') {
-            this.$router.push('/adminHome');
+            this.$router.push('/admin');
           }
           const self = this;
           self.axios({

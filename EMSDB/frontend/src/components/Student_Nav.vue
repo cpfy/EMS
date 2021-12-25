@@ -1,7 +1,7 @@
 <template>
   <div class="background">
-    <div class="Head" >
-      <img src="../assets/Head/stu-head.png" alt="img failed">
+    <div class="Head">
+      <img src="../assets/head.png" alt="img failed">
     </div>
 
     <div style="margin-top: 45px ;" class="Nav">
@@ -33,7 +33,8 @@
           <el-menu-item index="3-4">空教室查询</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="4">
-          <template #title><img style="height: 25px; margin-right: 8px" src="../assets/homePage/apply.png" alt="img failed"> 事务申请
+          <template #title><img style="height: 25px; margin-right: 8px" src="../assets/homePage/apply.png"
+                                alt="img failed"> 事务申请
           </template>
           <el-menu-item @click="fuck()" index="4-1">申请免听课程</el-menu-item>
           <el-menu-item index="4-2">申请免修课程</el-menu-item>
@@ -41,7 +42,8 @@
           <el-menu-item index="4-4">其他申请</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="5">
-          <template #title><img style="height: 26px; margin-right: 8px" src="../assets/homePage/message.png" alt="img failed"> 消息反馈
+          <template #title><img style="height: 26px; margin-right: 8px" src="../assets/homePage/message.png"
+                                alt="img failed"> 消息反馈
           </template>
           <el-menu-item index="5-1">系统通知</el-menu-item>
           <el-menu-item index="5-2">教师反馈</el-menu-item>
@@ -50,7 +52,8 @@
                                      alt="img failed"> 教学评价
         </el-menu-item>
         <el-sub-menu index="7">
-          <template #title><img style="height: 28px;margin-right: 5px;" src="../assets/homePage/person.png" alt="img failed"> 个人中心
+          <template #title><img style="height: 28px;margin-right: 5px;" src="../assets/homePage/person.png"
+                                alt="img failed"> 个人中心
           </template>
           <el-menu-item index="7-1">个人信息</el-menu-item>
           <el-menu-item index="7-2">修改密码</el-menu-item>
@@ -84,16 +87,24 @@
 
 export default {
   name: "stu",
+  props: {
+    activeIndex2: {
+      type: String,
+      default: '1',
+    }
+  },
   data() {
     return {
       dialogVisible: false,
-      activeIndex2: ""
     }
   },
   methods: {
     handleSelect(index, indexPath) {
-      if (index==='7-3') {
-        this.dialogVisible  = true
+      if (index === '7-3') {
+        this.dialogVisible = true
+      } else if (index === '7-2') {
+        this.$store.state.userType = 'student'
+        this.$router.push('/passwordChange')
       }
     },
     confirmLogout() {
@@ -115,20 +126,20 @@ html, body {
   width: 100%;
   height: 100%;
   position: fixed;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   background-size: 100% 100%;
 }
 
 .Head {
-  margin-left: 50vh;
+  margin-left: 38%;
   height: 60px;
   width: 100%;
 }
+
 .Nav {
   top: 60px;
 }
-
 
 
 </style>

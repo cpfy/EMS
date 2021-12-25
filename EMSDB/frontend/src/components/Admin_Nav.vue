@@ -1,7 +1,7 @@
 <template>
   <div class="background">
     <div class="Head">
-      <img src="../assets/Head/admin-head.png" alt="img failed">
+      <img src="../assets/head.png" alt="img failed">
     </div>
     <div style="margin-top: 45px ;" class="Nav">
       <el-menu
@@ -73,18 +73,27 @@
 </template>
 
 <script>
+
 export default {
   name: "admin",
+  props: {
+    activeIndex2: {
+      type: String,
+      default: '1',
+    }
+  },
   data() {
     return {
       dialogVisible: false,
-      activeIndex2: ""
     }
   },
   methods: {
     handleSelect(index, indexPath) {
       if (index === '5-3') {
         this.dialogVisible = true
+      } else if (index==='5-2') {
+        this.$store.state.userType = 'admin'
+        this.$router.push('/passwordChange')
       }
       //alert(index)
     },
@@ -113,7 +122,7 @@ html, body {
 }
 
 .Head {
-  margin-left: 50vh;
+  margin-left: 38%;
   height: 60px;
   width: 100%;
 }
