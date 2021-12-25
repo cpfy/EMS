@@ -1,8 +1,11 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue';
-import Student from "../views/Student";
-import Teacher from "../views/Teacher";
-import Admin from "../views/Admin";
+import Student from "../components/Student_Nav";
+import Teacher from "../components/Teacher_Nav";
+import Admin from "../components/Admin_Nav";
+import Student_Home from "../views/Student_Home";
+import Teacher_Home from "../views/Teacher_Home"
+import Admin_Home from "../views/Admin_Home";
 
 const routes = [
     {
@@ -27,6 +30,21 @@ const routes = [
         path: '/admin',
         name: 'Admin',
         component: Admin
+    },
+    {
+        path: '/studentHome',
+        name: 'studentHome',
+        component: Student_Home
+    },
+    {
+        path: '/teacherHome',
+        name: 'teacherHome',
+        component: Teacher_Home
+    },
+    {
+        path: '/adminHome',
+        name: 'adminHome',
+        component: Admin_Home
     }
 ]
 

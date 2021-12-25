@@ -2,7 +2,7 @@
 
   <!--  image-->
   <div class="login_background" style=" ">
-    <img src="../assets/login_background.png" style="position: absolute;left: 0;top:20px;height: 100vh;width: 100%"
+    <img src="../assets/login/login_background.png" style="position: absolute;left: 0;top:0;height: 100vh;width: 100%"
          alt="no image">
   </div>
 
@@ -183,22 +183,22 @@ export default {
 }
 
 .class_id {
-  background: url("../assets/id.png") no-repeat 7px 9px;
+  background: url("../assets/login/id.png") no-repeat 7px 9px;
   background-size: 25px;
 }
 
 .class_user {
-  background: url("../assets/user.png") no-repeat 7px 9px;
+  background: url("../assets/login/user.png") no-repeat 7px 9px;
   background-size: 24px;
 }
 
 .class_password {
-  background: url("../assets/lock.png") no-repeat 8px 9px;
+  background: url("../assets/login/lock.png") no-repeat 8px 9px;
   background-size: 22px;
 }
 
 .class_password0 {
-  background: url("../assets/key.png") no-repeat 6px 6px;
+  background: url("../assets/login/key.png") no-repeat 6px 6px;
   background-size: 28px;
 }
 
