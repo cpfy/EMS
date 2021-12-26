@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.redirects',
     #
     'apps.userprofile',
+    'apps.attrs',
 ]
 
 SITE_ID = 1
@@ -63,7 +64,8 @@ ROOT_URLCONF = 'EMSDB.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['frontend/dist'],
+        #'DIRS': ['frontend/dist'],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia-Shanghai'
+TIME_ZONE = 'utc'
 
 USE_I18N = True
 
@@ -124,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend/dist/static"),
+    os.path.join(BASE_DIR, 'frontend/dist/static'),
 ]
 
 # Default primary key field type
