@@ -4,7 +4,8 @@ import Student_Home from "../views/Student_Home";
 import Teacher_Home from "../views/Teacher_Home"
 import Admin_Home from "../views/Admin_Home";
 import PasswordChange from "../views/PasswordChange";
-//import test from "../views/test";
+import test from "../views/test";
+import PersonalInfo from "../views/PersonalInfo";
 
 const routes = [
     {
@@ -12,11 +13,11 @@ const routes = [
         name: 'login',
         component: Login
     },
-    /*{
+    {
       path: '/test',
       name: 'test',
       component: test
-    },*/
+    },
     {
         path: '/student',
         name: 'studentHome',
