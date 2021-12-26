@@ -3,8 +3,9 @@ import Login from '../views/Login.vue';
 import Student_Home from "../views/Student_Home";
 import Teacher_Home from "../views/Teacher_Home"
 import Admin_Home from "../views/Admin_Home";
-import PasswordChange from "../views/passwordChange";
+import PasswordChange from "../views/PasswordChange";
 import test from "../views/test";
+import PersonalInfo from "../views/PersonalInfo";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         path: '/passwordChange',
         name: 'passwordChange',
         component: PasswordChange
+    },
+    {
+        path: '/personalInfo',
+        name: 'personalInfo',
+        component: PersonalInfo
     },
 
 ]

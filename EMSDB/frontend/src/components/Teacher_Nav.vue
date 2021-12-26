@@ -3,6 +3,9 @@
     <div class="Head">
       <img src="../assets/head.png" alt="img failed">
     </div>
+    <div style="position: fixed;top: -20px;right: 0">
+      <img src="../assets/plane.gif" alt="gif failed">
+    </div>
     <div style="margin-top: 45px ;" class="Nav">
       <el-menu
           :default-active="activeIndex2"
@@ -94,11 +97,13 @@ export default {
   },
   methods: {
     handleSelect(index, indexPath) {
+      this.$store.state.userType = 'teacher'
       if(index==='6-3') {
         this.dialogVisible = true
       } else if (index==='6-2') {
-        this.$store.state.userType = 'teacher'
         this.$router.push('/passwordChange')
+      }else if (index==='6-1') {
+        this.$router.push('/personalInfo')
       }
     },
     confirmLogout() {
