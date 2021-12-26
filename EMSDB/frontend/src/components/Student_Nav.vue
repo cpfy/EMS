@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div style="z-index: 2;height: 22%" class="background">
     <div class="Head">
       <img src="../assets/head.png" alt="img failed">
     </div>
@@ -67,19 +67,25 @@
 
     </div>
 
-    <el-dialog
-        v-model="dialogVisible"
-        title="提示"
-        width="30%"
-    >
-      <span>您确定要退出吗？</span>
-      <template #footer>
+    <div style="z-index: 3;">
+      <el-dialog
+          v-model="dialogVisible"
+          title="提示"
+          width="30%"
+      >
+        <span>您确定要退出吗？</span>
+        <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="confirmLogout">确定</el-button>
+        <div style="">
+          <el-button  type="primary" @click="confirmLogout">确定</el-button>
         <el-button @click="dialogVisible = false">取消</el-button>
+        </div>
+
       </span>
-      </template>
-    </el-dialog>
+        </template>
+      </el-dialog>
+    </div>
+
 
   </div>
 
@@ -104,13 +110,15 @@ export default {
   },
   methods: {
     handleSelect(index, indexPath) {
-      this.$store.state.userType = 'student'
+      this.$store.state.userType = '学生'
       if (index === '7-3') {
         this.dialogVisible = true
       } else if (index === '7-2') {
         this.$router.push('/passwordChange')
       }else if (index==='7-1') {
         this.$router.push('/personalInfo')
+      } else if (index==='1') {
+        this.$router.push('/student')
       }
     },
     confirmLogout() {

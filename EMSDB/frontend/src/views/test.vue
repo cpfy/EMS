@@ -1,4 +1,5 @@
 <template>
+  <el-input></el-input>
   <div>
     <div class="eKTRoO">
       <div class="jcJKRS">
@@ -12,40 +13,50 @@
         <div class="row textForm userName">
           <span class="label">用户名</span>
           <span class="value">
-						<input type="text" placeholder="用户昵称"  v-model="this.newname" >
+						<input type="text" disabled placeholder="用户昵称"  v-model="this.newname" >
 					</span>
         </div>
-        <div class="row textForm realName">
+        <div v-if="this.$store.state.userType!=='管理员'" class="row textForm realName">
           <span class="label">姓名</span>
           <span class="value gray">未绑定</span>
           <span class="action">绑定</span>
         </div>
-        <div class="row textForm studentId">
+        <div v-if="this.$store.state.userType==='学生'" class="row textForm studentId">
           <span class="label">学号</span>
           <span class="value gray">未绑定</span>
           <span class="action">绑定</span>
         </div>
-        <div class="row textForm grade">
+        <div v-if="this.$store.state.userType==='学生'" class="row textForm grade">
           <span class="label">年级</span>
           <span class="value gray">未绑定</span>
           <span class="action">绑定</span>
         </div>
-        <div class="row textForm class">
+        <div v-if="this.$store.state.userType==='学生'" class="row textForm class">
           <span class="label">班级</span>
           <span class="value gray">未绑定</span>
           <span class="action">绑定</span>
         </div>
-        <div class="row textForm college">
+        <div v-if="this.$store.state.userType==='教师'" class="row textForm age">
+          <span class="label">年龄</span>
+          <span class="value gray">未绑定</span>
+          <span class="action">绑定</span>
+        </div>
+        <div v-if="this.$store.state.userType==='教师'" class="row textForm phone">
+          <span class="label">联系电话</span>
+          <span class="value gray">未绑定</span>
+          <span class="action">绑定</span>
+        </div>
+        <div v-if="this.$store.state.userType!=='管理员'" class="row textForm college">
           <span class="label">学院</span>
           <span class="value gray">未绑定</span>
           <span class="action">绑定</span>
         </div>
-        <div class="row textForm creditGot">
+        <div v-if="this.$store.state.userType==='学生'" class="row textForm creditGot">
           <span class="label">已修学分</span>
           <span class="value gray">未绑定</span>
           <span class="action">绑定</span>
         </div>
-        <div class="row textForm creditNeed">
+        <div v-if="this.$store.state.userType==='学生'" class="row textForm creditNeed">
           <span class="label">所需学分</span>
           <span class="value gray">未绑定</span>
           <span class="action">绑定</span>
@@ -209,6 +220,14 @@ export default {
 }
 
 .class {
+  background: url("https://assets.shimonote.com/static/lizard-one/assets/mobile.4cb34424.svg") left center / 20px 20px no-repeat;
+}
+
+.age {
+  background: url("https://assets.shimonote.com/static/lizard-one/assets/mobile.4cb34424.svg") left center / 20px 20px no-repeat;
+}
+
+.phone {
   background: url("https://assets.shimonote.com/static/lizard-one/assets/mobile.4cb34424.svg") left center / 20px 20px no-repeat;
 }
 

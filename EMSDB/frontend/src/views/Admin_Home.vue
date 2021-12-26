@@ -1,11 +1,8 @@
 <template>
-  <div class="background" style="height: 111px;">
-    <Admin_Nav></Admin_Nav>
+  <div class="bg" >
   </div>
-  <div class="" style="border: solid;position:absolute;left: 0; margin-top: 158px">
+  <Admin_Nav></Admin_Nav>
 
-
-  </div>
 </template>
 
 <script>
@@ -19,7 +16,7 @@ export default {
 </script>
 
 <style scoped>
-.background {
+.bg {
   background: url("../assets/homePage/bg_home.png");
   width: 100%;
   height: 100%;

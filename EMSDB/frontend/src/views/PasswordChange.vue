@@ -1,15 +1,16 @@
 <template>
   <div class="bg">
   </div>
-  <div v-if="this.$store.state.userType==='student'" style="height: 111px;">
+  <div v-if="this.$store.state.userType==='学生'" style="height: 111px;">
     <Student_Nav active-index2="7-2"></Student_Nav>
   </div>
-  <div v-else-if="this.$store.state.userType==='teacher'" style="height: 111px;">
+  <div v-else-if="this.$store.state.userType==='教师'" style="height: 111px;">
     <Teacher_Nav active-index2="6-2"></Teacher_Nav>
   </div>
-  <div v-else-if="this.$store.state.userType==='admin'" style="height: 111px;">
+  <div v-else-if="this.$store.state.userType==='管理员'" style="height: 111px;">
     <Admin_Nav active-index2="5-2"></Admin_Nav>
   </div>
+  <div class="bg_white" ></div>
   <div class="mainBody" style="position:absolute;left: 10%; margin-top: 6%">
     <el-form
         ref="ruleForm"
@@ -19,6 +20,9 @@
         class="demo-ruleForm"
         style="zoom: 120%"
     >
+      <el-form-item label="学号" prop="studentId">
+        <el-input placeholder=studentId disabled v-model="ruleForm.studentId"></el-input>
+      </el-form-item>
       <el-form-item label="用户名" prop="name">
         <el-input placeholder=name disabled v-model="ruleForm.name"></el-input>
       </el-form-item>
@@ -47,10 +51,29 @@ import Teacher_Nav from "../components/Teacher_Nav";
 import Student_Nav from "../components/Student_Nav";
 export default {
   name: "Admin_PasswordChange",
+  //TODO: mounted
+  mounted() {
+    const self = this;
+    self.axios({
+      method: 'post',
+      url: '/mounted/',
+      data: {
+      },
+      headers: {
+        'X-CSRFToken': this.getCookie('csrftoken')
+      },
+    }).then(res => {
+      var obj1 = JSON.parse(res.data);
+      this.$store.state.studentId = obj1.studentId;
+      this.$store.state.userType = obj1.userType;
+      this.$store.state.userName = obj1.userName;
 
+    })
+  },
   data() {
     return {
       ruleForm: {
+        studentId: this.$store.state.studentId,
         name: this.$store.state.userName,
         oldPassword: '',
         newPassword: '',
@@ -111,7 +134,7 @@ export default {
             const self = this;
             self.axios({
               method: 'post',
-              url: '/admin/passwordChange',
+              url: '/passwordChange/',
               data: {
                 'oldPassword': this.ruleForm.oldPassword,
                 'newPassword': this.ruleForm.newPassword
@@ -122,6 +145,9 @@ export default {
             }).then(res => {
               var obj1 = JSON.parse(res.data);
               //TODO: yes or no
+              if (obj1.result===true) {
+                alert("修改密码成功");
+              }
             })
 
           }
@@ -129,15 +155,16 @@ export default {
       })
 
     },
+    getCookie(name) {
+      var value = ';' + document.cookie;
+      var parts = value.split('; ' + name + '=');
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    },
     reset(formName) {
       this.$refs[formName].resetFields()
     }
   },
-  getCookie(name) {
-    var value = ';' + document.cookie;
-    var parts = value.split('; ' + name + '=');
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  },
+
   components: {
     Admin_Nav,
     Teacher_Nav,
@@ -155,6 +182,28 @@ export default {
   left: 0;
   top: 0;
   background-size: 100% 100%;
-  opacity: 0.4;
+  opacity: 1;
+}
+.bg_white {
+  margin: 4% auto 0 20%;
+  padding: 20px 0 70px 60px;
+  width: 816px;
+  min-height: 540px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: rgb(204 204 204) 0 1px 6px;
+  box-sizing: border-box;
+  transition: opacity 0.2s ease-in 0s;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: stretch;
+  align-items: stretch;
+  font-size: 14px;
+  opacity: 0.7;
+  position: fixed;
+}
+.mainBody {
+  position: fixed;
+  margin: 4% auto 0 20%;
+  padding: 20px 0 70px 10px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div style="z-index: 2;height: 22%" class="background">
     <div class="Head">
       <img src="../assets/head.png" alt="img failed">
     </div>
@@ -97,13 +97,15 @@ export default {
   },
   methods: {
     handleSelect(index, indexPath) {
-      this.$store.state.userType = 'teacher'
+      this.$store.state.userType = '教师'
       if(index==='6-3') {
         this.dialogVisible = true
       } else if (index==='6-2') {
         this.$router.push('/passwordChange')
       }else if (index==='6-1') {
         this.$router.push('/personalInfo')
+      }else if (index==='1') {
+        this.$router.push('/teacher')
       }
     },
     confirmLogout() {

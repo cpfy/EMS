@@ -120,6 +120,8 @@ export default {
         if (!this.userType) {
           this.$message.error('请选择登录方式');
         } else {
+          this.$store.state.userType = this.userType;
+          this.$store.state.userName = this.userName;
           if (this.userType==='学生') {
             this.$router.push('/student');
           } else if (this.userType==='教师') {
@@ -127,6 +129,7 @@ export default {
           } else if (this.userType==='管理员') {
             this.$router.push('/admin');
           }
+
           const self = this;
           self.axios({
             method: 'post',
@@ -141,12 +144,18 @@ export default {
             },
           }).then(res => {
             var obj1 = JSON.parse(res.data);
+            this.$store.state.id = obj1.id;
 
           })
 
         }
       }
 
+    },
+    getCookie(name) {
+      var value = '; ' + document.cookie;
+      var parts = value.split('; ' + name + '=');
+      if (parts.length === 2) return parts.pop().split(';').shift();
     },
     toRegister() {
       this.isLogin = 0;
@@ -155,11 +164,7 @@ export default {
       this.isLogin = 1;
     }
   },
-  getCookie(name) {
-    var value = '; ' + document.cookie;
-    var parts = value.split('; ' + name + '=');
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  },
+
 }
 
 </script>
