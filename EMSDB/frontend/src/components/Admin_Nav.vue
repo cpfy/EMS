@@ -1,7 +1,7 @@
 <template>
   <div style="z-index: 2;height: 22%" class="background">
     <div class="Head">
-      <img src="../assets/head.png" alt="img failed">
+      <img style="zoom: 0.22;margin-top: 0.8%;" src="../assets/head.png" alt="img failed">
     </div>
 
     <div style="position: fixed;top: -20px;right: 0">
@@ -131,7 +131,7 @@ html, body {
 }
 
 .Head {
-  margin-left: 38%;
+  margin-left: 32%;
   height: 60px;
   width: 100%;
 }

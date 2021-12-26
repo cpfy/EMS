@@ -12,8 +12,8 @@
   <div class="sign " style="position: absolute;top:0;right: 0;width: 500px;">
 
 
-    <div v-if="isLogin===1" class="login" style="position:absolute; top:25%;width: 500px; ">
-      <h1 style="font-family: font1,serif">用户登录</h1>
+    <div v-if="isLogin===1" class="login" style="position:absolute; top:25%;width: 500px;margin-left: 9% ">
+      <div style="margin-left: 20%"><h1 style="font-family: font1,serif;">用户登录</h1> </div>
       <input type="text"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_user qxs-icon" placeholder="用户名" v-model="userName">
@@ -32,8 +32,10 @@
       <el-button class="login_btn" @click.native="login" type="primary" round :loading="isBtnLoading">登录</el-button>
     </div>
 
-    <div v-else style="position:absolute; top:15%;width: 500px; ">
+    <div v-else style="position:absolute; top:15%;width: 500px; margin-left: 9% ">
+      <div style="margin-left: 20%">
       <h1 style="font-family: font1,serif">用户注册</h1>
+        </div>
       <input type="text"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_id qxs-icon" placeholder="学号" v-model="reg_scNum">

@@ -34,7 +34,7 @@
 						<el-input size="small" type="input" :placeholder="this.userName" v-model="newUserName"/>
 					</span>
         <span>
-          <el-button type="primary" @click="changeUserName" size="small">确认修改</el-button>
+          <el-button type="primary" @click="changeUserName" round size="small">修改</el-button>
         </span>
       </div>
       <div v-if="this.$store.state.userType!=='管理员'" class="row textForm realName">
@@ -90,7 +90,7 @@
 						<el-input size="small" type="text" :placeholder="this.email" v-model="this.newEmail"/>
 					</span>
         <span>
-          <el-button type="primary" @click="changeEmail" size="small">确认修改</el-button>
+          <el-button type="primary" @click="changeEmail" round size="small">修改</el-button>
         </span>
       </div>
 
@@ -186,7 +186,7 @@ export default {
         }
       })
     },
-    changEmail() {
+    changeEmail() {
       const self = this
       self.axios({
         method: 'post',

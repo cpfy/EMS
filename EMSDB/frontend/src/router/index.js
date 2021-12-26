@@ -6,6 +6,7 @@ import Admin_Home from "../views/Admin_Home";
 import PasswordChange from "../views/PasswordChange";
 import test from "../views/test";
 import PersonalInfo from "../views/PersonalInfo";
+import ExemptionApply from "../views/ExemptionApply";
 
 const routes = [
     {
@@ -42,6 +43,11 @@ const routes = [
         path: '/personalInfo',
         name: 'personalInfo',
         component: PersonalInfo
+    },
+    {
+        path: '/exemptionApply',
+        name: 'exemptionApply',
+        component: ExemptionApply
     },
 
 ]

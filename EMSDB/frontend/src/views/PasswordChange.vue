@@ -38,8 +38,8 @@
     </el-form>
 
     <div style="display: flex;justify-content: space-between; margin-left: 150px;margin-right: 10px">
-      <el-button style="zoom:130%" @click="reset('ruleForm')">重置</el-button>
-      <el-button style="zoom:130%" type="primary" @click="onSubmit('ruleForm')">确认修改</el-button>
+      <el-button style="zoom:130%" round @click="reset('ruleForm')">重置</el-button>
+      <el-button style="zoom:130%" type="primary" round @click="onSubmit('ruleForm')">确认修改</el-button>
     </div>
 
   </div>
@@ -187,7 +187,7 @@ export default {
 .bg_white {
   margin: 4% auto 0 20%;
   padding: 20px 0 70px 60px;
-  width: 816px;
+  width: 53%;
   min-height: 540px;
   background-color: rgba(255, 255, 255, 1);
   box-shadow: rgb(204 204 204) 0 1px 6px;

@@ -1,11 +1,11 @@
 <template>
   <div style="z-index: 2;height: 22%" class="background">
     <div class="Head">
-      <img src="../assets/head.png" alt="img failed">
+      <img style="zoom: 0.22;margin-top: 0.8%;" src="../assets/head.png" alt="img failed">
     </div>
 
     <div style="position: fixed;top: -20px;right: 0">
-      <img src="../assets/plane.gif" alt="gif failed">
+      <img src="../assets/plane.gif" style="" alt="gif failed">
     </div>
 
     <div style="margin-top: 45px ;" class="Nav">
@@ -40,10 +40,9 @@
           <template #title><img style="height: 25px; margin-right: 8px" src="../assets/homePage/apply.png"
                                 alt="img failed"> 事务申请
           </template>
-          <el-menu-item @click="fuck()" index="4-1">申请免听课程</el-menu-item>
-          <el-menu-item index="4-2">申请免修课程</el-menu-item>
-          <el-menu-item index="4-3">申请缓考</el-menu-item>
-          <el-menu-item index="4-4">其他申请</el-menu-item>
+          <el-menu-item index="4-1">免听/免修申请</el-menu-item>
+          <el-menu-item index="4-2">申请缓考</el-menu-item>
+          <el-menu-item index="4-3">其他申请</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="5">
           <template #title><img style="height: 26px; margin-right: 8px" src="../assets/homePage/message.png"
@@ -77,7 +76,7 @@
         <template #footer>
       <span class="dialog-footer">
         <div style="">
-          <el-button  type="primary" @click="confirmLogout">确定</el-button>
+          <el-button type="primary" @click="confirmLogout">确定</el-button>
         <el-button @click="dialogVisible = false">取消</el-button>
         </div>
 
@@ -115,12 +114,14 @@ export default {
         this.dialogVisible = true
       } else if (index === '7-2') {
         this.$router.push('/passwordChange')
-      }else if (index==='7-1') {
+      } else if (index === '7-1') {
         this.$router.push('/personalInfo')
-      } else if (index==='1') {
+      } else if (index === '1') {
         this.$router.push('/student')
+      } else if (index === '4-1') {
+        this.$router.push('/exemptionApply')
       }
-    },
+          },
     confirmLogout() {
       this.$router.push('/')
       this.dialogVisible = false
@@ -146,7 +147,8 @@ html, body {
 }
 
 .Head {
-  margin-left: 38%;
+  margin-left: 32%;
+
   height: 60px;
   width: 100%;
 }
