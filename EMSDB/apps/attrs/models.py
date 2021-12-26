@@ -46,7 +46,7 @@ class Student(models.Model):
     student_home = models.CharField(max_length=15)
 
     # studentAddress = models.CharField(max_length=128, verbose_name="宿舍地址", null=True)
-    # studentCredit = models.IntegerField(null=True, verbose_name="已修学分")
+    student_credit = models.IntegerField(default=0, verbose_name="已修学分")
 
     class Meta:
         verbose_name = "学生"  # 模型名称
@@ -87,6 +87,9 @@ class Admin(models.Model):
 class Department(models.Model):
     deptId = models.IntegerField(primary_key=True)
     dept_name = models.CharField(verbose_name='院系名', max_length=10, null=True)
+
+    # 学院培养方案所需学分
+    dept_credit = models.IntegerField(default=150, verbose_name="所需学分")
 
     class Meta:
         verbose_name = "院系"
