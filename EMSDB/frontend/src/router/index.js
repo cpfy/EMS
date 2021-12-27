@@ -6,7 +6,8 @@ import Admin_Home from "../views/Admin_Home";
 import PasswordChange from "../views/PasswordChange";
 import test from "../views/test";
 import PersonalInfo from "../views/PersonalInfo";
-import ExemptionApply from "../views/ExemptionApply";
+import ExemptionApply from "../views/Exemption_Apply";
+import ExamDelay_Apply from "../views/ExamDelay_Apply";
 
 const routes = [
     {
@@ -49,6 +50,11 @@ const routes = [
         name: 'exemptionApply',
         component: ExemptionApply
     },
+    {
+        path: '/examDelay_Apply',
+        name: 'examDelay_Apply',
+        component: ExamDelay_Apply
+    }
 
 ]
 

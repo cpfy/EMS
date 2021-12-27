@@ -120,6 +120,8 @@ export default {
         this.$router.push('/student')
       } else if (index === '4-1') {
         this.$router.push('/exemptionApply')
+      }else if (index === '4-2') {
+        this.$router.push('/examDelay_Apply')
       }
           },
     confirmLogout() {

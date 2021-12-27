@@ -2,11 +2,11 @@
   <div class="bg">
   </div>
   <div v-if="this.$store.state.userType==='学生'" style="height: 111px;">
-    <Student_Nav active-index2="7-2"></Student_Nav>
+    <Student_Nav :active-index2=type></Student_Nav>
   </div>
   <div class="bg_white"></div>
   <div class="form">
-    <p class="head">学生免听/免修申请</p>
+    <p class="head">{{ this.head }}</p>
     <el-form
         ref="ruleForm"
         :model="ruleForm"
@@ -17,8 +17,8 @@
     >
       <el-form-item style="" label="申请类型：" prop="applyType">
         <el-radio-group v-model="ruleForm.applyType">
-          <el-radio label="免修申请"></el-radio>
-          <el-radio label="免听申请"></el-radio>
+          <el-radio :label=this.type1></el-radio>
+          <el-radio :label=this.type2></el-radio>
         </el-radio-group>
       </el-form-item>
       <div style="width: 75%;">
@@ -68,10 +68,25 @@ export default {
   components: {
     Student_Nav
   },
+  props: {
+    head: {
+      type: String,
+      default: '学生免听/免修申请'
+    },
+    type1: {
+      type: String,
+      default: '免听申请'
+    },
+    type2: {
+      type: String,
+      default: '免修申请'
+    }
+  },
   data() {
     return {
+      textarea: '',
+      type: this.head === '学生免听/免修申请'? '4-1':'4-2',
       ruleForm: {
-        textarea: '',
         applyType: '',
         courseName: '',
         courseCollege: '',
@@ -132,6 +147,7 @@ export default {
           console.log('error submit!!')
           return false
         } else {
+          //alert(this.ruleForm.applyType);
           const self = this;
           self.axios({
             method: 'post',
@@ -148,10 +164,13 @@ export default {
               'X-CSRFToken': this.getCookie('csrftoken')
             },
           }).then(res => {
+
             var obj1 = JSON.parse(res.data);
             //TODO: yes or no
             if (obj1.result===true) {
-              alert("提交申请成功");
+              alert("提交申请成功!");
+            } else {
+              alert("申请信息填写有误，请核实后重新提交!")
             }
           })
         }
@@ -210,6 +229,7 @@ export default {
 .head {
   margin-left: 22%;
   font-family: 幼圆,serif;
+
   font-size: 25px;
 }
 </style>
