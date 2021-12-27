@@ -4,9 +4,7 @@ from . import views
 app_name = 'attrs'
 
 urlpatterns = [
-    # 学生查询
-    path('student/', views.query_student, name='student'),
+    # 个人信息查询
+    path('info/', views.get_user_info, name='userinfo'),
 
-    # 教师查询
-    path('teacher/', views.query_teacher, name='teacher'),
 ]

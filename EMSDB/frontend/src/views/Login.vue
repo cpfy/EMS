@@ -63,6 +63,8 @@
 <script>
 
 import router from "../router";
+import axios from "axios";
+import qs from "qs";
 
 export default {
   data() {
@@ -122,32 +124,39 @@ export default {
         if (!this.userType) {
           this.$message.error('请选择登录方式');
         } else {
-          this.$store.state.userType = this.userType;
-          this.$store.state.userName = this.userName;
-          if (this.userType==='学生') {
-            this.$router.push('/student');
-          } else if (this.userType==='教师') {
-            this.$router.push('/teacher');
-          } else if (this.userType==='管理员') {
-            this.$router.push('/admin');
-          }
 
           const self = this;
 
           self.axios({
             method: 'post',
-            url: '/login/',
-            data: {
+            url: 'http://localhost:8000/userprofile/login/',
+            data: qs.stringify({
               'userName': this.userName,
               'password': this.password,
               'userType': this.userType
-            },
+            }),
             headers: {
+                //'Content-Type': 'application/x-www-form-urlencoded',
               'X-CSRFToken': this.getCookie('csrftoken')
             },
           }).then(res => {
-            var obj1 = JSON.parse(res.data);
-            this.$store.state.id = obj1.id;
+            //var obj1 = JSON.parse(res.data);
+            this.$store.state.id = res.data.id;
+
+            console.log("登陆返回信息："+res)
+            if(res.data.result == true){
+                this.$store.state.userType = this.userType;
+                this.$store.state.userName = this.userName;
+                if (this.userType==='学生') {
+                this.$router.push('/student');
+                } else if (this.userType==='教师') {
+                this.$router.push('/teacher');
+                } else if (this.userType==='管理员') {
+                this.$router.push('/admin');
+                }
+            }else{
+                this.$message.error(res.data.info);
+            }
 
           })
 

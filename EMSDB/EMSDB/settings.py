@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     #
     'django.contrib.sites',
     'django.contrib.redirects',
+    'corsheaders',
     #
     'apps.userprofile',
     'apps.attrs',
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     #
     'corsheaders.middleware.CorsMiddleware',
+    #
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -59,12 +61,20 @@ MIDDLEWARE = [
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware'
 ]
 
+CORS_ALLOW_CREDENTIALS =True
+CORS_ORIGIN_ALLOW_ALL = True
+#允许所有方法
+CORS_ALLOW_METHODS = ('*')
+#允许所有请求头
+CORS_ALLOW_HEADERS = ('*')
+
+
 ROOT_URLCONF = 'EMSDB.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        #'DIRS': ['frontend/dist'],
+        # 'DIRS': ['frontend/dist'],
         'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')],
         'APP_DIRS': True,
         'OPTIONS': {

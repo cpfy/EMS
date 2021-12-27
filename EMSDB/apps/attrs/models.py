@@ -16,7 +16,7 @@ class Account(models.Model):
     name = models.CharField(verbose_name='姓名', max_length=5)
 
     class Meta:
-        verbose_name = '用户'
+        verbose_name = '账户'
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -51,7 +51,6 @@ class Student(models.Model):
     class Meta:
         verbose_name = "学生"  # 模型名称
         verbose_name_plural = verbose_name  # 模型复数
-        ordering = [id]
 
 
 class Teacher(models.Model):
@@ -85,8 +84,9 @@ class Admin(models.Model):
 
 
 class Department(models.Model):
-    deptId = models.IntegerField(primary_key=True)
+    dept_id = models.IntegerField(primary_key=True)
     dept_name = models.CharField(verbose_name='院系名', max_length=10, null=True)
+    dept_leader = models.CharField(verbose_name='系主任', max_length=10, null=True)
 
     # 学院培养方案所需学分
     dept_credit = models.IntegerField(default=150, verbose_name="所需学分")
