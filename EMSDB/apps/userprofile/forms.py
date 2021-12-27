@@ -7,8 +7,9 @@ from django.contrib.auth.models import User
 
 # 登录表单，继承了 forms.Form 类
 class UserLoginForm(forms.Form):
-    username = forms.CharField()
+    userName = forms.CharField()
     password = forms.CharField()
+    userType = forms.CharField()
 
 # 注册用户表单
 class UserRegisterForm(forms.ModelForm):
