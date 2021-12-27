@@ -3,11 +3,9 @@
     <div class="Head">
       <img style="zoom: 0.22;margin-top: 0.8%;" src="../assets/head.png" alt="img failed">
     </div>
-
     <div style="position: fixed;top: -20px;right: 0">
       <img src="../assets/plane.gif" style="" alt="gif failed">
     </div>
-
     <div style="margin-top: 45px ;" class="Nav">
       <el-menu
           :default-active="activeIndex2"
@@ -41,7 +39,7 @@
                                 alt="img failed"> 事务申请
           </template>
           <el-menu-item index="4-1">免听/免修申请</el-menu-item>
-          <el-menu-item index="4-2">申请缓考</el-menu-item>
+          <el-menu-item index="4-2">缓考/补考申请</el-menu-item>
           <el-menu-item index="4-3">其他申请</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="5">
@@ -119,9 +117,9 @@ export default {
       } else if (index === '1') {
         this.$router.push('/student')
       } else if (index === '4-1') {
-        this.$router.push('/exemptionApply')
+        this.$router.push('/student/exemptionApply')
       }else if (index === '4-2') {
-        this.$router.push('/examDelay_Apply')
+        this.$router.push('/student/examDelay_Apply')
       }
           },
     confirmLogout() {
@@ -150,7 +148,6 @@ html, body {
 
 .Head {
   margin-left: 32%;
-
   height: 60px;
   width: 100%;
 }

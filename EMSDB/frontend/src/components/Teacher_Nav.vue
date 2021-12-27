@@ -63,19 +63,22 @@
       </el-menu>
     </div>
 
-    <el-dialog
-        v-model="dialogVisible"
-        title="提示"
-        width="30%"
-    >
-      <span>您确定要退出吗？</span>
-      <template #footer>
+    <div style="z-index: 3;">
+      <el-dialog
+          v-model="dialogVisible"
+          title="提示"
+          width="30%"
+      >
+        <span>您确定要退出吗？</span>
+        <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="confirmLogout">确定</el-button>
         <el-button @click="dialogVisible = false">取消</el-button>
       </span>
-      </template>
-    </el-dialog>
+        </template>
+      </el-dialog>
+    </div>
+
 
   </div>
 
@@ -106,6 +109,10 @@ export default {
         this.$router.push('/personalInfo')
       }else if (index==='1') {
         this.$router.push('/teacher')
+      } else if (index==='4-2') {
+        this.$router.push('/teacher/scoreRevise_Apply')
+      } else if (index==='4-1') {
+        this.$router.push('/teacher/leave_Apply')
       }
     },
     confirmLogout() {

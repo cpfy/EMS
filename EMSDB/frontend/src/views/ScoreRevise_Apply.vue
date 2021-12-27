@@ -2,11 +2,14 @@
   <div class="bg">
   </div>
   <div style="height: 111px;">
-    <Student_Nav :active-index2=type></Student_Nav>
+    <Teacher_Nav active-index2="4-2"></Teacher_Nav>
   </div>
   <div class="bg_white"></div>
+
+
   <div class="form">
-    <p class="head">{{ this.head }}</p>
+    <p class="head">成绩修改申请</p>
+    <div style="height: 25px"></div>
     <el-form
         ref="ruleForm"
         :model="ruleForm"
@@ -15,32 +18,37 @@
         label-position="left"
         label-width="13%"
     >
-      <el-form-item style="" label="申请类型：" prop="applyType">
-        <el-radio-group v-model="ruleForm.applyType">
-          <el-radio :label=this.type1></el-radio>
-          <el-radio :label=this.type2></el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <div style="width: 75%;">
-        <el-form-item label-width="16%" label="课程名称:" prop="courseName">
-          <el-input v-model="ruleForm.courseName"></el-input>
+      <div style="width: 70%;display: flex;justify-content: space-between">
+        <el-form-item label-width="38%" label="学生姓名:" prop="studentName">
+          <el-input v-model="ruleForm.studentName"></el-input>
         </el-form-item>
-      </div>
-      <div style="width: 75%;">
-        <el-form-item label-width="16%" label="课程编号:" prop="courseId">
-          <el-input v-model="ruleForm.courseId"></el-input>
+        <span style="width: 10%"></span>
+        <el-form-item label-width="40%" label="学生学号:" prop="studentId">
+          <el-input v-model="ruleForm.studentId"></el-input>
         </el-form-item>
       </div>
 
       <div style="width: 70%;display: flex;justify-content: space-between">
-        <el-form-item label-width="38%" label="开课院系:" prop="courseCollege">
-          <el-input v-model="ruleForm.courseCollege"></el-input>
+        <el-form-item label-width="38%" label="课程名称:" prop="courseName">
+          <el-input v-model="ruleForm.courseName"></el-input>
         </el-form-item>
         <span style="width: 10%"></span>
-        <el-form-item label-width="40%" label="任课教师:" prop="teacher">
-          <el-input v-model="ruleForm.teacher"></el-input>
+        <el-form-item label-width="40%" label="开课院系:" prop="courseCollege">
+          <el-input v-model="ruleForm.courseCollege"></el-input>
         </el-form-item>
       </div>
+
+      <div style="width: 70%;display: flex;justify-content: space-between">
+        <el-form-item label-width="38%" label="原有成绩:" prop="originScore">
+          <el-input v-model="ruleForm.originScore"></el-input>
+        </el-form-item>
+        <span style="width: 10%"></span>
+        <el-form-item label-width="40%" label="修改成绩:" prop="newScore">
+          <el-input v-model="ruleForm.newScore"></el-input>
+        </el-form-item>
+      </div>
+
+      <div style="height: 8px"></div>
 
       <div style="width: 75%;">
         <el-form-item label-width="16%" label="申请理由:" prop="applyReason">
@@ -54,61 +62,50 @@
           <el-button type="primary" @click="submitForm('ruleForm')">提交申请</el-button>
         </el-form-item>
       </div>
-    </el-form>
 
+
+    </el-form>
   </div>
+
 </template>
 
 <script>
-import Student_Nav from "../components/Student_Nav";
-
+import Teacher_Nav from "../components/Teacher_Nav";
 export default {
-  name: "exemptionApply",
+
+  name: "Score_Revise",
   components: {
-    Student_Nav
-  },
-  props: {
-    head: {
-      type: String,
-      default: '学生免听/免修申请'
-    },
-    type1: {
-      type: String,
-      default: '免听申请'
-    },
-    type2: {
-      type: String,
-      default: '免修申请'
-    }
+    Teacher_Nav
   },
   data() {
     return {
       textarea: '',
-      type: this.head === '学生免听/免修申请'? '4-1':'4-2',
       ruleForm: {
-        applyType: '',
+        studentId: '',
+        studentName: '',
         courseName: '',
         courseCollege: '',
-        teacher: '',
         courseId: '',
+        originScore: '',
+        newScore: '',
         applyReason: '',
       },
       rules: {
-        applyType: [
+        studentName: [
           {
             required: true,
-            message: '请选择申请类型',
-            trigger: 'change',
-          },
-        ],
-        courseName: [
-          {
-            required: true,
-            message: '请填写课程名称',
+            message: '请填写学生姓名',
             trigger: 'blur',
           },
         ],
-        courseId: [
+        studentId: [
+          {
+            required: true,
+            message: '请填写学生学号',
+            trigger: 'blur',
+          },
+        ],
+        courseName: [
           {
             required: true,
             message: '请填写课程编号',
@@ -122,10 +119,24 @@ export default {
             trigger: 'blur',
           },
         ],
-        teacher: [
+        courseId: [
           {
             required: true,
-            message: '请填写任课教师姓名',
+            message: '请填写课程编号',
+            trigger: 'blur',
+          },
+        ],
+        originScore: [
+          {
+            required: true,
+            message: '请填写学生原成绩',
+            trigger: 'blur',
+          },
+        ],
+        newScore: [
+          {
+            required: true,
+            message: '请填写学生课程新成绩',
             trigger: 'blur',
           },
         ],
@@ -150,14 +161,17 @@ export default {
           const self = this;
           self.axios({
             method: 'post',
-            url: '/exemptionApply/',
+            url: '/scoreRevise_Apply/',
             data: {
-              'applyType': this.ruleForm.applyType,
+              'studentId': this.ruleForm.studentId,
+              'studentName': this.ruleForm.studentName,
               'courseName': this.ruleForm.courseName,
               'courseCollege': this.ruleForm.courseCollege,
-              'teacher': this.ruleForm.teacher,
               'courseId': this.ruleForm.courseId,
+              'originScore': this.ruleForm.originScore,
+              'newScore': this.ruleForm.newScore,
               'applyReason': this.ruleForm.applyReason,
+
             },
             headers: {
               'X-CSRFToken': this.getCookie('csrftoken')
@@ -166,10 +180,12 @@ export default {
 
             var obj1 = JSON.parse(res.data);
             //TODO: yes or no
-            if (obj1.result===true) {
+            if (obj1.result===0) {
               alert("提交申请成功!");
-            } else {
+            } else if (obj1.result===-1) {
               alert("申请信息填写有误，请核实后重新提交!")
+            } else if (obj1.result===-2) {
+              alert("您没有修改该课程成绩的权限!")
             }
           })
         }
@@ -179,12 +195,6 @@ export default {
       this.$refs[formName].resetFields()
     },
   },
-  getCookie(name) {
-    var value = ';' + document.cookie;
-    var parts = value.split('; ' + name + '=');
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  },
-
 }
 </script>
 
@@ -198,6 +208,7 @@ export default {
   top: 0;
   background-size: 100% 100%;
   opacity: 1;
+  z-index: -1;
 }
 
 .bg_white {
@@ -215,20 +226,21 @@ export default {
   align-items: stretch;
   opacity: 0.7;
   position: fixed;
+  z-index: 0;
 }
-
 .form {
   /*border: solid;*/
   position: fixed;
   width: 50%;
   margin-left: 26%;
-  margin-top: 5%;
+  margin-top: 6%;
+  z-index: 1;
 }
 
 .head {
-  margin-left: 22%;
+  margin-left: 26%;
   font-family: 幼圆,serif;
-
   font-size: 28px;
+  z-index: 1;
 }
 </style>
