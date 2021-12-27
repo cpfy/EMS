@@ -133,6 +133,7 @@ export default {
           }
 
           const self = this;
+
           self.axios({
             method: 'post',
             url: '/login/',
