@@ -123,7 +123,8 @@ export default {
   name: "Leave_Apply",
   components: {
     Teacher_Nav
-  }, data() {
+  },
+  data() {
     const checkSubstitute = (rule, value, callback) => {
       if (this.ruleForm.substitute === true && value === '') {
         return callback(new Error('请输入代课教师信息'))

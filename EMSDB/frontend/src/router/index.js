@@ -10,6 +10,7 @@ import ExemptionApply from "../views/Exemption_Apply";
 import ExamDelay_Apply from "../views/ExamDelay_Apply";
 import ScoreRevise_Apply from "../views/ScoreRevise_Apply";
 import Leave_Apply from "../views/Leave_Apply";
+import OtherApply from "../views/Other_Apply";
 
 const routes = [
     {
@@ -65,7 +66,12 @@ const routes = [
         path: '/teacher/leave_Apply',
         name: 'leave_Apply',
         component: Leave_Apply
-    }
+    },
+    {
+        path: '/other_Apply',
+        name: 'other_Apply',
+        component: OtherApply
+    },
 
 
 ]
