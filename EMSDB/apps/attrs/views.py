@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, UserChangePwdForm
 from .models import Student, Class, Teacher, Admin, Department, Course, Account
 
 
@@ -22,6 +22,7 @@ def user_login(request):
             data = user_login_form.cleaned_data
             # 检验账号、密码是否正确匹配数据库中的某个用户
             # 如果均匹配则返回这个 user 对象
+
             print("get username = " + data['userName'])
             print("get password = " + data['password'])
             user = authenticate(username=data['userName'], password=data['password'])
@@ -43,7 +44,7 @@ def user_login(request):
             return JsonResponse(retdata)
 
     else:
-        retdata = createFalseJsonWithIdAndInfo("请使用GET或POST请求数据")
+        retdata = createFalseJsonWithIdAndInfo("请使用POST请求数据")
         return JsonResponse(retdata)
 
 
@@ -104,16 +105,67 @@ def user_register(request):
             return JsonResponse(retdata)
 
     else:
-        retdata = createFalseJsonWithInfo("请求方式有误！请使用GET或POST请求数据")
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
         return JsonResponse(retdata)
 
 
-def query_student(request):
-    return HttpResponse("Stu-查询成功！")
+# 获取账户用户状态
+def check_status(request):
+    if not request.user.is_authenticated:
+        retdata = createFalseJsonWithInfo("当前用户未登录")
+        return JsonResponse(retdata)
+    else:
+        current_user = request.user
+        account = Account.objects.get(user=current_user)
+        type = account.status  # 用户类型
+
+        if (type == "a"):
+            usertypestr = "学生"
+        elif (type == "b"):
+            usertypestr = "教师"
+        elif (type == "c"):
+            usertypestr = "管理员"
+
+        retdata = {
+            "result": True,
+            "id": account.code,
+            "userType": usertypestr,
+            "userName": account.name
+        }
+
+        return JsonResponse(retdata)
 
 
-def query_teacher(request):
-    return HttpResponse("Tea-查询成功！")
+# 改密码
+def change_pwd(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    user_cpwd_form = UserChangePwdForm(data=request.POST)
+    cur_user = request.user
+
+    if user_cpwd_form.is_valid():
+        data = user_cpwd_form.cleaned_data
+        oldpwd = User.objects.filter(username=data['oldPassword'])
+        validuser = authenticate(username=cur_user.username, password=oldpwd)
+
+        if validuser is None:
+            retdata = createFalseJsonWithInfo("原密码不正确！请重新输入")
+            return JsonResponse(retdata)
+
+        else:
+            validuser.set_password(data['newPassword'])
+            validuser.save()
+
+            retdata = {
+                'result': True,
+                'info': "修改密码成功！"
+            }
+            return JsonResponse(retdata)
+    else:
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
 
 
 def student_home(request):
@@ -202,7 +254,7 @@ def get_user_info(request):
         return JsonResponse(retdata)
 
 
-# 辅助用函数
+##### 辅助用函数 #####
 
 def createFalseJsonWithIdAndInfo(str):
     retdata = {

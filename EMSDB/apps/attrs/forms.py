@@ -36,3 +36,8 @@ class UserRegisterForm(forms.Form):
             return data.get('password')
         else:
             raise forms.ValidationError("密码输入不一致,请重试。")
+
+# 修改密码表单
+class UserChangePwdForm(forms.Form):
+    oldPassword = forms.CharField()
+    newPassword = forms.CharField()

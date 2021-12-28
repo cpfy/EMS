@@ -125,7 +125,7 @@ class Course(models.Model):
         null=True
     )
     type = models.CharField(choices=TYPE, verbose_name='课程类别', max_length=1, default='a')
-    ident = models.CharField(max_length=10)  # 课程性质
+    #ident = models.CharField(max_length=10)  # 课程性质
     credit = models.IntegerField(verbose_name="学分")
 
     courseStudent = models.ManyToManyField(Student, verbose_name="课程学生")

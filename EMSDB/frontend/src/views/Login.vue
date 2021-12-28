@@ -96,7 +96,7 @@ export default {
         const self = this;
         self.axios({
           method: 'post',
-          url: '/register/',
+          url: 'http://localhost:8000/site/register/',
           //TODO: to revise url
           data: qs.stringify( {
             'studentId': this.reg_scNum,

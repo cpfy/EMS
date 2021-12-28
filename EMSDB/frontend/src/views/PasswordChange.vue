@@ -136,7 +136,7 @@ export default {
             const self = this;
             self.axios({
               method: 'post',
-              url: '/passwordChange/',
+              url: 'http://localhost:8000/site/passwordChange/',
               data: qs.stringify({
                 'oldPassword': this.ruleForm.oldPassword,
                 'newPassword': this.ruleForm.newPassword
