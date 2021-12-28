@@ -49,6 +49,7 @@
 import Admin_Nav from "../components/Admin_Nav";
 import Teacher_Nav from "../components/Teacher_Nav";
 import Student_Nav from "../components/Student_Nav";
+import qs from "qs";
 export default {
   name: "Admin_PasswordChange",
   //TODO: mounted
@@ -57,6 +58,7 @@ export default {
     self.axios({
       method: 'post',
       url: '/mounted/',
+      //TODO
       data: {
       },
       headers: {
@@ -128,17 +130,17 @@ export default {
             alert("两次输入密码不一样");
           } else {
             if (this.ruleForm.oldPassword === 'true') {
-              alert('OK');
+              //alert('OK');
               //TODO: to delete
             }
             const self = this;
             self.axios({
               method: 'post',
               url: '/passwordChange/',
-              data: {
+              data: qs.stringify({
                 'oldPassword': this.ruleForm.oldPassword,
                 'newPassword': this.ruleForm.newPassword
-              },
+              }),
               headers: {
                 'X-CSRFToken': this.getCookie('csrftoken')
               },

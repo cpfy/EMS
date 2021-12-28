@@ -103,6 +103,8 @@ export default {
         this.$router.push('/personalInfo')
       }else if (index==='1') {
         this.$router.push('/admin')
+      } else if (index==='4-1') {
+        this.$router.push('/admin/notice_Send')
       }
       //alert(index)
     },

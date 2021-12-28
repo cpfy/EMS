@@ -13,7 +13,7 @@
 
 
     <div v-if="isLogin===1" class="login" style="position:absolute; top:25%;width: 500px;margin-left: 9% ">
-      <div style="margin-left: 20%"><h1 style="font-family: font1,serif;">用户登录</h1> </div>
+      <div style="margin-left: 20%"><h1 style="font-family: font1,serif;">用户登录</h1></div>
       <input type="text"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_user qxs-icon" placeholder="用户名" v-model="userName">
@@ -34,8 +34,8 @@
 
     <div v-else style="position:absolute; top:15%;width: 500px; margin-left: 9% ">
       <div style="margin-left: 20%">
-      <h1 style="font-family: font1,serif">用户注册</h1>
-        </div>
+        <h1 style="font-family: font1,serif">用户注册</h1>
+      </div>
       <input type="text"
              style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
              class="class_id qxs-icon" placeholder="学号" v-model="reg_scNum">
@@ -97,11 +97,12 @@ export default {
         self.axios({
           method: 'post',
           url: '/register/',
-          data: {
+          //TODO: to revise url
+          data: qs.stringify( {
             'studentId': this.reg_scNum,
             'userName': this.reg_userName,
             'password': this.reg_password,
-          },
+          }),
           headers: {
             'X-CSRFToken': this.getCookie('csrftoken')
           },
@@ -136,26 +137,27 @@ export default {
               'userType': this.userType
             }),
             headers: {
-                //'Content-Type': 'application/x-www-form-urlencoded',
+              //'Content-Type': 'application/x-www-form-urlencoded',
               'X-CSRFToken': this.getCookie('csrftoken')
             },
           }).then(res => {
             //var obj1 = JSON.parse(res.data);
-            this.$store.state.id = res.data.id;
 
-            console.log("登陆返回信息："+res)
-            if(res.data.result == true){
-                this.$store.state.userType = this.userType;
-                this.$store.state.userName = this.userName;
-                if (this.userType==='学生') {
+
+            console.log("登陆返回信息：" + res)
+            if (res.data.result === true) {
+              this.$store.state.id = res.data.id;
+              this.$store.state.userType = this.userType;
+              this.$store.state.userName = this.userName;
+              if (this.userType === '学生') {
                 this.$router.push('/student');
-                } else if (this.userType==='教师') {
+              } else if (this.userType === '教师') {
                 this.$router.push('/teacher');
-                } else if (this.userType==='管理员') {
+              } else if (this.userType === '管理员') {
                 this.$router.push('/admin');
-                }
-            }else{
-                this.$message.error(res.data.info);
+              }
+            } else {
+              this.$message.error(res.data.info);
             }
 
           })

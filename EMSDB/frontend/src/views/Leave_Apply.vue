@@ -118,6 +118,7 @@
 
 <script>
 import Teacher_Nav from "../components/Teacher_Nav";
+import qs from "qs";
 
 export default {
   name: "Leave_Apply",
@@ -213,7 +214,7 @@ export default {
           self.axios({
             method: 'post',
             url: '/leave_Apply/',
-            data: {
+            data: qs.stringify({
               'reasonSelect': this.ruleForm.reasonSelect,
               'applyReason': this.ruleForm.applyReason,
               'beginDate': this.ruleForm.beginDate,
@@ -226,7 +227,7 @@ export default {
               'supplementDate': this.ruleForm.supplementDate,
               'supplementPos': this.ruleForm.supplementPos,
 
-            },
+            }),
             headers: {
               'X-CSRFToken': this.getCookie('csrftoken')
             },

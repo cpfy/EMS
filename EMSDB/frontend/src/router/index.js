@@ -11,6 +11,7 @@ import ExamDelay_Apply from "../views/ExamDelay_Apply";
 import ScoreRevise_Apply from "../views/ScoreRevise_Apply";
 import Leave_Apply from "../views/Leave_Apply";
 import OtherApply from "../views/Other_Apply";
+import Notice_Send from "../views/Notice_Send";
 
 const routes = [
     {
@@ -72,6 +73,11 @@ const routes = [
         name: 'other_Apply',
         component: OtherApply
     },
+    {
+        path: '/admin/notice_Send',
+        name: 'notice_Send',
+        component: Notice_Send
+    }
 
 
 ]

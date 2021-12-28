@@ -61,6 +61,7 @@
 
 <script>
 import Student_Nav from "../components/Student_Nav";
+import qs from "qs";
 
 export default {
   name: "exemptionApply",
@@ -151,14 +152,15 @@ export default {
           self.axios({
             method: 'post',
             url: '/exemptionApply/',
-            data: {
+            //TODO: to revise
+            data: qs.stringify( {
               'applyType': this.ruleForm.applyType,
               'courseName': this.ruleForm.courseName,
               'courseCollege': this.ruleForm.courseCollege,
               'teacher': this.ruleForm.teacher,
               'courseId': this.ruleForm.courseId,
               'applyReason': this.ruleForm.applyReason,
-            },
+            }),
             headers: {
               'X-CSRFToken': this.getCookie('csrftoken')
             },

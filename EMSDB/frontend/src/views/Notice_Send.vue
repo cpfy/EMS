@@ -1,15 +1,12 @@
 <template>
   <div class="bg">
   </div>
-  <div v-if="this.$store.state.userType==='学生'" style="height: 111px;">
-    <Student_Nav active-index2="4-3"></Student_Nav>
-  </div>
-  <div v-else-if="this.$store.state.userType==='教师'" style="height: 111px;">
-    <Teacher_Nav active-index2="4-3"></Teacher_Nav>
+  <div style="height: 111px;">
+    <Admin_Nav active-index2="4-1"></Admin_Nav>
   </div>
   <div class="bg_white"></div>
   <div class="form">
-    <p class="head">其他事务申请</p>
+    <p class="head">发送系统通知</p>
     <div style="height: 30px"></div>
     <el-form
         ref="ruleForm"
@@ -20,25 +17,22 @@
         label-width="20%"
     >
 
-      <div style="width: 75%;">
-        <el-form-item label-width="16%" label="申请事项:" prop="applyItem">
-          <el-input type="textarea" :rows="3" v-model="ruleForm.applyItem"></el-input>
+      <div style="width: 88%">
+        <el-form-item label="请选择要通知的对象：" label-width="43%" style="zoom: 120%" prop="object">
+          <el-checkbox-group v-model="ruleForm.object">
+            <el-checkbox label="全体教师" name="obj"></el-checkbox>
+            <el-checkbox label="全体同学" name="obj"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </div>
+
+      <div style="height: 15px"></div>
+      <div style="width: 88%;">
+        <el-form-item style="zoom: 120%" label-width="22%" label="通知内容:" prop="content">
+          <el-input type="textarea" :rows="3" v-model="ruleForm.content"></el-input>
         </el-form-item>
       </div>
       <div style="height: 15px"></div>
-      <div style="width: 75%;">
-        <el-form-item label-width="16%" label="申请理由:" prop="applyReason">
-          <el-input type="textarea" :rows="3" v-model="ruleForm.applyReason"></el-input>
-        </el-form-item>
-      </div>
-      <div style="height: 100px; width: 85%">
-        <p style="font-family: 等线,serif;color: #2154FA ">
-          注：在申请事项需要填写必要的信息。
-          <br/>
-          例如：若学生需要申请补填到容量已满的课程中，则需要写出课程的编号、名称、院系、任课教师等必要的课程信息；
-          若教师需要申请重新录入成绩等操作，同样需要给出课程的编号、名称、院系等必要信息。
-        </p>
-      </div>
 
 
       <div style="margin-left: 12%;">
@@ -51,45 +45,39 @@
 
     </el-form>
   </div>
+
 </template>
 
 <script>
-import Student_Nav from "../components/Student_Nav";
-import Teacher_Nav from "../components/Teacher_Nav";
+import Admin_Nav from "../components/Admin_Nav";
 import qs from "qs";
 
 export default {
-  name: "OtherApply",
-
+  name: "Notice_Send",
   components: {
-    Student_Nav,
-    Teacher_Nav
+    Admin_Nav
   },
   data() {
     return {
       textarea: '',
       ruleForm: {
-        applyReason: '',
-        applyItem: ''
+        content: '',
+        object: [],
       },
       rules: {
-        applyItem: [
+        object: [
           {
+            type: 'array',
             required: true,
-            message: '请填写要申请的事项',
-            trigger: 'blur',
-          }
+            message: '请至少选择一项',
+            trigger: 'change',
+          },
         ],
-        applyReason: [
-          {
-            required: true,
-            message: '请填写申请理由',
-            trigger: 'blur',
-          }
+        content: [
+          {required: true, message: '请填写通知内容', trigger:'blur'}
         ]
       }
     }
-
   },
   methods: {
     submitForm(formName) {
@@ -102,11 +90,11 @@ export default {
           const self = this;
           self.axios({
             method: 'post',
-            url: '/other_Apply/',
+            url: '/notice_Send/',
+            //TODO:
             data: qs.stringify({
-              'applyItem': this.ruleForm.applyItem,
-              'applyReason': this.ruleForm.applyReason,
-
+              'object': this.ruleForm.object,
+              'content': this.ruleForm.content,
             }),
             /*headers: {
               'X-CSRFToken': this.getCookie('csrftoken')
@@ -135,14 +123,12 @@ export default {
   left: 0;
   top: 0;
   background-size: 100% 100%;
-  opacity: 1;
-  z-index: -1;
 }
 
 .bg_white {
-  margin: 4% auto 0 22%;
+  margin: 4% auto 0 30%;
   padding: 20px 0 70px 60px;
-  width: 52%;
+  width: 42%;
   height: 540px;
   background-color: rgba(255, 255, 255, 1);
   box-shadow: rgb(204 204 204) 0 1px 6px;
@@ -160,8 +146,8 @@ export default {
 .form {
   /*border: solid;*/
   position: fixed;
-  width: 50%;
-  margin-left: 26%;
+  width: 30%;
+  margin-left: 37%;
   margin-top: 4.5%;
   z-index: 1;
 }

@@ -169,9 +169,9 @@ export default {
       const self = this
       self.axios({
         method: 'post',
-        data: {
+        data: qs.stringify({
           newUserName: this.newUserName,
-        },
+        }),
         url: '/PersonalInfo/changeUsername/',
         headers: {'X-CSRFToken': this.getCookie('csrftoken')},
       }).then(res => {
@@ -190,9 +190,9 @@ export default {
       const self = this
       self.axios({
         method: 'post',
-        data: {
+        data: qs.stringify({
           newEmail: this.newEmail,
-        },
+        }),
         url: '/PersonalInfo/changeEmail/',
         headers: {'X-CSRFToken': this.getCookie('csrftoken')},
       }).then(res => {

@@ -71,6 +71,7 @@
 
 <script>
 import Teacher_Nav from "../components/Teacher_Nav";
+import qs from "qs";
 export default {
 
   name: "Score_Revise",
@@ -162,7 +163,7 @@ export default {
           self.axios({
             method: 'post',
             url: '/scoreRevise_Apply/',
-            data: {
+            data: qs.stringify({
               'studentId': this.ruleForm.studentId,
               'studentName': this.ruleForm.studentName,
               'courseName': this.ruleForm.courseName,
@@ -172,7 +173,7 @@ export default {
               'newScore': this.ruleForm.newScore,
               'applyReason': this.ruleForm.applyReason,
 
-            },
+            }),
             headers: {
               'X-CSRFToken': this.getCookie('csrftoken')
             },
