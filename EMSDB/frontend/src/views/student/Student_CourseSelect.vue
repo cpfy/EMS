@@ -32,6 +32,7 @@
       <el-table-column prop="courseCategory" label="课程类别"/>
       <el-table-column prop="courseCollege" label="开课院系"/>
       <el-table-column prop="courseTeacher" label="任课教师"/>
+      <el-table-column width="80%" prop="credit" label="学分"/>
       <el-table-column prop="time" label="上课时间"/>
       <el-table-column prop="capacity" label="剩余/容量"/>
     </el-table>
@@ -77,6 +78,7 @@ export default {
         obj.courseCategory = res.data.resultList[i].courseCategory;
         obj.courseCollege = res.data.resultList[i].courseCollege;
         obj.courseTeacher = res.data.resultList[i].courseTeacher;
+        obj.credit = res.data.resultList[i].credit;
         obj.time = res.data.resultList[i].time;
         obj.capacity = res.data.resultList[i].capacity;
         obj.selected = res.data.resultList[i].selected;
@@ -97,6 +99,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'JohnCena',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '1/8',
           selected: true,
@@ -108,6 +111,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -119,6 +123,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -130,6 +135,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -141,6 +147,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -152,6 +159,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -163,6 +171,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -174,6 +183,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -185,6 +195,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -196,6 +207,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -207,6 +219,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -218,6 +231,7 @@ export default {
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
+          credit: 1.5,
           time: 'everyDay',
           capacity: '0/0',
           selected: false,
@@ -252,7 +266,7 @@ export default {
         method: 'post',
         url: '/selectCourse/',
         data: qs.stringify({
-          courseId: row.courseId,
+          'courseId': row.courseId,
         }),
         headers: {
           'X-CSRFToken': this.getCookie('csrftoken')

@@ -114,6 +114,8 @@ export default {
         this.$router.push('/passwordChange')
       } else if (index === '7-1') {
         this.$router.push('/personalInfo')
+      } else if (index==='6') {
+        this.$router.push('/student/courseEvaluate')
       } else if (index === '1') {
         this.$router.push('/student')
       } else if (index === '4-1') {

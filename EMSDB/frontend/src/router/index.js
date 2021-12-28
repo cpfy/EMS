@@ -20,6 +20,7 @@ import Student_ScheduleRecommend from "../views/student/Student_ScheduleRecommen
 import Teacher_Schedule from "../views/teacher/Teacher_Schedule";
 import Student_ExamSchedule from "../views/student/Student_ExamSchedule";
 import EmptyRoom from "../views/EmptyRoom";
+import CourseEvaluate from "../views/student/CourseEvaluate";
 
 const routes = [
     {
@@ -28,9 +29,9 @@ const routes = [
         component: Login
     },
     {
-      path: '/test',
-      name: 'test',
-      component: test
+        path: '/test',
+        name: 'test',
+        component: test
     },
     {
         path: '/student',
@@ -66,7 +67,7 @@ const routes = [
         path: '/student/examDelay_Apply',
         name: 'examDelay_Apply',
         component: ExamDelay_Apply
-    },{
+    }, {
         path: '/teacher/scoreRevise_Apply',
         name: 'scoreRevise_Apply',
         component: ScoreRevise_Apply
@@ -125,6 +126,10 @@ const routes = [
         path: '/emptyRoom',
         name: 'emptyRoom',
         component: EmptyRoom
+    }, {
+        path: '/student/courseEvaluate',
+        name: 'student_courseEvaluate' ,
+        component: CourseEvaluate
     }
 
 ]
