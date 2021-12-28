@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Student_Apply from "../components/Student_Apply";
+import Student_Apply from "../../components/Student_Apply";
 
 export default {
   name: "examDelay_Apply",

@@ -1,24 +1,25 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Login from '../views/Login.vue';
-import Student_Home from "../views/Student_Home";
-import Teacher_Home from "../views/Teacher_Home"
+import Student_Home from "../views/student/Student_Home";
+import Teacher_Home from "../views/teacher/Teacher_Home"
 import Admin_Home from "../views/Admin_Home";
 import PasswordChange from "../views/PasswordChange";
 import test from "../views/test";
 import PersonalInfo from "../views/PersonalInfo";
-import ExemptionApply from "../views/Exemption_Apply";
-import ExamDelay_Apply from "../views/ExamDelay_Apply";
-import ScoreRevise_Apply from "../views/ScoreRevise_Apply";
-import Leave_Apply from "../views/Leave_Apply";
+import ExemptionApply from "../views/student/Exemption_Apply";
+import ExamDelay_Apply from "../views/student/ExamDelay_Apply";
+import ScoreRevise_Apply from "../views/teacher/ScoreRevise_Apply";
+import Leave_Apply from "../views/teacher/Leave_Apply";
 import OtherApply from "../views/Other_Apply";
 import Notice_Send from "../views/Notice_Send";
-import Student_SysNotice from "../views/Student_SysNotice";
-import Student_CourseSelect from "../views/Student_CourseSelect";
-import Student_courseDrop from "../views/Student_CourseDrop";
-import Student_Schedule from "../views/Student_Schedule";
-import Student_ScheduleRecommend from "../views/Student_ScheduleRecommend";
-import Teacher_Schedule from "../views/Teacher_Schedule";
-import Student_ExamSchedule from "../views/Student_ExamSchedule";
+import Student_SysNotice from "../views/student/Student_SysNotice";
+import Student_CourseSelect from "../views/student/Student_CourseSelect";
+import Student_courseDrop from "../views/student/Student_CourseDrop";
+import Student_Schedule from "../views/student/Student_Schedule";
+import Student_ScheduleRecommend from "../views/student/Student_ScheduleRecommend";
+import Teacher_Schedule from "../views/teacher/Teacher_Schedule";
+import Student_ExamSchedule from "../views/student/Student_ExamSchedule";
+import EmptyRoom from "../views/EmptyRoom";
 
 const routes = [
     {
@@ -119,6 +120,11 @@ const routes = [
         path: '/student/examSchedule',
         name: 'student_ExamSchedule',
         component: Student_ExamSchedule
+    },
+    {
+        path: '/emptyRoom',
+        name: 'emptyRoom',
+        component: EmptyRoom
     }
 
 ]

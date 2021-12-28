@@ -1,22 +1,22 @@
 <template>
-  <div class="bg" >
-    <Student_Nav></Student_Nav>
+  <div class="bg">
+    <Teacher_Nav></Teacher_Nav>
   </div>
 </template>
 
 <script>
-import Student_Nav from "../components/Student_Nav";
+import Teacher_Nav from "../../components/Teacher_Nav";
 export default {
-  name: "Student_Home",
+  name: "Teacher_Home",
   components:{
-    Student_Nav
+    Teacher_Nav
   }
 }
 </script>
 
 <style scoped>
 .bg {
-  background: url("../assets/homePage/bg_home.png");
+  background: url("../../assets/homePage/bg_home.png");
   width: 100%;
   height: 100%;
   position: fixed;

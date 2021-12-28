@@ -171,7 +171,7 @@ export default {
       self.axios({
         method: 'post',
         data: qs.stringify({
-          newUserName: this.newUserName,
+          'newUserName': this.newUserName,
         }),
         url: 'http://localhost:8000/site/changeUsername/',
         headers: {'X-CSRFToken': this.getCookie('csrftoken')},

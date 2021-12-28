@@ -1,7 +1,7 @@
 <template>
   <div class="bg"></div>
   <div style="height: 111px;">
-    <Student_Nav active-index2="3-1"></Student_Nav>
+    <Teacher_Nav active-index2="3-3"></Teacher_Nav>
   </div>
   <div style="width: 90vw;margin-left: 5vw;margin-top: 7vh;">
     <Schedule :total-data="scheduleData" ></Schedule>
@@ -9,15 +9,15 @@
 </template>
 
 <script>
-import Schedule from "../components/Schedule";
-import Student_Nav from "../components/Student_Nav";
+import Schedule from "../../components/Schedule";
+import Teacher_Nav from "../../components/Teacher_Nav";
 
 export default {
   mounted() {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'Student_ScheduleRecommend',
+      url: 'Teacher_Schedule',
       data: {
 
       },
@@ -25,13 +25,13 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-      this.scheduleData = res.data.scheduleRecommend;
+      this.scheduleData = res.data.schedule;
     })
   },
-  name: "Student_ScheduleRecommend",
+  name: "Student_Schedule",
   components: {
     Schedule,
-    Student_Nav
+    Teacher_Nav
   },
   data() {
     return {
@@ -111,7 +111,7 @@ export default {
 
 <style scoped>
 .bg {
-  background: url("../assets/homePage/bg_home.png");
+  background: url("../../assets/homePage/bg_home.png");
   width: 100%;
   height: 100%;
   position: fixed;

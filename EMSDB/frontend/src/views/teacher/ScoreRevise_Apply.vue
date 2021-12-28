@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import Teacher_Nav from "../components/Teacher_Nav";
+import Teacher_Nav from "../../components/Teacher_Nav";
 import qs from "qs";
 export default {
 
@@ -178,7 +178,6 @@ export default {
               'X-CSRFToken': this.getCookie('csrftoken')
             },
           }).then(res => {
-
             var obj1 = JSON.parse(res.data);
             //TODO: yes or no
             if (obj1.result===0) {
@@ -201,7 +200,7 @@ export default {
 
 <style scoped>
 .bg {
-  background: url("../assets/homePage/bg_home.png");
+  background: url("../../assets/homePage/bg_home.png");
   width: 100%;
   height: 100%;
   position: fixed;

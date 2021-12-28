@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Schedule from "../components/Schedule";
-import Student_Nav from "../components/Student_Nav";
+import Schedule from "../../components/Schedule";
+import Student_Nav from "../../components/Student_Nav";
 
 export default {
   mounted() {
@@ -50,7 +50,7 @@ export default {
           time: '3,4节',
           Monday: '1',
           Tuesday: '2',
-          Wednesday: '3',
+          Wednesday: '奶茶炼制 二叔 印度街头',
           Thursday: '4',
           Friday: '5',
           Saturday: '6',
@@ -111,7 +111,7 @@ export default {
 
 <style scoped>
 .bg {
-  background: url("../assets/homePage/bg_home.png");
+  background: url("../../assets/homePage/bg_home.png");
   width: 100%;
   height: 100%;
   position: fixed;

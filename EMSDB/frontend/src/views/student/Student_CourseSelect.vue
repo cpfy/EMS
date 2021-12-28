@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Student_Nav from "../components/Student_Nav";
+import Student_Nav from "../../components/Student_Nav";
 import qs from "qs";
 
 export default {
@@ -280,7 +280,7 @@ export default {
 
 <style scoped>
 .bg {
-  background: url("../assets/homePage/bg_home.png");
+  background: url("../../assets/homePage/bg_home.png");
   width: 100%;
   height: 100%;
   position: fixed;
