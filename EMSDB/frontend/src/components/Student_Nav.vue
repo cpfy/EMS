@@ -118,12 +118,18 @@ export default {
         this.$router.push('/student')
       } else if (index === '4-1') {
         this.$router.push('/student/exemptionApply')
-      }else if (index === '4-2') {
+      } else if (index === '4-2') {
         this.$router.push('/student/examDelay_Apply')
-      } else if (index==='4-3') {
+      } else if (index === '4-3') {
         this.$router.push('/other_Apply')
+      } else if (index === '5-1') {
+        this.$router.push('/student/sysNotice')
+      } else if (index === '2-1') {
+        this.$router.push('/student/courseSelect')
+      } else if (index === '2-2') {
+        this.$router.push('/student/courseDrop')
       }
-          },
+    },
     confirmLogout() {
       this.$router.push('/')
       this.dialogVisible = false

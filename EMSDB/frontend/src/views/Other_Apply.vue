@@ -113,6 +113,9 @@ export default {
             },*/
           })/*.then(res => {
             //TODO; need to delete?
+            var obj
+            obj.name=res.data.resultlist[i].name
+            this.resultlist.splice(0,0,obj)
           })*/
           alert('申请提交成功');
         }

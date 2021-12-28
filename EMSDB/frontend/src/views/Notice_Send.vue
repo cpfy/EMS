@@ -6,7 +6,7 @@
   </div>
   <div class="bg_white"></div>
   <div class="form">
-    <p class="head">发送系统通知</p>
+    <p class="head">通知发布</p>
     <div style="height: 30px"></div>
     <el-form
         ref="ruleForm"
@@ -148,7 +148,7 @@ export default {
   position: fixed;
   width: 30%;
   margin-left: 37%;
-  margin-top: 4.5%;
+  margin-top: 6%;
   z-index: 1;
 }
 

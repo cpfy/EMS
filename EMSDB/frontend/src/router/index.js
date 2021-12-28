@@ -12,6 +12,9 @@ import ScoreRevise_Apply from "../views/ScoreRevise_Apply";
 import Leave_Apply from "../views/Leave_Apply";
 import OtherApply from "../views/Other_Apply";
 import Notice_Send from "../views/Notice_Send";
+import Student_SysNotice from "../views/Student_SysNotice";
+import Student_CourseSelect from "../views/Student_CourseSelect";
+import Student_courseDrop from "../views/Student_courseDrop";
 
 const routes = [
     {
@@ -77,8 +80,22 @@ const routes = [
         path: '/admin/notice_Send',
         name: 'notice_Send',
         component: Notice_Send
+    },
+    {
+        path: '/student/sysNotice',
+        name: 'student_SysNotice',
+        component: Student_SysNotice
+    },
+    {
+        path: '/student/courseSelect',
+        name: 'student_CourseSelect',
+        component: Student_CourseSelect
+    },
+    {
+        path: '/student/courseDrop',
+        name: 'student_CourseDrop',
+        component: Student_courseDrop
     }
-
 
 ]
 
