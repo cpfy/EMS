@@ -15,6 +15,9 @@ import Notice_Send from "../views/Notice_Send";
 import Student_SysNotice from "../views/Student_SysNotice";
 import Student_CourseSelect from "../views/Student_CourseSelect";
 import Student_courseDrop from "../views/Student_courseDrop";
+import Student_Schedule from "../views/Student_Schedule";
+import Student_ScheduleRecommend from "../views/Student_ScheduleRecommend";
+import teacher_Schedule from "../views/Teacher_Schedule";
 
 const routes = [
     {
@@ -95,6 +98,21 @@ const routes = [
         path: '/student/courseDrop',
         name: 'student_CourseDrop',
         component: Student_courseDrop
+    },
+    {
+        path: '/student/schedule',
+        name: 'student_Schedule',
+        component: Student_Schedule
+    },
+    {
+        path: '/student/scheduleRecommend',
+        name: 'student_ScheduleRecommend',
+        component: Student_ScheduleRecommend
+    },
+    {
+        path: '/teacher/schedule',
+        name: 'teacher_Schedule',
+        component: teacher_Schedule
     }
 
 ]

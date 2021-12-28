@@ -1,41 +1,44 @@
 <template>
   <div class="bg"></div>
-  <div style="height: 111px;position: fixed">
+  <div style="height: 111px">
     <Student_Nav active-index2="2-1"></Student_Nav>
   </div>
+  
+  <div style="position: absolute;">
+    <el-table
+        :data="courseInfos.slice(index1,index2)"
+        :row-class-name="tableRowClassName"
+        height="78vh"
+        class="table"
+        cell-style="height:60px"
+        header-cell-style="height:75px"
+    >
+      <el-table-column align="center">
+        <template #default="scope">
+          <el-button v-if="scope.row.selected===false"
+                     size="medium"
+                     type="primary"
+                     @click="select(scope.$index, scope.row)"
+          >选课
+          </el-button>
+          <el-button v-else size="medium" type="default" disabled>
+            已选
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="num" label="序号" width="120px"/>
+      <el-table-column prop="courseId" label="课程编号"/>
+      <el-table-column prop="courseName" label="课程名称"/>
+      <el-table-column prop="courseCategory" label="课程类别"/>
+      <el-table-column prop="courseCollege" label="开课院系"/>
+      <el-table-column prop="courseTeacher" label="任课教师"/>
+      <el-table-column prop="time" label="上课时间"/>
+      <el-table-column prop="capacity" label="剩余/容量"/>
+    </el-table>
 
-  <el-table
-      :data="courseInfos.slice(index1,index2)"
-      :row-class-name="tableRowClassName"
-      height="78vh"
-      class="table"
-      cell-style="height:60px"
-      header-cell-style="height:75px"
-  >
-    <el-table-column align="center">
-      <template #default="scope">
-        <el-button v-if="scope.row.selected===false"
-            size="medium"
-            type="primary"
-            @click="select(scope.$index, scope.row)"
-        >选课
-        </el-button>
-        <el-button v-else size="medium" type="default" disabled>
-          已选
-        </el-button>
-      </template>
-    </el-table-column>
-    <el-table-column prop="num" label="序号" width="120px"/>
-    <el-table-column prop="courseId" label="课程编号"/>
-    <el-table-column prop="courseName" label="课程名称"/>
-    <el-table-column prop="courseCategory" label="课程类别"/>
-    <el-table-column prop="courseCollege" label="开课院系"/>
-    <el-table-column prop="courseTeacher" label="任课教师"/>
-    <el-table-column prop="time" label="上课时间"/>
-    <el-table-column prop="capacity" label="剩余/容量"/>
-  </el-table>
+  </div>
 
-  <div style="right: 10vw;margin-top: 92vh;position: fixed">
+  <div style="right: 10vw;bottom: 3vh;position: absolute">
     <el-pagination background layout="prev, pager, next" :total="this.courseInfos.length"
                    v-model:current-page="newPage"
                    page-size=9
@@ -43,6 +46,8 @@
                    @current-change="change_page(newPage)">
     </el-pagination>
   </div>
+
+
 </template>
 
 <script>
@@ -283,7 +288,7 @@ export default {
 
 .table {
   margin-left: 5vw;
-  margin-top: 20vh;
+  margin-top: 7vh;
   width: 90%;
   opacity: 0.7;
   position: fixed;

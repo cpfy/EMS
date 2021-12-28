@@ -206,7 +206,7 @@ export default {
   margin: 4% auto 0 15%;
   padding: 20px 0 70px 60px;
   width: 65%;
-  min-height: 540px;
+  height: 76vh;
   background-color: rgba(255, 255, 255, 1);
   box-shadow: rgb(204 204 204) 0 1px 6px;
   box-sizing: border-box;
@@ -216,7 +216,7 @@ export default {
   -webkit-box-align: stretch;
   align-items: stretch;
   opacity: 0.7;
-  position: fixed;
+  position: absolute;
 }
 
 .form {

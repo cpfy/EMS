@@ -115,6 +115,9 @@ export default {
         this.$router.push('/teacher/leave_Apply')
       }else if (index==='4-3') {
         this.$router.push('/other_Apply')
+      } else if (index==='3-3') {
+        this.$router.push('/teacher/schedule')
+
       }
     },
     confirmLogout() {

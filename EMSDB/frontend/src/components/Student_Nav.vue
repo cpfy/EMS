@@ -128,6 +128,10 @@ export default {
         this.$router.push('/student/courseSelect')
       } else if (index === '2-2') {
         this.$router.push('/student/courseDrop')
+      } else if (index === '3-2') {
+        this.$router.push('/student/schedule')
+      }else if (index === '3-1') {
+        this.$router.push('/student/scheduleRecommend')
       }
     },
     confirmLogout() {
