@@ -14,10 +14,11 @@ import OtherApply from "../views/Other_Apply";
 import Notice_Send from "../views/Notice_Send";
 import Student_SysNotice from "../views/Student_SysNotice";
 import Student_CourseSelect from "../views/Student_CourseSelect";
-import Student_courseDrop from "../views/Student_courseDrop";
+import Student_courseDrop from "../views/Student_CourseDrop";
 import Student_Schedule from "../views/Student_Schedule";
 import Student_ScheduleRecommend from "../views/Student_ScheduleRecommend";
-import teacher_Schedule from "../views/Teacher_Schedule";
+import Teacher_Schedule from "../views/Teacher_Schedule";
+import Student_ExamSchedule from "../views/Student_ExamSchedule";
 
 const routes = [
     {
@@ -112,7 +113,12 @@ const routes = [
     {
         path: '/teacher/schedule',
         name: 'teacher_Schedule',
-        component: teacher_Schedule
+        component: Teacher_Schedule
+    },
+    {
+        path: '/student/examSchedule',
+        name: 'student_ExamSchedule',
+        component: Student_ExamSchedule
     }
 
 ]

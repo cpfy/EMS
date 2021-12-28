@@ -1,10 +1,9 @@
 <template>
   <div class="bg"></div>
-  <div style="height: 111px">
-    <Student_Nav active-index2="2-1"></Student_Nav>
+  <div style="height: 111px;">
+    <Student_Nav active-index2="2-2"></Student_Nav>
   </div>
-  
-  <div style="position: absolute;">
+  <div style="position: absolute">
     <el-table
         :data="courseInfos.slice(index1,index2)"
         :row-class-name="tableRowClassName"
@@ -15,14 +14,10 @@
     >
       <el-table-column align="center">
         <template #default="scope">
-          <el-button v-if="scope.row.selected===false"
-                     size="medium"
+          <el-button size="medium"
                      type="primary"
-                     @click="select(scope.$index, scope.row)"
-          >选课
-          </el-button>
-          <el-button v-else size="medium" type="default" disabled>
-            已选
+                     @click="drop(scope.$index, scope.row)"
+          >退选
           </el-button>
         </template>
       </el-table-column>
@@ -35,8 +30,8 @@
       <el-table-column prop="time" label="上课时间"/>
       <el-table-column prop="capacity" label="剩余/容量"/>
     </el-table>
-
   </div>
+
 
   <div style="right: 10vw;bottom: 3vh;position: absolute">
     <el-pagination background layout="prev, pager, next" :total="this.courseInfos.length"
@@ -46,7 +41,7 @@
                    @current-change="change_page(newPage)">
     </el-pagination>
   </div>
-
+  <!--  TODO: maybe add a dialogue-->
 
 </template>
 
@@ -55,7 +50,8 @@ import Student_Nav from "../components/Student_Nav";
 import qs from "qs";
 
 export default {
-  name: "Student_CourseSelect",
+
+  name: "Student_courseDrop",
   components: {
     Student_Nav
   },
@@ -63,14 +59,14 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: '/getCourse/',
+      url: '/getSelectedCourse/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
       for (let i = 0; i < res.data.resultList.length; i++) {
-        let obj={};
+        let obj = {};
         obj.num = i;
         obj.courseId = res.data.resultList[i].courseId;
         obj.courseName = res.data.resultList[i].courseName;
@@ -79,13 +75,13 @@ export default {
         obj.courseTeacher = res.data.resultList[i].courseTeacher;
         obj.time = res.data.resultList[i].time;
         obj.capacity = res.data.resultList[i].capacity;
-        obj.selected = res.data.resultList[i].selected;
         this.courseInfos.splice(this.courseInfos.length - 1, 0, obj);
       }
     })
   },
   data() {
     return {
+      dialogVisible: false,
       newPage: 1,
       index1: 0,
       index2: 9,
@@ -99,129 +95,128 @@ export default {
           courseTeacher: 'JohnCena',
           time: 'everyDay',
           capacity: '1/8',
-          selected: true,
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
         },
         {
           num: 1,
-          courseId: '#sadl',
-          courseName: 'fuckyou',
+          courseId: '#ssssssssssssss',
+          courseName: 'fuckme',
           courseCategory: 'sex',
           courseCollege: 'sexCollege',
-          courseTeacher: 'van',
+          courseTeacher: 'JohnCena',
           time: 'everyDay',
-          capacity: '0/0',
-          selected: false,
+          capacity: '1/8',
+        },
+        {
+          num: 1,
+          courseId: '#sss',
+          courseName: 'fuckme',
+          courseCategory: 'sex',
+          courseCollege: 'sexCollege',
+          courseTeacher: 'JohnCena',
+          time: 'everyDay',
+          capacity: '1/8',
         }
+
 
       ],
 
@@ -239,18 +234,18 @@ export default {
       console.log(this.index1);
       console.log(this.index2);
     },
-    tableRowClassName({ row, rowIndex }) {
-       if (row.selected === true) {
+    /*tableRowClassName({row, rowIndex}) {
+      if (row.selected === true) {
         return 'success-row'
       }
       return ''
-    },
-    select(index, row) {
+    },*/
+    drop(index, row) {
 
       const self = this;
       self.axios({
         method: 'post',
-        url: '/selectCourse/',
+        url: '/dropCourse/',
         data: qs.stringify({
           courseId: row.courseId,
         }),
@@ -259,14 +254,14 @@ export default {
         },
       }).then(res => {
         if (res.data.result === 'success') {
-          this.courseInfos[index+(this.newPage-1)*9].selected = true;
+          this.courseInfos.splice(index + (this.newPage - 1) * 9, 1);
           this.$message({
             type: 'success',
-            message: '选课成功'
+            message: '退课成功'
           })
         } else {
           this.$message({
-            type: 'error',
+            type: 'success',
             message: res.data.result,
           })
         }
