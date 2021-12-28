@@ -19,7 +19,9 @@ urlpatterns = [
     # 个人信息查询
     path('info/', views.get_user_info, name='info'),
 
-    # 改密码
+    # 改密码,信息
     path('passwordChange/', views.change_pwd, name='passwordChange'),
+    path('changeUsername/', views.change_username, name='changeUsername'),
+    path('changeEmail/', views.change_email, name='changeEmail')
 
 ]

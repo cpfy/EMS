@@ -3,8 +3,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
-from .forms import UserLoginForm, UserRegisterForm, UserChangePwdForm
-from .models import Student, Class, Teacher, Admin, Department, Course, Account
+from .forms import *
+from .models import Student, Class, Teacher, Admin, Department, Course, Account,CourseTime
 
 
 # Create your views here.
@@ -14,7 +14,6 @@ from .models import Student, Class, Teacher, Admin, Department, Course, Account
 def user_login(request):
     if request.method == 'POST':
         user_login_form = UserLoginForm(data=request.POST)
-
         # print("POST=",request.POST)
 
         if user_login_form.is_valid():
@@ -23,18 +22,31 @@ def user_login(request):
             # 检验账号、密码是否正确匹配数据库中的某个用户
             # 如果均匹配则返回这个 user 对象
 
-            print("get username = " + data['userName'])
-            print("get password = " + data['password'])
-            user = authenticate(username=data['userName'], password=data['password'])
+            myusername = data['userName']
+            mypassword = data['password']
+            myusertype = data['userType']
+
+            print("get username = " + myusername)
+            print("get password = " + mypassword)
+            # print("userType = " + data['userType'])
+
+            user = authenticate(username=myusername, password=mypassword)
             if user:
-                # 将用户数据保存在 session 中，即实现了登录动作
-                login(request, user)
-                retdata = {
-                    'result': True,
-                    'id': data['userName'],
-                    'info': "登录成功！"
-                }
-                return JsonResponse(retdata)
+                account = Account.objects.get(user=user)
+                if (checkUserTypeIsFit(account.status, myusertype)):
+                    # 将用户数据保存在 session 中，即实现了登录动作
+                    login(request, user)
+                    retdata = {
+                        'result': True,
+                        'id': myusername,
+                        'info': "登录成功！"
+                    }
+                    return JsonResponse(retdata)
+
+                else:
+                    retdata = createFalseJsonWithIdAndInfo("账号类型有误。请重新选择~")
+                    return JsonResponse(retdata)
+
             else:
                 retdata = createFalseJsonWithIdAndInfo("账号或密码输入有误。请重新输入~")
                 return JsonResponse(retdata)
@@ -63,34 +75,40 @@ def user_register(request):
         if user_register_form.is_valid():
 
             data = user_register_form.cleaned_data
+            myusername = data['userName']
+            mypassword = data['password']
+            mystuid = data['studentId']
+            myrealname = data['realName']
 
-            inuser = User.objects.filter(username=data['userName'])
+            inuser = User.objects.filter(username=myusername)
             if inuser:
                 retdata = createFalseJsonWithInfo("该用户名已被注册！")
                 return JsonResponse(retdata)
 
             else:
-                alreadyreg = Account.objects.filter(code=data['studentId'])
+                alreadyreg = Account.objects.filter(code=mystuid)
                 if alreadyreg:
                     retdata = createFalseJsonWithInfo("学生学号已注册！请直接登录")
                     return JsonResponse(retdata)
 
                 else:
                     # create the model to store in db
-                    # reg_user = User.objects.create_user(data['userName'],  data['password'])
-                    reg_user = User.objects.create(
-                        username=data['userName'],
-                        password=data['password']
-                    )
+                    reg_user = User.objects.create_user(myusername, mystuid + "@buaa.edu.cn", mypassword)
+
+                    """reg_user = User.objects.create(
+                        username=myusername,
+                        password=mypassword,
+                        email=mystuid + "@buaa.edu.cn"
+                    )"""
 
                     reg_acc = Account.objects.create(
                         user=reg_user,
                         status='a',
-                        code=data['studentId'],
-                        name=data['realName']
+                        code=mystuid,
+                        name=myrealname
                     )
 
-                    reg_stu = Student.objects.create(
+                    Student.objects.create(
                         id=reg_acc
                     )
 
@@ -143,12 +161,12 @@ def change_pwd(request):
         return JsonResponse(retdata)
 
     user_cpwd_form = UserChangePwdForm(data=request.POST)
-    cur_user = request.user
+    owner = request.user
 
     if user_cpwd_form.is_valid():
         data = user_cpwd_form.cleaned_data
         oldpwd = User.objects.filter(username=data['oldPassword'])
-        validuser = authenticate(username=cur_user.username, password=oldpwd)
+        validuser = authenticate(username=owner.username, password=oldpwd)
 
         if validuser is None:
             retdata = createFalseJsonWithInfo("原密码不正确！请重新输入")
@@ -168,36 +186,66 @@ def change_pwd(request):
         return JsonResponse(retdata)
 
 
-def student_home(request):
-    """student_obj = Students.objects.get(admin=request.user.id)
+# 改username
+def change_username(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
 
-    course_obj = Courses.objects.get(id=student_obj.course_id.id)
-    total_subjects = Subjects.objects.filter(course_id=course_obj).count()
+    user_cuname_form = UserChangeUsernameForm(data=request.POST)
 
-    subject_name = []
-    data_present = []
-    data_absent = []
-    subject_data = Subjects.objects.filter(course_id=student_obj.course_id)
-    for subject in subject_data:
-        attendance = Attendance.objects.filter(subject_id=subject.id)
-        attendance_present_count = AttendanceReport.objects.filter(attendance_id__in=attendance, status=True,
-                                                                   student_id=student_obj.id).count()
-        attendance_absent_count = AttendanceReport.objects.filter(attendance_id__in=attendance, status=False,
-                                                                  student_id=student_obj.id).count()
-        subject_name.append(subject.subject_name)
-        data_present.append(attendance_present_count)
-        data_absent.append(attendance_absent_count)
+    if user_cuname_form.is_valid():
+        data = user_cuname_form.cleaned_data
+        inname = User.objects.filter(username=data['newUserName'])
 
-    context = {
-        "total_attendance": total_attendance,
-        "attendance_present": attendance_present,
-        "attendance_absent": attendance_absent,
-        "total_subjects": total_subjects,
-        "subject_name": subject_name,
-        "data_present": data_present,
-        "data_absent": data_absent
-    }
-    return render(request, "student_template/student_home_template.html", context)"""
+        if inname:
+            retdata = createFalseJsonWithInfo("该用户名已被使用！请重新输入")
+            return JsonResponse(retdata)
+
+        else:
+            owner = request.user
+            owner.username = data['newUserName']
+            owner.save()
+
+            retdata = {
+                'result': True,
+                'info': "修改用户名成功！"
+            }
+            return JsonResponse(retdata)
+    else:
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+
+# 改email
+def change_email(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    user_cemail_form = UserChangeEmailForm(data=request.POST)
+
+    if user_cemail_form.is_valid():
+        data = user_cemail_form.cleaned_data
+        inemail = User.objects.filter(username=data['newEmail'])
+
+        if inemail:
+            retdata = createFalseJsonWithInfo("该Email已被使用！请重新输入")
+            return JsonResponse(retdata)
+
+        else:
+            owner = request.user
+            owner.email = data['newEmail']
+            owner.save()
+
+            retdata = {
+                'result': True,
+                'info': "修改用户名成功！"
+            }
+            return JsonResponse(retdata)
+    else:
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
 
 
 def get_user_info(request):
@@ -217,6 +265,11 @@ def get_user_info(request):
         student_obj = Student.objects.get(id=account)
         dept_obj = Department.objects.get(dept_id=student_obj.student_dept)
 
+        if (current_user.email is None):
+            myemail = account.code + "@buaa.edu.cn"
+        else:
+            myemail = current_user.email
+
         stu_data = {
             'realName': account.name,
             'grade': student_obj.student_year,
@@ -224,7 +277,7 @@ def get_user_info(request):
             'college': student_obj.student_dept,
             'creditGot': student_obj.student_credit,
             'creditNeed': dept_obj.dept_credit,
-            'email': account.code + "@buaa.edu.cn"
+            'email': myemail
         }
         retdata.update(stu_data)
 
@@ -271,3 +324,17 @@ def createFalseJsonWithInfo(str):
         'info': str
     }
     return retdata
+
+
+def checkUserTypeIsFit(status, typestr):
+    # print(status, typestr)
+
+    if (status == 'a'):
+        return typestr == '1'
+    elif (status == 'b'):
+        return typestr == '2'
+    elif (status == 'c'):
+        return typestr == '3'
+    else:
+        # print("Unknown Type!")
+        return False
