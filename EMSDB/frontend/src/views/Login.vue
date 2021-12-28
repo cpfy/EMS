@@ -130,7 +130,7 @@ export default {
 
           self.axios({
             method: 'post',
-            url: 'http://localhost:8000/userprofile/login/',
+            url: 'http://localhost:8000/site/login/',
             data: qs.stringify({
               'userName': this.userName,
               'password': this.password,

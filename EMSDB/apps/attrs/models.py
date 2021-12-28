@@ -41,9 +41,9 @@ class Student(models.Model):
         verbose_name="班级号",
         null=True
     )
-    student_inyear = models.CharField(max_length=5)
+    student_inyear = models.CharField(max_length=5, null=True)
     student_age = models.IntegerField(default=0);
-    student_home = models.CharField(max_length=15)
+    student_home = models.CharField(max_length=15, null=True)
 
     # studentAddress = models.CharField(max_length=128, verbose_name="宿舍地址", null=True)
     student_credit = models.IntegerField(default=0, verbose_name="已修学分")

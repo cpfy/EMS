@@ -14,12 +14,13 @@ class UserLoginForm(forms.Form):
 
 
 # 注册用户表单
-class UserRegisterForm(forms.ModelForm):
+class UserRegisterForm(forms.Form):
     # 复写 User 的密码
 
     studentId = forms.CharField()
     userName = forms.CharField()
     password = forms.CharField()
+    realName = forms.CharField()
 
     # password = forms.CharField()
     # password2 = forms.CharField()

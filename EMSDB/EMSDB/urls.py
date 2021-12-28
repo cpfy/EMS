@@ -22,9 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # 用户管理
-    path('userprofile/', include('apps.userprofile.urls', namespace='userprofile')),
+    #path('userprofile/', include('apps.userprofile.urls', namespace='userprofile')),
 
     # 用户属性
-    path('attrs/', include('apps.attrs.urls', namespace='attrs')),
+    path('site/', include('apps.attrs.urls', namespace='attrs')),
 
 ]
