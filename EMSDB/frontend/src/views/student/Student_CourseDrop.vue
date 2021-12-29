@@ -66,6 +66,7 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+      this.courseInfos.splice(0,this.courseInfo.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
         obj.num = i;
@@ -276,7 +277,7 @@ export default {
           })
         } else {
           this.$message({
-            type: 'success',
+            type: 'error',
             message: res.data.result,
           })
         }

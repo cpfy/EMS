@@ -23,8 +23,7 @@
                                 alt="image failed">
             课程管理
           </template>
-          <el-menu-item index="2-1">开设课程</el-menu-item>
-          <el-menu-item index="2-2">修改课程信息</el-menu-item>
+          <el-menu-item index="2-1">课程信息管理</el-menu-item>
           <el-menu-item index="2-3">查看选课学生</el-menu-item>
           <el-menu-item index="2-4">学生成绩录入</el-menu-item>
         </el-sub-menu>
@@ -122,6 +121,8 @@ export default {
         this.$router.push('/teacher/courseStudent')
       } else if (index==='2-4') {
         this.$router.push('/teacher/scoreRecord')
+      }else if (index==='2-1') {
+        this.$router.push('/teacher/setupCourse')
       }
     },
     confirmLogout() {

@@ -1,192 +1,120 @@
 <template>
-  <a href="./template.xlsx" download="" style="z-index: 6;position: absolute;top: 180px" > 点击下载成绩模板</a>
-  <div class="bg"></div>
-  <div style="height: 111px;">
-    <Teacher_Nav active-index2="2-4"></Teacher_Nav>
-  </div >
-  <div style="position: absolute; z-index: 3;">
-    <el-button
-        size="mini"
-        type="text"
-        @click="download"
-    >下载模板
-    </el-button>
-    <a href="./template.xlsx" download="" > 点击下载成绩模板</a>
-  </div>
-  <div style="position: absolute;top: 14vh;">
-    <el-table
-        :data="scoreInfos.slice(index1,index2)"
-        :row-class-name="tableRowClassName"
-        height="76vh"
-        class="table"
-        cell-style="height:50px;text-align: center"
-        header-cell-style="height:75px;text-align: center;font-size:20px"
-    >
-      <el-table-column prop="num" label="序号" width="120px"/>
-      <el-table-column prop="courseId" label="课程编号"/>
-      <el-table-column prop="courseName" label="课程名"/>
-      <el-table-column prop="recorded" label="录入状态"/>
-      <el-table-column prop="" label="成绩录入">
-        <template #default="scope">
-          <div>
+  <el-form
+      :model="temp2"
+      :rules="rules"
+  >
 
-            <el-upload
-                class="upload-demo"
-                action="http://localhost:8000/site/login/"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :on-success="handleSuccess"
-                :limit="1"
-                :auto-upload="true"
-                :on-error="handleError"
-            >
+    <el-form-item label="添加课程名称" prop="tempName">
+      <el-input placeholder="课程名称" v-model="temp2.tempName"
+                style="margin-bottom: 10px; width: 85%"></el-input>
+    </el-form-item>
+    <el-form-item label="添加课程容量" prop="tempCapacity">
+      <el-input placeholder="课程容量" v-model="temp2.tempCapacity"
+                style="margin-bottom: 10px; width: 85%"></el-input>
+    </el-form-item>
+    <el-form-item label="添加开课院系" prop="tempCollege">
+      <el-input placeholder="开课院系" v-model="temp2.tempCollege"
+                style="margin-bottom: 10px; width: 85%"></el-input>
+    </el-form-item>
+    <el-form-item label="添加课程类型" prop="tempCategory">
+      <el-input placeholder="课程类型" v-model="temp2.tempCategory"
+                style="margin-bottom: 10px; width: 85%"></el-input>
+    </el-form-item>
+    <el-form-item label="添加课程学分" prop="tempCredit">
+      <el-input placeholder="课程学分" v-model="temp2.tempCredit"
+                style="margin-bottom: 10px; width: 85%"></el-input>
+    </el-form-item>
 
-              <el-button size="small" type="primary" @click="submit(scope.$index,scope.row)">上传文件</el-button>
+  </el-form>
 
-              <template #tip>
-                <div class="el-upload__tip">
-                  请按照模板上传文件
-                </div>
-              </template>
-              <!--                <el-button size="small" disabled type="default">选择文件</el-button>-->
-
-
-            </el-upload>
-          </div>
-        </template>
-      </el-table-column>
-
-
-    </el-table>
-  </div>
 </template>
 
 <script>
-import Teacher_Nav from "../components/Teacher_Nav";
-import qs from "qs";
+import {Timer} from '@element-plus/icons-vue'
 
 export default {
-  name: "ScoreRecord", components: {
-    Teacher_Nav
-  },
-  mounted() {
 
+  components: {
+    Timer,
   },
   data() {
     return {
-      newPage: 1,
-      index1: 0,
-      index2: 9,
-      scoreInfos: [
-        {
-          num: 0,
-          courseId: '#22',
-          courseName: 'database',
-          recorded: '未录入',
-        },
-        {
-          num: 0,
-          courseId: '#22222',
-          courseName: 'database22',
-          recorded: '已录入',
-        },
-        {
-          num: 0,
-          courseId: '#22',
-          courseName: 'database',
-          recorded: '未录入',
-        },
-        {
-          num: 0,
-          courseId: '#22',
-          courseName: 'database',
-          recorded: '未录入',
-        }
-      ],
-      fileList: [],
+      temp2: {
+        tempName: '',
+        tempCategory: '',
+        tempCollege: '',
+        tempCapacity: '',
+        tempCredit: '',
+      },
+      rules: {
+        tempName: [
+          {required: true, message: '请填写课程名称！', trigger: 'blur'}
+        ],
+        tempCapacity: [
+          {required: true, message: '请填写课程容量！', trigger: 'blur'},
+          {type: 'number', message: '容量必须是数字！', trigger: 'blur'}
+        ],
+        tempCredit: [
+          {required: true, message: '请填写课程学分！', trigger: 'blur'},
+          {type: 'number', message: '容量必须是数字！', trigger: 'blur'}
+        ],
+        tempCategory: [
+          {required: true, message: '请填写课程类别！', trigger: 'blur'}
+        ],
+        tempCollege: [
+          {required: true, message: '请填写开课学院！', trigger: 'blur'}
+        ],
+      }
     }
   },
   methods: {
-    download() {
-      const a = document.createElement('a')
-      a.setAttribute('download', "成绩模板")
-      a.setAttribute('href', "./template.xlsx")
-      a.click()
+    handleEdit(index, row) {
+      alert(index)
+      this.dialogVisible = true;
+      console.log(index, row)
     },
-    getCookie(name) {
-      var value = ';' + document.cookie;
-      var parts = value.split('; ' + name + '=');
-      if (parts.length === 2) return parts.pop().split(';').shift();
+    handleDelete(index, row) {
+      this.tableData.splice(index, 1)
     },
-    change_page(newPage) {
-      this.index1 = (newPage - 1) * 9;
-      this.index2 = this.index1 + 9;
-      console.log(this.index1);
-      console.log(this.index2);
-    },
-    tableRowClassName({row, rowIndex}) {
-      if (row.recorded === '已录入') {
-        return 'success-row'
+    confirm(index, row) {
+      if (this.tempName) {
+        this.temp.name = this.tempName;
+      } else {
+        this.temp.name = row.name;
       }
-      return ''
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
-    handleSuccess() {
-      this.$message({
-        type: 'success',
-        message: '上传成功',
-      })
-    },
+      if (this.tempCollege) {
+        this.temp.college = this.tempCollege;
+      } else {
+        this.temp.college = row.college;
+      }
+      if (this.tempCapacity) {
+        this.temp.capacity = this.tempCapacity;
+      } else {
+        this.temp.capacity = row.capacity;
+      }
+      if (this.tempCategory) {
+        this.temp.category = this.tempCategory;
+      } else {
+        this.temp.category = row.category;
+      }
+      if (this.tempCredit) {
+        this.temp.credit = this.tempCredit;
+      } else {
+        this.temp.credit = row.credit;
+      }
 
-
-    submit(index, row) {
-      const self = this;
-      self.axios({
-        method: 'post',
-        url: '/http://localhost:8000/site/login/',
-        data: qs.stringify({
-          'courseId': row.courseId,
-        }),
-        headers: {
-          'X-CSRFToken': this.getCookie('csrftoken')
-        },
-      })
+      this.tableData.splice(index, 1, this.temp);
+      this.tempName = '';
+      this.dialogVisible = false;
     },
-    handleError(err, file, fileList) {
-      console.log(err);
-      console.log(file)
+    cancel() {
+      this.tempName = '';
+      this.tempCollege = '';
+      this.tempCapacity = '';
+      this.tempCategory = '';
+      this.tempCredit = '';
+      this.dialogVisible = false;
     }
-  }
-
+  },
 }
 </script>
-
-<style scoped>
-.bg {
-  /*background: url("../../assets/homePage/bg_home.png");*/
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  background-size: 100% 100%;
-}
-
-.table {
-  margin-left: 17vw;
-  margin-top: 8vh;
-  width: 65%;
-  opacity: 0.7;
-  position: fixed;
-
-}
-
-.el-table .success-row {
-  --el-table-tr-bg-color: var(--el-color-success-lighter);
-}
-</style>

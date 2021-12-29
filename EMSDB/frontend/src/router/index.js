@@ -4,7 +4,7 @@ import Student_Home from "../views/student/Student_Home";
 import Teacher_Home from "../views/teacher/Teacher_Home"
 import Admin_Home from "../views/Admin_Home";
 import PasswordChange from "../views/PasswordChange";
-import test from "../views/ScoreRecord";
+import test from "../views/test0";
 import PersonalInfo from "../views/PersonalInfo";
 import ExemptionApply from "../views/student/Exemption_Apply";
 import ExamDelay_Apply from "../views/student/ExamDelay_Apply";
@@ -23,6 +23,7 @@ import EmptyRoom from "../views/EmptyRoom";
 import CourseEvaluate from "../views/student/CourseEvaluate";
 import CourseStudent from "../views/teacher/CourseStudent";
 import ScoreRecord from "../views/ScoreRecord";
+import Teacher_SetupCourse from "../views/Teacher_SetupCourse";
 
 const routes = [
     {
@@ -141,6 +142,11 @@ const routes = [
         path: '/teacher/scoreRecord',
         name: 'teacher_scoreRecord' ,
         component: ScoreRecord
+    },
+    {
+        path: '/teacher/setupCourse',
+        name: 'teacher_setupCourse' ,
+        component: Teacher_SetupCourse
     }
 
 ]
