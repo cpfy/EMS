@@ -131,46 +131,30 @@ export default {
     handlePreview(file) {
       console.log(file)
     },
-    handleSuccess(index,row) {
+    handleSuccess() {
       this.$message({
         type: 'success',
-        message: '评价成功',
+        message: '上传成功',
       })
-      /* const self = this;
-       self.axios({
-         method: 'post',
-         url: '/scoreRecord/',
-         data: qs.stringify({
-           'courseId': row.courseId,
-         }),
-         headers: {
-           'X-CSRFToken': this.getCookie('csrftoken')
-         },
-       }).then(res => {
-         if (res.data.result === 'success') {
-           this.scoreInfos[index + (this.newPage - 1) * 9].recorded = true;
-           this.$message({
-             type: 'success',
-             message: '评价成功',
-           })
-           row.evaluated = '已评价'
-         } else {
-           this.$message({
-             type: 'error',
-             message: res.data.result,
-           })
-         }
-
-       })*/
     },
+
     submit(index, row) {
-
+      const self = this;
+      self.axios({
+        method: 'post',
+        url: '/http://localhost:8000/site/login/',
+        data: qs.stringify({
+          'courseId': row.courseId,
+        }),
+        headers: {
+          'X-CSRFToken': this.getCookie('csrftoken')
+        },
+      })
     },
-    handleError() {
-      this.$message({
-        type: 'success',
-        message: '评价成功',
-      })}
+    handleError(err, file, fileList) {
+      console.log(err);
+      console.log(file)
+    }
   }
 
 }
