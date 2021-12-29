@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 # Create your models here.
@@ -45,11 +46,17 @@ class Student(models.Model):
         blank=True
     )
     student_inyear = models.CharField(max_length=5, null=True, blank=True)
-    student_age = models.IntegerField(default=0);
+    student_age = models.IntegerField(default=0)
     student_home = models.CharField(max_length=15, null=True, blank=True)
 
     # studentAddress = models.CharField(max_length=128, verbose_name="宿舍地址", null=True)
     student_credit = models.IntegerField(default=0, verbose_name="已修学分")
+
+    courses = models.ManyToManyField(
+        "Course",
+        verbose_name="已选课程",
+        blank=True,
+    )
 
     def __str__(self):
         return self.id.__str__()
@@ -72,11 +79,20 @@ class Teacher(models.Model):
         blank=True
     )
 
-    teacher_age = models.IntegerField(default=0);
-    teacher_email = models.CharField(verbose_name='邮箱', max_length=30, null=True, blank=True)
+    teacher_age = models.IntegerField(default=0)
+
+    # teacher_email = models.CharField(verbose_name='邮箱', max_length=30, null=True, blank=True)
+    # Account已经包含
+
     telephone = models.CharField(verbose_name='联系电话', max_length=11, unique=True, null=True, blank=True)
 
     # brief = models.TextField(verbose_name="简介", null=True)
+
+    """courses = models.ManyToManyField(
+        "Course",
+        verbose_name="开设课程",
+        blank=True,
+    )"""
 
     class Meta:
         verbose_name = "教师"
@@ -103,7 +119,7 @@ class Department(models.Model):
     dept_credit = models.IntegerField(default=150, verbose_name="所需学分")
 
     def __str__(self):
-        return str(self.dept_id) + "-" + self.dept_name
+        return str(self.dept_id) + "-" + str(self.dept_name)
 
     class Meta:
         verbose_name = "院系"
@@ -177,7 +193,6 @@ class Course(models.Model):
     )
     type = models.CharField(choices=TYPE, verbose_name='课程类别', max_length=1, default='a')
     credit = models.IntegerField(verbose_name="学分")
-    # time = models.OneToOneField(CourseTime, on_delete=models.CASCADE, blank=True)
 
     time = models.ForeignKey(
         "CourseTime",
@@ -187,23 +202,82 @@ class Course(models.Model):
         blank=True
     )
 
+    semi = models.IntegerField(verbose_name="课程学年", default=2021)
+
     dept = models.ForeignKey(
         "Department",
         on_delete=models.CASCADE,
         verbose_name="开课学院",
     )
 
-    #dept = models.IntegerField(verbose_name="开课学院")
-
-    courseTeacher = models.ManyToManyField(Teacher, verbose_name="课程教师", blank=True)
-    courseStudent = models.ManyToManyField(Student, verbose_name="课程学生", blank=True)
-
     capacity = models.IntegerField(verbose_name="总容量")
-    cur_capacity = models.IntegerField(verbose_name="当前人数", default=0)
+    count = models.IntegerField(verbose_name="当前人数", default=0)
+
+    # courseTeacher = models.ManyToManyField(Teacher, verbose_name="课程教师", blank=True)
+    # courseStudent = models.ManyToManyField(Student, verbose_name="课程学生", blank=True)
+
+    def __str__(self):
+        return self.code + "-" + self.name
 
     class Meta:
         verbose_name = "课程"
         verbose_name_plural = verbose_name
 
+
+class OpenCourse(models.Model):  # 开课表
+    # 课号
+    course = models.ForeignKey(
+        "Course",
+        on_delete=models.CASCADE,
+        verbose_name="m",
+    )
+
+    # 工号
+    teacher = models.ForeignKey(
+        "Teacher",
+        on_delete=models.CASCADE
+    )
+
+    # semester = models.CharField(max_length=20, blank=True)  # 学期
+    # course_time = models.CharField(max_length=20)  # 上课时间
+
     def __str__(self):
-        return self.code + "-" + self.name
+        return self.course.__str__() + "(" + self.teacher.__str__() + ")"
+
+    class Meta:
+        # unique_together = ("course", "teacher", "semester")
+        # db_table = "OpenTable"
+        verbose_name = "开课表"
+        verbose_name_plural = verbose_name
+
+
+class Score(models.Model):  # 选课表
+    # 开设课程号
+    opencourse = models.ForeignKey(
+        "OpenCourse",
+        on_delete=models.CASCADE
+    )
+
+    # 学号
+    student = models.ForeignKey(
+        "Student",
+        on_delete=models.CASCADE,
+        blank=True
+    )
+
+    score = models.FloatField(default=0)  # 最终成绩
+
+    def __str__(self):
+        return self.opencourse.__str__() + "——" + self.student.__str__()
+
+    class Meta:
+        verbose_name = "选课表SC"
+        verbose_name_plural = verbose_name
+
+
+class Message(models.Model):
+    time = models.DateTimeField(verbose_name="发布时间", default=timezone.now)
+
+    class Meta:
+        verbose_name = "通知信息"
+        verbose_name_plural = verbose_name

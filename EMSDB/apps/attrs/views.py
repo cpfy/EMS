@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
 from .forms import *
-from .models import Student, Class, Teacher, Admin, Department, Course, Account,CourseTime
+from .models import Student, Class, Teacher, Admin, Department, Course, Account, CourseTime, Score, OpenCourse, Score
 
 
 # Create your views here.
@@ -194,26 +194,26 @@ def change_username(request):
 
     user_cuname_form = UserChangeUsernameForm(data=request.POST)
 
-    if user_cuname_form.is_valid():
-        data = user_cuname_form.cleaned_data
-        inname = User.objects.filter(username=data['newUserName'])
-
-        if inname:
-            retdata = createFalseJsonWithInfo("该用户名已被使用！请重新输入")
-            return JsonResponse(retdata)
-
-        else:
-            owner = request.user
-            owner.username = data['newUserName']
-            owner.save()
-
-            retdata = {
-                'result': True,
-                'info': "修改用户名成功！"
-            }
-            return JsonResponse(retdata)
-    else:
+    if not user_cuname_form.is_valid():
         retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = user_cuname_form.cleaned_data
+    inname = User.objects.filter(username=data['newUserName'])
+
+    if inname:
+        retdata = createFalseJsonWithInfo("该用户名已被使用！请重新输入")
+        return JsonResponse(retdata)
+
+    else:
+        owner = request.user
+        owner.username = data['newUserName']
+        owner.save()
+
+        retdata = {
+            'result': True,
+            'info': "修改用户名成功！"
+        }
         return JsonResponse(retdata)
 
 
@@ -225,26 +225,26 @@ def change_email(request):
 
     user_cemail_form = UserChangeEmailForm(data=request.POST)
 
-    if user_cemail_form.is_valid():
-        data = user_cemail_form.cleaned_data
-        inemail = User.objects.filter(username=data['newEmail'])
-
-        if inemail:
-            retdata = createFalseJsonWithInfo("该Email已被使用！请重新输入")
-            return JsonResponse(retdata)
-
-        else:
-            owner = request.user
-            owner.email = data['newEmail']
-            owner.save()
-
-            retdata = {
-                'result': True,
-                'info': "修改用户名成功！"
-            }
-            return JsonResponse(retdata)
-    else:
+    if not user_cemail_form.is_valid():
         retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = user_cemail_form.cleaned_data
+    inemail = User.objects.filter(username=data['newEmail'])
+
+    if inemail:
+        retdata = createFalseJsonWithInfo("该Email已被使用！请重新输入")
+        return JsonResponse(retdata)
+
+    else:
+        owner = request.user
+        owner.email = data['newEmail']
+        owner.save()
+
+        retdata = {
+            'result': True,
+            'info': "修改邮箱成功！"
+        }
         return JsonResponse(retdata)
 
 
@@ -307,6 +307,198 @@ def get_user_info(request):
         return JsonResponse(retdata)
 
 
+#####  课程相关操作  #####
+
+# 获取可选课程
+def get_course_list(request):
+    resultList = []
+
+    account = Account.objects.get(user=request.user)
+    student = Student.objects.get(id=account)
+
+    # courses_list = Course.objects.filter()
+    courses_list = Course.objects.all()
+
+    for course in courses_list:
+        """thisteacher = course.courseTeacher
+        if thisteacher is None:
+            teacherstr = "待定"
+        else:
+            teacherstr = thisteacher
+
+        # selected = Score.objects.filter(course=course, student=student)
+        ifselected = Score.objects.filter(course=course, student=student)
+        selected = ifselected is None"""
+
+        openc = OpenCourse.objects.get(course=course)
+        if openc.teacher is None:
+            teacherstr = "待定"
+        else:
+            teacherstr = openc.teacher.id.name
+
+        ifselected = Score.objects.filter(opencourse=openc, student=student)
+        selected = ifselected is None
+
+        capacitystr = course.count + "/" + course.capacity
+
+        data = {
+            "courseId": course.code,
+            "courseName": course.name,
+            "courseCategory": course.type,
+            "courseCollege": str(course.dept),
+            "courseTeacher": teacherstr,
+            "time": str(course.time),
+            "credit": course.credit,
+            "capacity": capacitystr,
+            "selected": selected
+        }
+        # for x in data.values():
+        # print(x)
+        resultList.append(data)
+
+    retdata = {
+        'resultList': resultList
+    }
+    return JsonResponse(retdata)
+
+
+# select课程
+def select_course(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    user_selectc_form = CourseIdForm(data=request.POST)
+
+    if not user_selectc_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = user_selectc_form.cleaned_data
+    courseId = data['courseId']
+
+    course = Course.objects.filter(code=courseId)
+    if not course:
+        retdata = createFalseJsonWithInfo("该课程不存在！请重新检查")
+        return JsonResponse(retdata)
+
+    openc = OpenCourse.objects.get(course=course)
+    account = Account.objects.get(user=request.user)
+    student = Student.objects.get(id=account)
+
+    Score.objects.create(opencourse=openc, student=student)
+    course.count += 1
+
+    retdata = {
+        'result': True,
+        'info': "选课成功！"
+    }
+    return JsonResponse(retdata)
+
+
+# 获取已选课程
+def get_course_selected(request):
+    account = Account.objects.get(user=request.user)
+    student = Student.objects.get(id=account)
+
+    selected_courses_list = Score.objects.filter(student=student)
+    resultList = []
+
+    for select_course in selected_courses_list:
+        openc = OpenCourse.objects.get(course=select_course)
+        if openc.teacher is None:
+            teacherstr = "待定"
+        else:
+            teacherstr = openc.teacher.id.name
+
+        capacitystr = select_course.count + "/" + select_course.capacity
+
+        data = {
+            "courseId": select_course.code,
+            "courseName": select_course.name,
+            "courseCategory": select_course.type,
+            "courseCollege": str(select_course.dept),
+            "courseTeacher": teacherstr,
+            "time": str(select_course.time),
+            "credit": select_course.credit,
+            "capacity": capacitystr,
+        }
+        for x in data.values():
+            print(x)
+        resultList.append(data)
+
+    retdata = {
+        'resultList': resultList
+    }
+    return JsonResponse(retdata)
+
+
+# 退选课程
+def unselect_course(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    user_courseid_form = CourseIdForm(data=request.POST)
+
+    if not user_courseid_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = user_courseid_form.cleaned_data
+    courseId = data['courseId']
+
+    course = Course.objects.filter(code=courseId)
+    if not course:
+        retdata = createFalseJsonWithInfo("该课程不存在！请重新检查")
+        return JsonResponse(retdata)
+
+    openc = OpenCourse.objects.get(course=course)
+    account = Account.objects.get(user=request.user)
+    student = Student.objects.get(id=account)
+
+    sc = Score.objects.get(opencourse=openc, student=student)
+
+    if not sc:
+        retdata = createFalseJsonWithInfo("您已退选该课程！请勿重复退选")
+        return JsonResponse(retdata)
+
+    sc.delete()
+    course.count -= 1
+
+    retdata = {
+        'result': True,
+        'info': "退课成功！"
+    }
+    return JsonResponse(retdata)
+
+
+#####  事务相关操作  #####
+
+# 学生事务申请
+def exemption_apply(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    exemption_form = UserExemptionForm(data=request.POST)
+
+    if not exemption_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = exemption_form.cleaned_data
+    # applyType = data['applyType']  #免听or免修or缓考or补考
+    courseName = data['courseName']
+    courseCollege = data['courseCollege']
+    teacher = data['teacher']
+    courseId = data['courseId']
+    # applyReason = data['applyReason']
+
+    retdata = {}
+    return JsonResponse(retdata)
+
+
 ##### 辅助用函数 #####
 
 def createFalseJsonWithIdAndInfo(str):
@@ -327,14 +519,14 @@ def createFalseJsonWithInfo(str):
 
 
 def checkUserTypeIsFit(status, typestr):
-    # print(status, typestr)
+    print(status, typestr)
 
     if (status == 'a'):
-        return typestr == '1'
+        return typestr == '学生'
     elif (status == 'b'):
-        return typestr == '2'
+        return typestr == '教师'
     elif (status == 'c'):
-        return typestr == '3'
+        return typestr == '管理员'
     else:
         # print("Unknown Type!")
         return False
