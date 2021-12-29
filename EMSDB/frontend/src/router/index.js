@@ -21,6 +21,7 @@ import Teacher_Schedule from "../views/teacher/Teacher_Schedule";
 import Student_ExamSchedule from "../views/student/Student_ExamSchedule";
 import EmptyRoom from "../views/EmptyRoom";
 import CourseEvaluate from "../views/student/CourseEvaluate";
+import CourseStudent from "../views/teacher/CourseStudent";
 
 const routes = [
     {
@@ -130,6 +131,10 @@ const routes = [
         path: '/student/courseEvaluate',
         name: 'student_courseEvaluate' ,
         component: CourseEvaluate
+    }, {
+        path: '/teacher/courseStudent',
+        name: 'teacher_courseStudent' ,
+        component: CourseStudent
     }
 
 ]

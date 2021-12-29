@@ -11,6 +11,7 @@
 <script>
 import Schedule from "../../components/Schedule";
 import Teacher_Nav from "../../components/Teacher_Nav";
+import qs from "qs";
 
 export default {
   mounted() {
@@ -18,9 +19,8 @@ export default {
     self.axios({
       method: 'post',
       url: 'Teacher_Schedule',
-      data: {
-
-      },
+      data: qs.stringify({
+      }),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },

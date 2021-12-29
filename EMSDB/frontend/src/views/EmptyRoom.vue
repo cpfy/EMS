@@ -8,8 +8,9 @@
     <Teacher_Nav active-index2="3-2"></Teacher_Nav>
   </div>
 
-  <div @change="renew" style="position: absolute;top: 20.5vh;opacity: 0.7;left: 8.5vw">
+  <div style="position: absolute;top: 20.5vh;opacity: 0.7;left: 8.5vw">
     <el-date-picker
+        @change="renew"
         v-model="date"
         type="date"
         placeholder="选择要查询的日期"
@@ -145,9 +146,9 @@ export default {
       self.axios({
         method: 'post',
         url: 'getEmptyRoom',
-        data: {
+        data: qs.stringify({
           'date' : this.date,
-        },
+        }),
         headers: {
           'X-CSRFToken': this.getCookie('csrftoken')
         },

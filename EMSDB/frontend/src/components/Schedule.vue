@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="color: darkorchid;background-color: rgba(0,0,0,0);position: absolute;left: 1vw;top:21.8vh"> 请选择周数：</div>
+    <div style="color: dimgrey;background-color: rgba(0,0,0,0);position: absolute;left: 1vw;top:21.8vh"> 请选择周数：</div>
     <el-select style="margin-left: 1vw;width: 5.5vw;position: absolute;background-color: lightsteelblue;opacity: 0.75" v-model="weekNum" placeholder="选择周数">
       <el-option
           v-for="item in options"

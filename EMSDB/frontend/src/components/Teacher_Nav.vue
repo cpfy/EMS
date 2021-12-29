@@ -119,7 +119,8 @@ export default {
         this.$router.push('/emptyRoom')
       } else if (index==='3-3') {
         this.$router.push('/teacher/schedule')
-
+      } else if (index==='2-3') {
+        this.$router.push('/teacher/courseStudent')
       }
     },
     confirmLogout() {
