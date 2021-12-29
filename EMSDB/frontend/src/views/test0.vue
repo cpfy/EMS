@@ -1,16 +1,23 @@
 <template>
+  <a href="./template.xlsx" download="" style="z-index: 6;position: absolute;top: 180px" > 点击下载成绩模板</a>
   <div class="bg"></div>
   <div style="height: 111px;">
     <Teacher_Nav active-index2="2-4"></Teacher_Nav>
+  </div >
+  <div style="position: absolute; z-index: 3;">
+    <el-button
+        size="mini"
+        type="text"
+        @click="download"
+    >下载模板
+    </el-button>
+    <a href="./template.xlsx" download="" > 点击下载成绩模板</a>
   </div>
   <div style="position: absolute;top: 14vh;">
-    <div>
-
-    </div>
     <el-table
         :data="scoreInfos.slice(index1,index2)"
         :row-class-name="tableRowClassName"
-        height="78vh"
+        height="76vh"
         class="table"
         cell-style="height:50px;text-align: center"
         header-cell-style="height:75px;text-align: center;font-size:20px"
@@ -22,6 +29,7 @@
       <el-table-column prop="" label="成绩录入">
         <template #default="scope">
           <div>
+
             <el-upload
                 class="upload-demo"
                 action="http://localhost:8000/site/login/"
@@ -48,30 +56,21 @@
         </template>
       </el-table-column>
 
-      <!--
-            <el-table-column label="确认录入">
-              <template #default="scope">
-                <div v-if="scope.row.recorded === '未录入'">
-                  <el-button size="medium" type="success" @click="confirmUpload(scope.$index, scope.row)">确认上传</el-button>
-                </div>
-
-                <div v-else>
-                  <el-button size="medium" type="default" disabled>已录入</el-button>
-                </div>
-              </template>
-            </el-table-column>-->
 
     </el-table>
   </div>
 </template>
 
 <script>
-import Teacher_Nav from "../../components/Teacher_Nav";
+import Teacher_Nav from "../components/Teacher_Nav";
 import qs from "qs";
 
 export default {
   name: "ScoreRecord", components: {
     Teacher_Nav
+  },
+  mounted() {
+
   },
   data() {
     return {
@@ -108,6 +107,12 @@ export default {
     }
   },
   methods: {
+    download() {
+      const a = document.createElement('a')
+      a.setAttribute('download', "成绩模板")
+      a.setAttribute('href', "./template.xlsx")
+      a.click()
+    },
     getCookie(name) {
       var value = ';' + document.cookie;
       var parts = value.split('; ' + name + '=');
@@ -138,6 +143,7 @@ export default {
       })
     },
 
+
     submit(index, row) {
       const self = this;
       self.axios({
@@ -162,7 +168,7 @@ export default {
 
 <style scoped>
 .bg {
-  background: url("../../assets/homePage/bg_home.png");
+  /*background: url("../../assets/homePage/bg_home.png");*/
   width: 100%;
   height: 100%;
   position: fixed;
@@ -172,9 +178,9 @@ export default {
 }
 
 .table {
-  margin-left: 5vw;
-  margin-top: 7vh;
-  width: 90%;
+  margin-left: 17vw;
+  margin-top: 8vh;
+  width: 65%;
   opacity: 0.7;
   position: fixed;
 

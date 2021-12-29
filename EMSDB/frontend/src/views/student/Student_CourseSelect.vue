@@ -42,7 +42,7 @@
   <div style="right: 10vw;bottom: 3vh;position: absolute">
     <el-pagination background layout="prev, pager, next" :total="this.courseInfos.length"
                    v-model:current-page="newPage"
-                   page-size=9
+                   :page-size=9
                    pager-count=3
                    @current-change="change_page(newPage)">
     </el-pagination>

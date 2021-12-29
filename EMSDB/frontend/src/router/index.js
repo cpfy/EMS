@@ -4,7 +4,7 @@ import Student_Home from "../views/student/Student_Home";
 import Teacher_Home from "../views/teacher/Teacher_Home"
 import Admin_Home from "../views/Admin_Home";
 import PasswordChange from "../views/PasswordChange";
-import test from "../views/test";
+import test from "../views/ScoreRecord";
 import PersonalInfo from "../views/PersonalInfo";
 import ExemptionApply from "../views/student/Exemption_Apply";
 import ExamDelay_Apply from "../views/student/ExamDelay_Apply";
@@ -22,7 +22,7 @@ import Student_ExamSchedule from "../views/student/Student_ExamSchedule";
 import EmptyRoom from "../views/EmptyRoom";
 import CourseEvaluate from "../views/student/CourseEvaluate";
 import CourseStudent from "../views/teacher/CourseStudent";
-import ScoreRecord from "../views/teacher/ScoreRecord";
+import ScoreRecord from "../views/ScoreRecord";
 
 const routes = [
     {
