@@ -20,7 +20,7 @@
       <el-table
           :data="studentInfo.slice(index1,index2)"
           :row-class-name="tableRowClassName"
-          height="74vh"
+          height="73.5vh"
           class="table"
           cell-style="height:52px;text-align: center"
           header-cell-style="height:75px;text-align: center;font-size:20px"
@@ -37,7 +37,7 @@
 
   </div>
 
-  <div style="right: 5vw;bottom: 0.5vh;position: absolute;opacity: 0.8;">
+  <div style="zoom:96%;right: 5vw;bottom: 0.6vh;position: absolute;opacity: 0.8;">
     <el-pagination background layout="prev, pager, next" :total="this.studentInfo.length"
                    v-model:current-page="newPage"
                    page-size=9

@@ -42,13 +42,13 @@
           <el-menu-item index="4-2">缓考/补考申请</el-menu-item>
           <el-menu-item index="4-3">其他申请</el-menu-item>
         </el-sub-menu>
-        <el-sub-menu index="5">
+<!--        <el-sub-menu index="5">
           <template #title><img style="height: 26px; margin-right: 8px" src="../assets/homePage/message.png"
                                 alt="img failed"> 消息反馈
           </template>
           <el-menu-item index="5-1">系统通知</el-menu-item>
           <el-menu-item index="5-2">教师反馈</el-menu-item>
-        </el-sub-menu>
+        </el-sub-menu>-->
         <el-menu-item index="6"><img style="height: 28px;margin-right: 10px;" src="../assets/homePage/teachingEva.png"
                                      alt="img failed"> 教学评价
         </el-menu-item>

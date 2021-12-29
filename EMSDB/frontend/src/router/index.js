@@ -22,6 +22,7 @@ import Student_ExamSchedule from "../views/student/Student_ExamSchedule";
 import EmptyRoom from "../views/EmptyRoom";
 import CourseEvaluate from "../views/student/CourseEvaluate";
 import CourseStudent from "../views/teacher/CourseStudent";
+import ScoreRecord from "../views/teacher/ScoreRecord";
 
 const routes = [
     {
@@ -135,6 +136,11 @@ const routes = [
         path: '/teacher/courseStudent',
         name: 'teacher_courseStudent' ,
         component: CourseStudent
+    },
+    {
+        path: '/teacher/scoreRecord',
+        name: 'teacher_scoreRecord' ,
+        component: ScoreRecord
     }
 
 ]

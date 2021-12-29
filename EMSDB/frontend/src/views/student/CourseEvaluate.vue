@@ -63,7 +63,7 @@
           </div>
 
           <div v-else>
-            <el-button size="medium" type="default" @click="confirm(scope.$index, scope.row)">已评价</el-button>
+            <el-button size="medium" type="default" disabled @click="confirm(scope.$index, scope.row)">已评价</el-button>
           </div>
         </template>
       </el-table-column>
