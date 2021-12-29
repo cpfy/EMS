@@ -3,8 +3,13 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
+from django.db import models
+
+from django.contrib.auth.decorators import login_required
+
 from .forms import *
-from .models import Student, Class, Teacher, Admin, Department, Course, Account, CourseTime, Score, OpenCourse, Score
+from .models import Student, Class, Teacher, Admin, Department, Course, Account, CourseTime, Score, OpenCourse, Score, \
+    Place
 
 
 # Create your views here.
@@ -12,6 +17,8 @@ from .models import Student, Class, Teacher, Admin, Department, Course, Account,
 # 登录相关 #
 
 def user_login(request):
+    # print(request.POST)
+
     if request.method == 'POST':
         user_login_form = UserLoginForm(data=request.POST)
         # print("POST=",request.POST)
@@ -36,6 +43,7 @@ def user_login(request):
                 if (checkUserTypeIsFit(account.status, myusertype)):
                     # 将用户数据保存在 session 中，即实现了登录动作
                     login(request, user)
+                    print("登录成功！当前用户：", request.user.username)
                     retdata = {
                         'result': True,
                         'id': myusername,
@@ -155,6 +163,7 @@ def check_status(request):
 
 
 # 改密码
+@login_required
 def change_pwd(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -187,6 +196,7 @@ def change_pwd(request):
 
 
 # 改username
+@login_required
 def change_username(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -218,6 +228,7 @@ def change_username(request):
 
 
 # 改email
+@login_required
 def change_email(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -248,6 +259,8 @@ def change_email(request):
         return JsonResponse(retdata)
 
 
+# 获取个人info
+@login_required
 def get_user_info(request):
     current_user = request.user
     account = Account.objects.get(user=current_user)
@@ -310,6 +323,7 @@ def get_user_info(request):
 #####  课程相关操作  #####
 
 # 获取可选课程
+@login_required
 def get_course_list(request):
     resultList = []
 
@@ -339,7 +353,7 @@ def get_course_list(request):
         ifselected = Score.objects.filter(opencourse=openc, student=student)
         selected = ifselected is None
 
-        capacitystr = course.count + "/" + course.capacity
+        capacitystr = str(course.count) + "/" + str(course.capacity)
 
         data = {
             "courseId": course.code,
@@ -363,6 +377,7 @@ def get_course_list(request):
 
 
 # select课程
+@login_required
 def select_course(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -397,6 +412,7 @@ def select_course(request):
 
 
 # 获取已选课程
+@login_required
 def get_course_selected(request):
     account = Account.objects.get(user=request.user)
     student = Student.objects.get(id=account)
@@ -411,7 +427,7 @@ def get_course_selected(request):
         else:
             teacherstr = openc.teacher.id.name
 
-        capacitystr = select_course.count + "/" + select_course.capacity
+        capacitystr = str(select_course.count) + "/" + str(select_course.capacity)
 
         data = {
             "courseId": select_course.code,
@@ -434,6 +450,7 @@ def get_course_selected(request):
 
 
 # 退选课程
+@login_required
 def unselect_course(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -473,9 +490,148 @@ def unselect_course(request):
     return JsonResponse(retdata)
 
 
+#####  信息查询相关操作  #####
+# 课表
+@login_required
+def get_stu_schedule(request):
+    if (request.method != "GET"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用GET请求数据")
+        return JsonResponse(retdata)
+
+    account = Account.objects.get(user=request.user)
+    student = Student.objects.get(id=account)
+    mycourseSC = Score.objects.filter(student=student)
+    mycourse = mycourseSC.opencourse
+
+    print(mycourse)
+
+    schedule = []
+
+    for i in range(16):
+        weekschedule = []
+        week = i + 1
+
+        # 本周课程
+        weekcourse = mycourse.filter(course__time__startweek__lte=week).filter(
+            course__time__startweek__gte=week - models.F('course__time__duringweek'))
+
+        for j in range(6):
+            # 1,2节
+            timestr = str(2 * j + 1) + "," + str(2 * j + 2) + "节"
+
+            # 示例：编译技术 锌小子 (一)215
+            onesect = {
+                'time': timestr,
+                'Monday': '',
+                'Tuesday': '',
+                'Wednesday': '',
+                'Thursday': '',
+                'Friday': '',
+                'Saturday': '',
+                'Sunday': ''
+            }
+
+            sectweekcourse = weekcourse.filter(course__time__startsection__lte=2 * j).filter(
+                course__time__startsection__gte=2 * j + 1 - models.F('course__time__duringsection'))
+
+            if sectweekcourse:
+                for c in sectweekcourse:
+                    course_str = str(c.course.name) + " " \
+                                 + str(c.teacher.id.name) + " " \
+                                 + str(c.course.place)
+
+                    weekstr = convertWeeknumToEng(int(c.course.time.week))
+                    onesect[weekstr] = course_str
+                    print("Set weekstr: ", course_str)
+
+                    weekschedule.append(onesect)
+
+        schedule.append(weekschedule)
+
+    retdata = {
+        'schedule': schedule,
+    }
+    return JsonResponse(retdata)
+
+
+# 推荐课表
+@login_required
+def get_stu_schedule_recommend(request):
+    retdata = {
+        'result': True,
+        'info': "退课成功！"
+    }
+    return JsonResponse(retdata)
+
+
+# 教师课表
+@login_required
+def get_teacher_schedule(request):
+    retdata = {
+        'result': True,
+        'info': "退课成功！"
+    }
+    return JsonResponse(retdata)
+
+
+# 空教室
+@login_required
+def get_empty_room(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    date_form = DateForm(data=request.POST)
+
+    if not date_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    # 与数据库中匹配的星期
+    data = date_form.cleaned_data
+    search_date = data['date']
+    weeknum = search_date.weekday() + 1
+
+    roomInfo = []
+
+    spare = ['空闲', '空闲', '空闲', '空闲', '空闲', '空闲', '空闲', '空闲', '空闲', '空闲', '空闲', '空闲']
+    places = Place.objects.all()
+    for place in places:
+        conflict = Course.objects.filter(time__weekday=weeknum, place=place)
+        # 有冲突
+        if conflict:
+            for conf in conflict:
+                start = conf.time.startsection
+                during = conf.time.duringsection
+                for i in range(start - 1, start + during - 1):
+                    spare[i] = "占用"
+
+        roomitem = {
+            "room": str(place),
+            "c": spare
+        }
+        roomInfo.append(roomitem)
+
+    retdata = {
+        'roomInfo': roomInfo,
+    }
+    return JsonResponse(retdata)
+
+
+# 考表
+@login_required
+def get_stu_exam(request):
+    retdata = {
+        'result': True,
+        'info': "退课成功！"
+    }
+    return JsonResponse(retdata)
+
+
 #####  事务相关操作  #####
 
 # 学生事务申请
+@login_required
 def exemption_apply(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -530,3 +686,16 @@ def checkUserTypeIsFit(status, typestr):
     else:
         # print("Unknown Type!")
         return False
+
+
+def convertWeeknumToEng(num):
+    dict = {
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: 'Thursday',
+        5: 'Friday',
+        6: 'Saturday',
+        7: 'Sunday',
+    }
+    return dict.get(num)

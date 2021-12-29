@@ -148,11 +148,11 @@ class CourseTime(models.Model):
     duringweek = models.IntegerField(verbose_name="持续周数")
     weekday = models.IntegerField(verbose_name="星期")
     startsection = models.IntegerField(verbose_name="开始节数")
-    durinsection = models.IntegerField(verbose_name="持续节数")
+    duringsection = models.IntegerField(verbose_name="持续节数")
 
     def __str__(self):
         dbstr = "周" + self.convertToHanz(self.weekday) \
-                + "第" + str(self.startsection) + "-" + str(self.startsection + self.durinsection - 1) + "节[" \
+                + "第" + str(self.startsection) + "-" + str(self.startsection + self.duringsection - 1) + "节[" \
                 + str(self.startweek) + "-" + str(self.startweek + self.duringweek - 1) + "周]"
         return dbstr
 
@@ -174,6 +174,18 @@ class CourseTime(models.Model):
         ordering = ['weekday', 'startsection']
 
 
+class Place(models.Model):
+    building = models.CharField(max_length=10, verbose_name="楼号")
+    room = models.CharField(max_length=10, verbose_name="教室号")
+
+    def __str__(self):
+        return self.building.__str__() + self.room.__str__()
+
+    class Meta:
+        verbose_name = "地点"
+        verbose_name_plural = verbose_name
+
+
 class Course(models.Model):
     TYPE = (
         ('a', '必修'),
@@ -192,7 +204,7 @@ class Course(models.Model):
         blank=True
     )
     type = models.CharField(choices=TYPE, verbose_name='课程类别', max_length=1, default='a')
-    credit = models.IntegerField(verbose_name="学分")
+    credit = models.FloatField(verbose_name="学分")
 
     time = models.ForeignKey(
         "CourseTime",
@@ -200,6 +212,14 @@ class Course(models.Model):
         verbose_name="课程时间",
         null=True,
         blank=True
+    )
+
+    place = models.ForeignKey(
+        "Place",
+        on_delete=models.CASCADE,
+        verbose_name="课程地点",
+        null=True,
+        blank=True,
     )
 
     semi = models.IntegerField(verbose_name="课程学年", default=2021)
@@ -222,6 +242,7 @@ class Course(models.Model):
     class Meta:
         verbose_name = "课程"
         verbose_name_plural = verbose_name
+        ordering = ['code']
 
 
 class OpenCourse(models.Model):  # 开课表
