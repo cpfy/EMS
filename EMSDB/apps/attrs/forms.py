@@ -53,15 +53,28 @@ class UserChangeUsernameForm(forms.Form):
 class UserChangeEmailForm(forms.Form):
     newEmail = forms.CharField()
 
+
 # 事务申请表单
 class UserExemptionForm(forms.Form):
-    applyType = forms.CharField()   # 申请类型：免听or免修or缓考or补考
+    applyType = forms.CharField()  # 申请类型：免听or免修or缓考or补考
     courseName = forms.CharField()  # 课程名
     courseCollege = forms.CharField()  # 开课院系
-    teacher = forms.CharField()     # 任课教师
-    courseId = forms.CharField()    # 课程编号
+    teacher = forms.CharField()  # 任课教师
+    courseId = forms.CharField()  # 课程编号
     applyReason = forms.CharField()  # 申请理由
+
 
 # 选课申请表单
 class CourseIdForm(forms.Form):
     courseId = forms.CharField()
+
+
+# 空教师查询表单
+class DateForm(forms.Form):
+    date = forms.DateField()
+
+
+# 评教
+class EvaluateForm(forms.Form):
+    courseId = forms.CharField()
+    mark = forms.IntegerField()
