@@ -852,7 +852,7 @@ def get_course_stuinfo(request):
 
     data = courseid_form.cleaned_data
     cid = data['courseId']
-    mySC = Score.objects, filter(opencourse__course__code=cid)
+    mySC = Score.objects.filter(opencourse__course__code=cid)
 
     if not mySC:
         retdata = createFalseJsonWithInfo("该课程当前无学生选课")
