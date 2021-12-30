@@ -145,7 +145,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: 'getEmptyRoom',
+        url: 'http://localhost:8000/site/info/getEmptyRoom/',
         data: qs.stringify({
           'date' : this.date,
         }),

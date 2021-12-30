@@ -79,6 +79,8 @@
 
 <script>
 
+import qs from "qs";
+
 export default {
   name: "admin",
   props: {
@@ -93,6 +95,11 @@ export default {
     }
   },
   methods: {
+    getCookie(name) {
+      var value = ';' + document.cookie;
+      var parts = value.split('; ' + name + '=');
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    },
     handleSelect(index, indexPath) {
       this.$store.state.userType = '管理员'
       if (index === '5-3') {
@@ -109,6 +116,18 @@ export default {
       //alert(index)
     },
     confirmLogout() {
+
+
+      const self = this;
+      self.axios({
+        method: 'post',
+        url: 'http://localhost:8000/site/logout/',
+        data: qs.stringify({        }),
+        headers: {
+          'X-CSRFToken': this.getCookie('csrftoken')
+        },
+      })
+
       this.$router.push('/')
       this.dialogVisible = false
     },

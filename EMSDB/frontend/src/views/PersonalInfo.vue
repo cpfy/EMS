@@ -117,7 +117,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'http://localhost:8000/site/info/',
+      url: 'http://localhost:8000/site/my/info/',
       data: {},
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')

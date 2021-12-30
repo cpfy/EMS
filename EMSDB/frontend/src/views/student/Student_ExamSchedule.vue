@@ -47,7 +47,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: '/getExamSchedule/',
+      url: 'http://localhost:8000/site/info/getExamSchedule/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')

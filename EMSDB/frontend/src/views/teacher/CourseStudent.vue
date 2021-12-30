@@ -57,13 +57,14 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'getCourse',
+      url: 'http://localhost:8000/site/t/getCourse/',
       data: qs.stringify({
       }),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+
       this.courseInfo = res.data.courseInfo;
     })
   },
@@ -234,7 +235,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: 'getStudentInfo',
+        url: 'http://localhost:8000/site/t/getStudentInfo/',
         data: {
           'courseId': this.id,
         },
@@ -243,6 +244,7 @@ export default {
         },
       }).then(res => {
         this.studentInfo = res.data.studentInfo;
+        //TODO: splice?
       })
     }
   }

@@ -151,7 +151,7 @@ export default {
           const self = this;
           self.axios({
             method: 'post',
-            url: '/exemptionApply/',
+            url: 'http://localhost:8000/site/task/exemptionApply/',
             //TODO: to revise
             data: qs.stringify( {
               'applyType': this.ruleForm.applyType,

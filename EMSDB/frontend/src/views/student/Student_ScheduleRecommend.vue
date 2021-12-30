@@ -17,7 +17,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'Student_ScheduleRecommend',
+      url: 'http://localhost:8000/site/info/Student_ScheduleRecommend',
       data: {
 
       },
