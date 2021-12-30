@@ -93,7 +93,8 @@ export default {
       newPage: 1,
       index1: 0,
       index2: 6,
-      res: '',
+      result: '',
+      info:'',
       rowNum: '',
       scoreInfos: [
 
@@ -180,7 +181,7 @@ export default {
 
     handleSuccess() {
 
-      if (this.res === 'success') {
+      if (this.result === true) {
         this.$message({
           type: 'success',
           message: '上传成功',
@@ -189,7 +190,7 @@ export default {
       } else {
         this.$message({
           type: 'error',
-          message: this.res,
+          message: this.info,
         })
       }
 
@@ -210,7 +211,8 @@ export default {
         },
       }) .then(res => {
         this.rowNum = index;
-        this.res = res.data.result;
+        this.result = res.data.result;
+        this.info = res.data.info;
       })
     },
 

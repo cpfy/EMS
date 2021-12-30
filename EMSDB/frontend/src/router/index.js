@@ -23,7 +23,7 @@ import EmptyRoom from "../views/EmptyRoom";
 import CourseEvaluate from "../views/student/CourseEvaluate";
 import CourseStudent from "../views/teacher/CourseStudent";
 import ScoreRecord from "../views/ScoreRecord";
-import Teacher_SetupCourse from "../views/Teacher_SetupCourse";
+import Teacher_SetupCourse from "../views/teacher/Teacher_SetupCourse";
 
 const routes = [
     {

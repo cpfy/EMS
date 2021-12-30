@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import Teacher_Nav from "../components/Teacher_Nav";
+import Teacher_Nav from "../../components/Teacher_Nav";
 import qs from "qs";
 
 export default {
@@ -150,14 +150,14 @@ export default {
       },
     }).then(res => {
       this.courseInfo.splice(0,this.courseInfo.length)
-      for (let i = 0; i < res.data.resultList.length; i++) {
+      for (let i = 0; i < res.data.courseInfo.length; i++) {
         let obj = {};
         obj.num = i;
-        obj.name = res.data.resultList[i].name;
-        obj.credit = res.data.resultList[i].credit;
-        obj.college = res.data.resultList[i].college;
-        obj.capacity = res.data.resultList[i].capacity;
-        obj.category = res.data.resultList[i].category;
+        obj.name = res.data.courseInfo[i].name;
+        obj.credit = res.data.courseInfo[i].credit;
+        obj.college = res.data.courseInfo[i].college;
+        obj.capacity = res.data.courseInfo[i].capacity;
+        obj.category = res.data.courseInfo[i].category;
         this.courseInfo.splice(this.courseInfo.length, 0, obj);
       }
 
@@ -381,7 +381,7 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
-        if (res.data.result === 'success') {
+        if (res.data.result === true) {
           this.courseInfo.splice(this.index + (this.newPage - 1) * 9, 1, obj);
           this.$message({
             type: 'success',
@@ -390,7 +390,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.data.result,
+            message: res.data.info,
           })
         }
 
@@ -433,7 +433,7 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
-        if (res.data.result === 'success') {
+        if (res.data.result === true) {
           this.courseInfo.splice(this.courseInfo.length, 0, obj);
           this.$message({
             type: 'success',
@@ -442,7 +442,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.data.result,
+            message: res.data.info,
           })
         }
 
@@ -457,7 +457,7 @@ export default {
 
 <style scoped>
 .bg {
-  background: url("../assets/homePage/bg_home.png");
+  background: url("../../assets/homePage/bg_home.png");
   width: 100%;
   height: 100%;
   position: fixed;

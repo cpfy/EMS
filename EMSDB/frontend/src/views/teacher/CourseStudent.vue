@@ -64,6 +64,7 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+
       this.courseInfo = res.data.courseInfo;
     })
   },
@@ -243,6 +244,7 @@ export default {
         },
       }).then(res => {
         this.studentInfo = res.data.studentInfo;
+        //TODO: splice?
       })
     }
   }
