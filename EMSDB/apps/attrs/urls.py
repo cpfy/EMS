@@ -18,6 +18,9 @@ urlpatterns = [
     path('my/changeUsername/', views.change_username, name='changeUsername'),
     path('my/changeEmail/', views.change_email, name='changeEmail'),
 
+    # 管理员消息
+    path('notice_Send/', views.send_notice, name='notice_Send'),
+
     # 课程相关
     path('course/getCourse/', views.get_course_list, name='course_list'),
     path('course/selectCourse/', views.select_course, name='select_course'),
@@ -36,10 +39,10 @@ urlpatterns = [
 
     # 教学评价
     path('eva/getEvaInfo/', views.get_evaluate_list, name='getEvaInfo'),
-    path('eva/evaluateCourse/', views.get_evaluate_course, name='evaluateCourse'),
+    path('eva/evaluateCourse/', views.evaluate_course, name='evaluateCourse'),
 
     # 教师课程管理
-    path('t/getCourse/', views.get_course, name='getCourse'),  # 得到对应教师所开课程信息
+    path('t/getCourse/', views.get_course, name='getCourse'),
     path('t/getStudentInfo/', views.get_course_stuinfo, name='getStudentInfo'),
     path('t/getCourseOfScore/', views.get_course_of_score, name='getCourseOfScore'),
     path('t/importGrade/', views.import_grade_file, name='importGrade'),

@@ -286,13 +286,48 @@ class Score(models.Model):  # 选课表
         blank=True
     )
 
-    score = models.FloatField(default=0)  # 最终成绩
+    score = models.FloatField(verbose_name="最终成绩", default=0)
+
+    mark = models.FloatField(verbose_name="评教分数", default=0)
+
+    eval = models.BooleanField(verbose_name="是否评价", default=False)
 
     def __str__(self):
         return self.opencourse.__str__() + "——" + self.student.__str__()
 
     class Meta:
         verbose_name = "选课表SC"
+        verbose_name_plural = verbose_name
+
+
+class Exam(models.Model):
+    # 课号
+    course = models.ForeignKey(
+        "Course",
+        on_delete=models.CASCADE,
+        verbose_name="考试课程",
+        primary_key=True
+    )
+
+    # 工号
+    teacher = models.ForeignKey(
+        "Teacher",
+        on_delete=models.CASCADE,
+        verbose_name="监考教师",
+    )
+
+    time = models.DateTimeField()
+    place = models.ForeignKey(
+        "Place",
+        on_delete=models.CASCADE,
+        verbose_name="考试地点",
+    )
+
+    def __str__(self):
+        return self.course.__str__()
+
+    class Meta:
+        verbose_name = "考试表"
         verbose_name_plural = verbose_name
 
 

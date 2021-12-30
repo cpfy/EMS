@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import *
 from .models import Student, Class, Teacher, Admin, Department, Course, Account, CourseTime, Score, OpenCourse, Score, \
-    Place
+    Place, Exam
 
 
 # Create your views here.
@@ -127,7 +127,7 @@ def user_register(request):
 
                     return JsonResponse(retdata)
         else:
-            retdata = createFalseJsonWithInfo("无效的json格式")
+            retdata = createFalseJsonWithInfo("json格式有误")
             return JsonResponse(retdata)
 
     else:
@@ -353,7 +353,7 @@ def get_course_list(request):
         ifselected = Score.objects.filter(opencourse=openc, student=student)
         selected = ifselected is None
 
-        capacitystr = str(course.count) + "/" + str(course.capacity)
+        capacitystr = str(course.capacity - course.count) + "/" + str(course.capacity)
 
         data = {
             "courseId": course.code,
@@ -567,9 +567,61 @@ def get_stu_schedule_recommend(request):
 # 教师课表
 @login_required
 def get_teacher_schedule(request):
+    if (request.method != "GET"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用GET请求数据")
+        return JsonResponse(retdata)
+
+    account = Account.objects.get(user=request.user)
+    teacher = Teacher.objects.get(id=account)
+    mycourseOP = OpenCourse.objects.filter(teacher=teacher)
+
+    print(mycourseOP)
+
+    schedule = []
+
+    for i in range(16):
+        weekschedule = []
+        week = i + 1
+
+        # 本周课程
+        weekcourse = mycourseOP.filter(course__time__startweek__lte=week).filter(
+            course__time__startweek__gte=week - models.F('course__time__duringweek'))
+
+        for j in range(6):
+            # 1,2节
+            timestr = str(2 * j + 1) + "," + str(2 * j + 2) + "节"
+
+            # 示例：编译技术 锌小子 (一)215
+            onesect = {
+                'time': timestr,
+                'Monday': '',
+                'Tuesday': '',
+                'Wednesday': '',
+                'Thursday': '',
+                'Friday': '',
+                'Saturday': '',
+                'Sunday': ''
+            }
+
+            sectweekcourse = weekcourse.filter(course__time__startsection__lte=2 * j).filter(
+                course__time__startsection__gte=2 * j + 1 - models.F('course__time__duringsection'))
+
+            if sectweekcourse:
+                for c in sectweekcourse:
+                    course_str = str(c.course.name) + " " \
+                                 + str(c.teacher.id.name) + " " \
+                                 + str(c.course.place)
+
+                    weekstr = convertWeeknumToEng(int(c.course.time.week))
+                    onesect[weekstr] = course_str
+                    print("Set weekstr: ", course_str)
+
+                    weekschedule.append(onesect)
+
+        schedule.append(weekschedule)
+
     retdata = {
-        'result': True,
-        'info': "退课成功！"
+        'schedule': schedule,
     }
     return JsonResponse(retdata)
 
@@ -621,10 +673,42 @@ def get_empty_room(request):
 # 考表
 @login_required
 def get_stu_exam(request):
+    if (request.method != "GET"):
+        retdata = createVoidListWithInfo("请求方式有误！请使用GET请求数据")
+        return JsonResponse(retdata)
+
+    account = Account.objects.get(user=request.user)
+    student = Student.objects.get(id=account)
+    mycourseSC = Score.objects.filter(student=student)
+    mycourse = mycourseSC.opencourse.course
+    myexam = Exam.objects.filter(course=mycourse)
+
+    resultList = []
+
+    if myexam:
+        for item in myexam:
+            if item.course.teacher is None:
+                teacherstr = "待定"
+            else:
+                teacherstr = item.course.teacher.id.name
+
+            # capacitystr = str(item.course.capacity - item.course.count) + "/" + str(item.course.capacity)
+
+            data = {
+                "courseId": item.course.code,
+                "courseName": item.course.name,
+                "courseCategory": item.course.type,
+                "courseCollege": str(item.course.dept),
+                "courseTeacher": teacherstr,
+                "time": str(item.time),
+                "location": str(item.place),
+            }
+            resultList.append(data)
+
     retdata = {
-        'result': True,
-        'info': "退课成功！"
+        'resultList': resultList,
     }
+
     return JsonResponse(retdata)
 
 
@@ -652,6 +736,167 @@ def exemption_apply(request):
     # applyReason = data['applyReason']
 
     retdata = {}
+    return JsonResponse(retdata)
+
+
+##### 教学评价 #####
+# 进入页面需要信息
+@login_required
+def get_evaluate_list(request):
+    if (request.method != "GET"):
+        retdata = createVoidListWithInfo("请求方式有误！请使用GET请求数据")
+        return JsonResponse(retdata)
+
+    account = Account.objects.get(user=request.user)
+    student = Student.objects.get(id=account)
+    courseSC = Score.objects.filter(student=student)
+
+    resultList = []
+
+    if courseSC:
+        for item in courseSC:
+            if item.course.teacher is None:
+                teacherstr = "待定"
+            else:
+                teacherstr = item.opencourse.course.teacher.id.name
+
+            data = {
+                "courseId": item.opencourse.course.code,
+                "courseName": item.opencourse.course.name,
+                "courseCategory": item.opencourse.course.type,
+                "mark": item.mark,
+                "credit": item.opencourse.course.credit,
+                "courseTeacher": teacherstr,
+                "evaluated": item.eval,
+            }
+            resultList.append(data)
+
+    retdata = {
+        'resultList': resultList,
+    }
+    return JsonResponse(retdata)
+
+
+# 进行评价时信息交流
+@login_required
+def evaluate_course(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    course_eval_form = EvaluateCourseForm(data=request.POST)
+
+    if course_eval_form.is_valid():
+        data = course_eval_form.cleaned_data
+        cid = data['courseId']
+        mark = data['mark']
+
+        account = Account.objects.get(user=request.user)
+        student = Student.objects.get(id=account)
+        mysc = Score.objects.get(student=student, course__code=cid)
+
+        if not mysc:
+            retdata = createFalseJsonWithInfo("请核对学生与课程信息后重新尝试！")
+            return JsonResponse(retdata)
+
+        mysc.mark = mark
+        retdata = {
+            'result': True,
+            'info': '评价成功！'
+        }
+        return JsonResponse(retdata)
+
+    else:
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+
+##### 教师操作 #####
+# 得到对应教师所开课程信息
+@login_required
+def get_course(request):
+    account = Account.objects.get(user=request.user)
+    teacher = Teacher.objects.get(id=account)
+    mycourseOP = OpenCourse.objects.filter(teacher=teacher)
+
+    courseInfo = []
+
+    if mycourseOP:
+        for openc in mycourseOP:
+            data = {
+                "courseId": openc.course.code,
+                "courseName": openc.course.name,
+            }
+            # for x in data.values():
+            # print(x)
+            courseInfo.append(data)
+
+    retdata = {
+        'courseInfo': courseInfo,
+    }
+    return JsonResponse(retdata)
+
+
+# 查看某课程学生信息
+@login_required
+def get_course_stuinfo(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    courseid_form = CourseIdForm(data=request.POST)
+
+    if not courseid_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = courseid_form.cleaned_data
+    cid = data['courseId']
+    mySC = Score.objects, filter(opencourse__course__code=cid)
+
+    if not mySC:
+        retdata = createFalseJsonWithInfo("该课程当前无学生选课")
+        return JsonResponse(retdata)
+
+    studentInfo = []
+
+    for sc in mySC:
+        data = {
+            'studentId': sc.student.id.code,
+            'studentName': sc.student.id.name,
+            'grade': sc.grade,
+            'college': str(sc.student.student_dept),
+            'email': sc.student.id.user.email,
+        }
+        studentInfo.append(data)
+
+    retdata = {
+        "studentInfo": studentInfo,
+    }
+    return JsonResponse(retdata)
+
+
+# 导入成绩
+@login_required
+def import_grade_file(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    courseid_form = CourseIdForm(data=request.POST)
+
+    if not courseid_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = courseid_form.cleaned_data
+    # cid = data['courseId']
+    # mySC = Score.objects, filter(opencourse__course__code=cid)
+
+    retdata = {
+        'result': True,
+        'info': "成绩导入成功！"
+    }
     return JsonResponse(retdata)
 
 
@@ -699,3 +944,12 @@ def convertWeeknumToEng(num):
         7: 'Sunday',
     }
     return dict.get(num)
+
+
+def createVoidListWithInfo(str):
+    print("请求方式错误！返回空数据")
+    retdata = {
+        'resultList': [],
+        'info': str
+    }
+    return retdata
