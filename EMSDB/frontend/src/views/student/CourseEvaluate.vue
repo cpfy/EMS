@@ -96,7 +96,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: '/getEvaInfo/',
+      url: 'http://localhost:8000/site/eva/getEvaInfo/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
@@ -297,7 +297,7 @@ export default {
         const self = this;
         self.axios({
           method: 'post',
-          url: '/evaluate/',
+          url: 'http://localhost:8000/site/eva/evaluateCourse',
           data: qs.stringify({
             'courseId': row.courseId,
             'mark': row.mark,

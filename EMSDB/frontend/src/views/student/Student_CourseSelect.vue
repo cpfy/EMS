@@ -264,7 +264,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: '/selectCourse/',
+        url: 'http://localhost:8000/site/course/selectCourse',
         data: qs.stringify({
           'courseId': row.courseId,
         }),
@@ -272,7 +272,7 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
-        if (res.data.result === 'success') {
+        if (res.data.result === true) {
           this.courseInfos[index+(this.newPage-1)*9].selected = true;
           this.$message({
             type: 'success',
@@ -281,7 +281,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.data.result,
+            message: res.data.info,
           })
         }
 

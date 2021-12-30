@@ -148,7 +148,16 @@ export default {
               var obj1 = JSON.parse(res.data);
               //TODO: yes or no
               if (obj1.result===true) {
-                alert("修改密码成功");
+
+                this.$message({
+                  type: 'success',
+                  message: res.data.info,
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.data.info,
+                })
               }
             })
 

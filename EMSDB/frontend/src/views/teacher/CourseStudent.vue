@@ -57,7 +57,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'getCourse',
+      url: 'http://localhost:8000/site/t/getCourse/',
       data: qs.stringify({
       }),
       headers: {
@@ -234,7 +234,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: 'getStudentInfo',
+        url: 'http://localhost:8000/site/t/getStudentInfo/',
         data: {
           'courseId': this.id,
         },

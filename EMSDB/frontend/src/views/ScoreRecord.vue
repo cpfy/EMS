@@ -31,7 +31,7 @@
 
             <el-upload
                 class="upload-demo"
-                action="http://localhost:8000/site/login/"
+                action="http://localhost:8000/site/t/getCourseOfScore/"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :on-success="handleSuccess"
@@ -79,7 +79,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: '/getCourseOfScore/',
+      url: 'http://localhost:8000/site/t/importGrade/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')

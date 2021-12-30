@@ -90,7 +90,7 @@ export default {
           const self = this;
           self.axios({
             method: 'post',
-            url: '/notice_Send/',
+            url: 'http://localhost:8000/site/notice_Send/',
             //TODO:
             data: qs.stringify({
               'object': this.ruleForm.object,

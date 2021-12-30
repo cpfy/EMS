@@ -92,6 +92,8 @@
 
 <script>
 
+import qs from "qs";
+
 export default {
   name: "stu",
   props: {
@@ -106,6 +108,11 @@ export default {
     }
   },
   methods: {
+    getCookie(name) {
+      var value = ';' + document.cookie;
+      var parts = value.split('; ' + name + '=');
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    },
     handleSelect(index, indexPath) {
       this.$store.state.userType = '学生'
       if (index === '7-3') {
@@ -142,6 +149,16 @@ export default {
       }
     },
     confirmLogout() {
+      const self = this;
+      self.axios({
+        method: 'post',
+        url: 'http://localhost:8000/site/logout/',
+        data: qs.stringify({        }),
+        headers: {
+          'X-CSRFToken': this.getCookie('csrftoken')
+        },
+      })
+
       this.$router.push('/')
       this.dialogVisible = false
     },
