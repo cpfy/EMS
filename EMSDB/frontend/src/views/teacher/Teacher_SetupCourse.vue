@@ -143,7 +143,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: '/getCourseInfo/',
+      url: 'http://localhost:8000/site/t/getCourseD/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
@@ -369,7 +369,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: '/changeCourseInfo/',
+        url: 'http://localhost:8000/site/t/changeCourseInfo/',
         data: qs.stringify({
           'name': obj.name,
           'college': obj.college,
@@ -421,7 +421,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: '/addCourse/',
+        url: 'http://localhost:8000/site/t/addCourse/',
         data: qs.stringify({
           'name': obj.name,
           'college': obj.college,
