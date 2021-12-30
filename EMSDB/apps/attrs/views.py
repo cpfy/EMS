@@ -11,6 +11,9 @@ from .forms import *
 from .models import Student, Class, Teacher, Admin, Department, Course, Account, CourseTime, Score, OpenCourse, Score, \
     Place, Exam
 
+import random
+import string
+
 
 # Create your views here.
 
@@ -861,10 +864,16 @@ def get_course_stuinfo(request):
     studentInfo = []
 
     for sc in mySC:
+        if sc.grade == 0:
+            gradestr = "待录入"
+        else:
+            gradestr = sc.grade
+
         data = {
             'studentId': sc.student.id.code,
             'studentName': sc.student.id.name,
-            'grade': sc.grade,
+            'class': str(sc.student.student_class.id),
+            'grade': gradestr,
             'college': str(sc.student.student_dept),
             'email': sc.student.id.user.email,
         }
@@ -872,6 +881,39 @@ def get_course_stuinfo(request):
 
     retdata = {
         "studentInfo": studentInfo,
+    }
+    return JsonResponse(retdata)
+
+
+# 获取成绩
+@login_required
+def get_course_of_score(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    courseid_form = CourseIdForm(data=request.POST)
+
+    if not courseid_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = courseid_form.cleaned_data
+    cid = data['courseId']
+    myOP = OpenCourse.objects.filter(course__code=cid)
+
+    scoreInfos = []
+
+    for opc in myOP:
+        data = {
+            'courseId': opc.course.code,
+            'courseName': opc.course,
+            'recorded': opc.recorded,
+        }
+        scoreInfos.append(data)
+
+    retdata = {
+        "scoreInfos": scoreInfos,
     }
     return JsonResponse(retdata)
 
@@ -896,6 +938,154 @@ def import_grade_file(request):
     retdata = {
         'result': True,
         'info': "成绩导入成功！"
+    }
+    return JsonResponse(retdata)
+
+
+# 得到对应教师所开课程detail信息
+@login_required
+def get_course_detail(request):
+    account = Account.objects.get(user=request.user)
+    teacher = Teacher.objects.get(id=account)
+    mycourseOP = OpenCourse.objects.filter(teacher=teacher)
+
+    resultList = []
+
+    if mycourseOP:
+        for openc in mycourseOP:
+            data = {
+                'id': openc.course.code,
+                'name': openc.course.name,
+                'capacity': openc.course.capacity,
+                'college': str(openc.course.dept),
+                'credit': openc.course.credit,
+                'category': openc.course.type,
+            }
+            # for x in data.values():
+            # print(x)
+            resultList.append(data)
+
+    retdata = {
+        'resultList': resultList,
+    }
+
+    return JsonResponse(retdata)
+
+
+# 修改课程信息
+@login_required
+def change_course_info(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    create_course_form = ChangeCourseForm(data=request.POST)
+
+    if not create_course_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = create_course_form.cleaned_data
+    cid = data['id']
+    name = data['name']
+    college = data['college']
+    capacity = data['capacity']
+    category = data[' category']
+    credit = data['credit']
+
+    destc = Course.objects.get(courseId=cid)
+
+    if not destc:
+        retdata = createFalseJsonWithInfo("该课程不存在")
+        return JsonResponse(retdata)
+
+    destdept = Department.objects.get(dept_name=college)
+
+    if not destdept:
+        retdata = createFalseJsonWithInfo("学院不存在")
+        return JsonResponse(retdata)
+
+    destc.name = name
+    destc.dept = destdept
+    destc.capacity = capacity
+    destc.type = getCategoryType(category)
+    destc.credit = credit
+
+    retdata = {
+        'result': True,
+        'info': "课程信息修改成功！"
+    }
+    return JsonResponse(retdata)
+
+
+# 添加课程信息
+@login_required
+def add_course(request):
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    create_course_form = ChangeCourseForm(data=request.POST)
+
+    if not create_course_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = create_course_form.cleaned_data
+    name = data['name']
+    college = data['college']
+    capacity = data['capacity']
+    category = data['category']
+    credit = data['credit']
+
+    # 随机：MyModel.objects.order_by('?').first()
+
+    destdept = Department.objects.get(dept_name=college)
+
+    if not destdept:
+        retdata = createFalseJsonWithInfo("学院不存在")
+        return JsonResponse(retdata)
+
+    # Random+不重复 课程号
+    randomcodestr = generateRandCourseCode()
+    while (Course.objects.filter(courseId=randomcodestr)):
+        randomcodestr = generateRandCourseCode()
+
+    newc = Course.objects.create(
+        code=randomcodestr,
+        name=name,
+        # pred =
+        type=getCategoryType(category),
+        credit=credit,
+        time=CourseTime.objects.order_by('?').first(),
+        place=Place.objects.order_by('?').first(),
+        # semi =
+        dept=destdept,
+        capacity=capacity,
+        # count = 0,
+    )
+
+    account = Account.objects.get(user=request.user)
+    teacher = Teacher.objects.get(id=account)
+    OpenCourse.objects.create(
+        course=newc,
+        teacher=teacher
+    )
+
+    retdata = {
+        'result': True,
+        'info': '添加课程成功',
+        'id': randomcodestr,
+    }
+    return JsonResponse(retdata)
+
+
+##### 通知类 #####
+
+def send_notice(request):
+    retdata = {
+        'result': True,
+        'info': "消息发送成功！"
     }
     return JsonResponse(retdata)
 
@@ -953,3 +1143,23 @@ def createVoidListWithInfo(str):
         'info': str
     }
     return retdata
+
+
+# 生成随机课程码
+def generateRandCourseCode():
+    # printing lowercase
+    letters = string.ascii_lowercase
+    digits = string.digits
+    str1 = ''.join(random.choice(letters) for i in range(1))
+    str2 = str1.join(random.choice(digits) for i in range(2))
+    return str2
+
+
+# category对应码
+def getCategoryType(str):
+    dict = {
+        '必修': 'a',
+        '选修': 'b',
+        '限修': 'c',
+        '任修': 'd',
+    }

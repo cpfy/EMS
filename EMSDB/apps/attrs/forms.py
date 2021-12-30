@@ -78,3 +78,23 @@ class DateForm(forms.Form):
 class EvaluateCourseForm(forms.Form):
     courseId = forms.CharField()
     mark = forms.IntegerField()
+
+
+# 课程信息更改
+class ChangeCourseInfoForm(forms.Form):
+    id = forms.CharField()
+    name = forms.CharField()
+    college = forms.IntegerField()
+    capacity = forms.IntegerField()  # 课程容量
+    category = forms.CharField()  # 课程类别
+    credit = forms.IntegerField()  # 课程学分
+
+
+# 课程信息创建
+class ChangeCourseForm(forms.Form):
+    # courseId = forms.CharField()
+    name = forms.CharField()
+    college = forms.IntegerField()
+    capacity = forms.IntegerField()  # 课程容量
+    category = forms.CharField()  # 课程类别
+    credit = forms.IntegerField()  # 课程学分

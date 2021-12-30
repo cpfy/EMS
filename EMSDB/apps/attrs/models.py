@@ -262,6 +262,8 @@ class OpenCourse(models.Model):  # 开课表
     # semester = models.CharField(max_length=20, blank=True)  # 学期
     # course_time = models.CharField(max_length=20)  # 上课时间
 
+    record = models.BooleanField(verbose_name="录入状态", default=False)
+
     def __str__(self):
         return self.course.__str__() + "(" + self.teacher.__str__() + ")"
 
@@ -289,7 +291,6 @@ class Score(models.Model):  # 选课表
     score = models.FloatField(verbose_name="最终成绩", default=0)
 
     mark = models.FloatField(verbose_name="评教分数", default=0)
-
     eval = models.BooleanField(verbose_name="是否评价", default=False)
 
     def __str__(self):

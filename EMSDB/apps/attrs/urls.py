@@ -46,5 +46,8 @@ urlpatterns = [
     path('t/getStudentInfo/', views.get_course_stuinfo, name='getStudentInfo'),
     path('t/getCourseOfScore/', views.get_course_of_score, name='getCourseOfScore'),
     path('t/importGrade/', views.import_grade_file, name='importGrade'),
+    path('t/getCourseDetail/', views.get_course_detail, name='getCourseDetail'),
+    path('t/changeCourseInfo/', views.change_course_info, name='changeCourseInfo'),
+    path('t/addCourse/', views.add_course, name='addCourse'),
 
 ]
