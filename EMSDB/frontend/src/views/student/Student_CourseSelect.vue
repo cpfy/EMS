@@ -48,6 +48,13 @@
     </el-pagination>
   </div>
 
+  <div style="position: absolute;left: 6vw;top: 22.8vh;z-index: 56"><p style="color: dimgrey;">隐藏冲突课程</p></div>
+
+  <div style="position: absolute;left: 12vw;top: 24.5vh;z-index: 56">
+
+    <el-switch @change="renew" active-text="Y" inactive-text="N" inline-prompt v-model="filter" active-color="#13ce66"></el-switch>
+  </div>
+
 
 </template>
 
@@ -65,7 +72,7 @@ export default {
     self.axios({
       method: 'get',
       url: 'http://localhost:8000/site/course/getCourse/',
-      data: qs.stringify({}),
+      data: qs.stringify({'filter' : this.filter}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
@@ -88,6 +95,7 @@ export default {
   },
   data() {
     return {
+      filter: false,
       newPage: 1,
       index1: 0,
       index2: 9,
@@ -242,6 +250,35 @@ export default {
     }
   },
   methods: {
+    renew() {
+      const self = this;
+      self.axios({
+        method: 'get',
+        url: 'http://localhost:8000/site/course/getCourse/',
+        data: qs.stringify({
+          'filter' : this.filter
+        }),
+        headers: {
+          'X-CSRFToken': this.getCookie('csrftoken')
+        },
+      }).then(res => {
+        this.courseInfos.splice(0,this.courseInfos.length - 1)
+        for (let i = 0; i < res.data.resultList.length; i++) {
+          let obj={};
+          obj.num = i;
+          obj.courseId = res.data.resultList[i].courseId;
+          obj.courseName = res.data.resultList[i].courseName;
+          obj.courseCategory = res.data.resultList[i].courseCategory;
+          obj.courseCollege = res.data.resultList[i].courseCollege;
+          obj.courseTeacher = res.data.resultList[i].courseTeacher;
+          obj.credit = res.data.resultList[i].credit;
+          obj.time = res.data.resultList[i].time;
+          obj.capacity = res.data.resultList[i].capacity;
+          obj.selected = res.data.resultList[i].selected;
+          this.courseInfos.splice(this.courseInfos.length - 1, 0, obj);
+        }
+      })
+    },
     getCookie(name) {
       var value = ';' + document.cookie;
       var parts = value.split('; ' + name + '=');
