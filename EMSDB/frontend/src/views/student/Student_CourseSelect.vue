@@ -3,7 +3,7 @@
   <div style="height: 111px">
     <Student_Nav active-index2="2-1"></Student_Nav>
   </div>
-  
+
   <div style="position: absolute;">
     <el-table
         :data="courseInfos.slice(index1,index2)"
@@ -52,7 +52,8 @@
 
   <div style="position: absolute;left: 12vw;top: 24.5vh;z-index: 56">
 
-    <el-switch @change="renew" active-text="Y" inactive-text="N" inline-prompt v-model="filter" active-color="#13ce66"></el-switch>
+    <el-switch @change="renew" active-text="Y" inactive-text="N" inline-prompt v-model="filter"
+               active-color="#13ce66"></el-switch>
   </div>
 
 
@@ -61,28 +62,29 @@
 <script>
 import Student_Nav from "../../components/Student_Nav";
 import qs from "qs";
+
 export default {
   name: "Student_CourseSelect",
   components: {
     Student_Nav
   },
   mounted() {
-    console.log("courseSelect "+document.cookie)
+    console.log("courseSelect " + document.cookie)
     const self = this;
     self.axios({
       method: 'get',
       url: 'http://localhost:8000/site/course/getCourse/',
-      data: qs.stringify({'filter' : this.filter}),
+      data: qs.stringify({'filter': this.filter}),
 
       withCredentials: true,
       headers: {
-      //'Content-Type': 'application/json',
+        //'Content-Type': 'application/json',
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-
+      this.courseInfos.splice(0, this.courseInfos.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
-        let obj={};
+        let obj = {};
         obj.num = i;
         obj.courseId = res.data.resultList[i].courseId;
         obj.courseName = res.data.resultList[i].courseName;
@@ -260,15 +262,15 @@ export default {
         method: 'get',
         url: 'http://localhost:8000/site/course/getCourse/',
         data: qs.stringify({
-          'filter' : this.filter
+          'filter': this.filter
         }),
         headers: {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
-        this.courseInfos.splice(0,this.courseInfos.length - 1)
+        this.courseInfos.splice(0, this.courseInfos.length)
         for (let i = 0; i < res.data.resultList.length; i++) {
-          let obj={};
+          let obj = {};
           obj.num = i;
           obj.courseId = res.data.resultList[i].courseId;
           obj.courseName = res.data.resultList[i].courseName;
@@ -294,14 +296,14 @@ export default {
       console.log(this.index1);
       console.log(this.index2);
     },
-    tableRowClassName({ row, rowIndex }) {
-       if (row.selected === true) {
+    tableRowClassName({row, rowIndex}) {
+      if (row.selected === true) {
         return 'success-row'
       }
       return ''
     },
     select(index, row) {
-
+      alert(index)
       const self = this;
       self.axios({
         method: 'post',
@@ -313,8 +315,9 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
+        alert(res.data.result)
         if (res.data.result === true) {
-          this.courseInfos[index+(this.newPage-1)*9].selected = true;
+          this.courseInfos[index + (this.newPage - 1) * 9].selected = true;
           this.$message({
             type: 'success',
             message: '选课成功'

@@ -53,6 +53,7 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+      this.examSchedule.splice(0, this.examSchedule.length);
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
         obj.num = i;
@@ -63,7 +64,7 @@ export default {
         obj.courseTeacher = res.data.resultList[i].courseTeacher;
         obj.time = res.data.resultList[i].time;
         obj.location = res.data.resultList[i].location;
-        this.examSchedule.splice(this.examSchedule.length - 1, 0, obj);
+        this.examSchedule.splice(this.examSchedule.length, 0, obj);
       }
     })
   },

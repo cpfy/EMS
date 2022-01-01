@@ -25,7 +25,20 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-      this.scheduleData = res.data.scheduleRecommend;
+      this.scheduleData.splice(0, this.scheduleData.length);
+      for (let i = 0; i < res.data.schedule.length; i++) {
+        let obj = {};
+        obj.num = i;
+        obj.time = res.data.scheduleRecommend[i].time;
+        obj.Monday = res.data.scheduleRecommend[i].Monday;
+        obj.Tuesday = res.data.scheduleRecommend[i].Tuesday;
+        obj.Wednesday = res.data.scheduleRecommend[i].Wednesday;
+        obj.Thursday = res.data.scheduleRecommend[i].Thursday;
+        obj.Friday = res.data.scheduleRecommend[i].Friday;
+        obj.Saturday = res.data.scheduleRecommend[i].Saturday;
+        obj.Sunday = res.data.scheduleRecommend[i].Sunday;
+        this.scheduleData.splice(this.scheduleData.length, 0, obj);
+      }
     })
   },
   name: "Student_ScheduleRecommend",

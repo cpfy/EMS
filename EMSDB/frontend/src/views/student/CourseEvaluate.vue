@@ -104,6 +104,7 @@ export default {
     }).then(res => {
       this.courseInfos.splice(0,this.courseInfo.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
+        this.courseInfos.splice(0,this.courseInfos.length , obj);
         let obj = {};
         obj.num = i;
         obj.courseId = res.data.resultList[i].courseId;
@@ -114,7 +115,7 @@ export default {
         obj.credit = res.data.resultList[i].credit;
         obj.courseTeacher = res.data.resultList[i].courseTeacher;
         obj.evaluated = res.data.resultList[i].evaluated;
-        this.courseInfos.splice(this.courseInfos.length - 1, 0, obj);
+        this.courseInfos.splice(this.courseInfos.length, 0, obj);
       }
     })
   },
