@@ -22,120 +22,113 @@ import string
 def user_login(request):
     # print(request.POST)
 
-    if request.method == 'POST':
-        user_login_form = UserLoginForm(data=request.POST)
-        # print("POST=",request.POST)
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
 
-        if user_login_form.is_valid():
-            # .cleaned_data 清洗出合法数据
-            data = user_login_form.cleaned_data
-            # 检验账号、密码是否正确匹配数据库中的某个用户
-            # 如果均匹配则返回这个 user 对象
+    user_login_form = UserLoginForm(data=request.POST)
 
-            myusername = data['userName']
-            mypassword = data['password']
-            myusertype = data['userType']
+    if not user_login_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
 
-            print("get username = " + myusername)
-            print("get password = " + mypassword)
-            # print("userType = " + data['userType'])
+    # .cleaned_data 清洗出合法数据
+    data = user_login_form.cleaned_data
+    # 检验账号、密码是否正确匹配数据库中的某个用户
 
-            user = authenticate(username=myusername, password=mypassword)
-            if user:
-                account = Account.objects.get(user=user)
-                if (checkUserTypeIsFit(account.status, myusertype)):
-                    # 将用户数据保存在 session 中，即实现了登录动作
-                    login(request, user)
-                    print("登录成功！当前用户：", request.user.username)
-                    retdata = {
-                        'result': True,
-                        'id': myusername,
-                        'info': "登录成功！"
-                    }
-                    return JsonResponse(retdata)
+    myusername = data['userName']
+    mypassword = data['password']
+    myusertype = data['userType']
 
-                else:
-                    retdata = createFalseJsonWithIdAndInfo("账号类型有误。请重新选择~")
-                    return JsonResponse(retdata)
+    print("get username = " + myusername)
+    print("get password = " + mypassword)
+    # print("userType = " + data['userType'])
 
-            else:
-                retdata = createFalseJsonWithIdAndInfo("账号或密码输入有误。请重新输入~")
-                return JsonResponse(retdata)
+    user = authenticate(username=myusername, password=mypassword)
 
-        else:
-            retdata = createFalseJsonWithIdAndInfo("json格式不合法")
-            return JsonResponse(retdata)
+    if not user:
+        retdata = createFalseJsonWithIdAndInfo("账号或密码输入有误。请重新输入~")
+        return JsonResponse(retdata)
+
+    account = Account.objects.get(user=user)
+    if (checkUserTypeIsFit(account.status, myusertype)):
+        # 将用户数据保存在 session 中，即实现了登录动作
+        login(request, user)
+        print("登录成功！当前用户：", request.user.username)
+        retdata = {
+            'result': True,
+            'id': myusername,
+            'info': "登录成功！"
+        }
+        return JsonResponse(retdata)
 
     else:
-        retdata = createFalseJsonWithIdAndInfo("请使用POST请求数据")
+        retdata = createFalseJsonWithIdAndInfo("账号类型有误。请重新选择~")
         return JsonResponse(retdata)
 
 
 # 用户退出,实际vue负责管理
 def user_logout(request):
     logout(request)
-    return redirect("article:article_list")
+    return JsonResponse({})
 
 
 # 用户注册
 def user_register(request):
-    if request.method == 'POST':
-        print(request.POST)
-
-        user_register_form = UserRegisterForm(data=request.POST)
-        if user_register_form.is_valid():
-
-            data = user_register_form.cleaned_data
-            myusername = data['userName']
-            mypassword = data['password']
-            mystuid = data['studentId']
-            myrealname = data['realName']
-
-            inuser = User.objects.filter(username=myusername)
-            if inuser:
-                retdata = createFalseJsonWithInfo("该用户名已被注册！")
-                return JsonResponse(retdata)
-
-            else:
-                alreadyreg = Account.objects.filter(code=mystuid)
-                if alreadyreg:
-                    retdata = createFalseJsonWithInfo("学生学号已注册！请直接登录")
-                    return JsonResponse(retdata)
-
-                else:
-                    # create the model to store in db
-                    reg_user = User.objects.create_user(myusername, mystuid + "@buaa.edu.cn", mypassword)
-
-                    """reg_user = User.objects.create(
-                        username=myusername,
-                        password=mypassword,
-                        email=mystuid + "@buaa.edu.cn"
-                    )"""
-
-                    reg_acc = Account.objects.create(
-                        user=reg_user,
-                        status='a',
-                        code=mystuid,
-                        name=myrealname
-                    )
-
-                    Student.objects.create(
-                        id=reg_acc
-                    )
-
-                    retdata = {
-                        'result': True,
-                        'info': "注册成功！"
-                    }
-
-                    return JsonResponse(retdata)
-        else:
-            retdata = createFalseJsonWithInfo("json格式有误")
-            return JsonResponse(retdata)
-
-    else:
+    if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
         return JsonResponse(retdata)
+
+    user_register_form = UserRegisterForm(data=request.POST)
+    if not user_register_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = user_register_form.cleaned_data
+    myusername = data['userName']
+    mypassword = data['password']
+    mystuid = data['studentId']
+    myrealname = data['realName']
+
+    inuser = User.objects.filter(username=myusername)
+    if inuser:
+        retdata = createFalseJsonWithInfo("该用户名已被注册！")
+        return JsonResponse(retdata)
+
+    alreadyreg = Account.objects.filter(code=mystuid)
+    if alreadyreg:
+        retdata = createFalseJsonWithInfo("学生学号已注册！请直接登录")
+        return JsonResponse(retdata)
+
+    # create the model to store in db
+    reg_user = User.objects.create_user(
+        myusername,
+        mystuid + "@buaa.edu.cn",
+        mypassword
+    )
+
+    newacc = Account.objects.create(
+        user=reg_user,
+        status='a',
+        code=mystuid,
+        name=myrealname
+    )
+
+    Student.objects.create(
+        id=newacc,
+        dept=Department.objects.order_by('?').first(),
+        student_class=Class.objects.order_by('?').first(),
+        # inyear=,
+        # age=,
+        home=getRandomProvince(),
+        # credit
+    )
+
+    retdata = {
+        'result': True,
+        'info': "注册成功！"
+    }
+    return JsonResponse(retdata)
 
 
 # 获取账户用户状态
@@ -279,7 +272,7 @@ def get_user_info(request):
 
     if (type == "a"):
         student_obj = Student.objects.get(id=account)
-        dept_obj = Department.objects.get(dept_id=student_obj.student_dept)
+        dept_obj = Department.objects.get(dept_id=student_obj.dept)
 
         if (current_user.email is None):
             myemail = account.code + "@buaa.edu.cn"
@@ -290,8 +283,8 @@ def get_user_info(request):
             'realName': account.name,
             'grade': student_obj.student_year,
             'classNum': student_obj.student_class,
-            'college': student_obj.student_dept,
-            'creditGot': student_obj.student_credit,
+            'college': student_obj.dept,
+            'creditGot': student_obj.credit,
             'creditNeed': dept_obj.dept_credit,
             'email': myemail
         }
@@ -369,8 +362,8 @@ def get_course_list(request):
             "capacity": capacitystr,
             "selected": selected
         }
-        # for x in data.values():
-        # print(x)
+        for x in data.values():
+            print(x)
         resultList.append(data)
 
     retdata = {
@@ -874,7 +867,7 @@ def get_course_stuinfo(request):
             'studentName': sc.student.id.name,
             'class': str(sc.student.student_class.id),
             'grade': gradestr,
-            'college': str(sc.student.student_dept),
+            'college': str(sc.student.dept),
             'email': sc.student.id.user.email,
         }
         studentInfo.append(data)
@@ -1010,6 +1003,7 @@ def change_course_info(request):
     destc.capacity = capacity
     destc.type = getCategoryType(category)
     destc.credit = credit
+    destc.save()
 
     retdata = {
         'result': True,
@@ -1163,3 +1157,24 @@ def getCategoryType(str):
         '限修': 'c',
         '任修': 'd',
     }
+    return dict.get(str)
+
+
+# 随机省份（学生create时）
+def getRandomProvince():
+    province = [
+        '司隶',
+        '徐州',
+        '青州',
+        '豫州',
+        '冀州',
+        '并州',
+        '幽州',
+        '兖州',
+        '凉州',
+        '益州',
+        '荆州',
+        '扬州',
+        '交州',
+    ]
+    return random.choice(province)

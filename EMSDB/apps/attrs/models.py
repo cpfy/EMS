@@ -29,7 +29,7 @@ class Student(models.Model):
     id = models.OneToOneField(Account, on_delete=models.CASCADE, primary_key=True)
 
     # 与学院多对一
-    student_dept = models.ForeignKey(
+    dept = models.ForeignKey(
         "Department",
         on_delete=models.CASCADE,
         verbose_name="学院号",
@@ -45,18 +45,18 @@ class Student(models.Model):
         null=True,
         blank=True
     )
-    student_inyear = models.CharField(max_length=5, null=True, blank=True)
-    student_age = models.IntegerField(default=0)
-    student_home = models.CharField(max_length=15, null=True, blank=True)
+    inyear = models.CharField(verbose_name="入学年份", max_length=5, default=2021)
+    age = models.IntegerField(verbose_name="年龄", default=18)
+    home = models.CharField(verbose_name="家乡", max_length=15, null=True, blank=True)
 
     # studentAddress = models.CharField(max_length=128, verbose_name="宿舍地址", null=True)
-    student_credit = models.IntegerField(default=0, verbose_name="已修学分")
+    credit = models.IntegerField(default=0, verbose_name="已修学分")
 
-    courses = models.ManyToManyField(
+    """courses = models.ManyToManyField(
         "Course",
         verbose_name="已选课程",
         blank=True,
-    )
+    )"""
 
     def __str__(self):
         return self.id.__str__()
@@ -307,7 +307,6 @@ class Exam(models.Model):
         "Course",
         on_delete=models.CASCADE,
         verbose_name="考试课程",
-        primary_key=True
     )
 
     # 工号
