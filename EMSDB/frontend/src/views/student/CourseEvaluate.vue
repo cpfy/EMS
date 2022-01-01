@@ -297,7 +297,7 @@ export default {
         const self = this;
         self.axios({
           method: 'post',
-          url: 'http://localhost:8000/site/eva/evaluateCourse',
+          url: 'http://localhost:8000/site/eva/evaluateCourse/',
           data: qs.stringify({
             'courseId': row.courseId,
             'mark': row.mark,

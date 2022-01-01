@@ -60,7 +60,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'http://localhost:8000/site/course/getCourseSelected',
+      url: 'http://localhost:8000/site/course/getCourseSelected/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
@@ -261,7 +261,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: 'http://localhost:8000/site/course/unselectCourse',
+        url: 'http://localhost:8000/site/course/unselectCourse/',
         data: qs.stringify({
           'courseId': row.courseId,
         }),
