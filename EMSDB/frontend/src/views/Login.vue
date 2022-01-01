@@ -65,7 +65,12 @@
 import router from "../router";
 import axios from "axios";
 import qs from "qs";
-
+function setCookie(name,value) {
+    var days = 14;
+    var exp = new Date();
+    exp.setTime(exp.getTime() + days*24*60*60*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString()+"; path=/";
+}
 export default {
   data() {
     return {
@@ -146,6 +151,7 @@ export default {
 
             console.log("登陆返回信息：" + res)
             if (res.data.result === true) {
+              setCookie("sessionid", res.data.session_id)
               this.$store.state.id = res.data.id;
               this.$store.state.userType = this.userType;
               this.$store.state.userName = this.userName;
