@@ -15,10 +15,10 @@
     <div v-if="isLogin===1" class="login" style="position:absolute; top:25%;width: 500px;margin-left: 9% ">
       <div style="margin-left: 20%"><h1 style="font-family: font1,serif;">用户登录</h1></div>
       <input type="text"
-             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,0.4);"
              class="class_user qxs-icon" placeholder="用户名" v-model="userName">
       <input type="password"
-             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,0.4);"
              class="class_password qxs-icon" placeholder="密码" v-model="password">
       <br/>
       <div>
@@ -37,16 +37,16 @@
         <h1 style="font-family: font1,serif">用户注册</h1>
       </div>
       <input type="text"
-             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,0.4);"
              class="class_id qxs-icon" placeholder="学号" v-model="reg_scNum">
       <input type="text"
-             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,0.4);"
              class="class_user qxs-icon" placeholder="用户名" v-model="reg_userName">
       <input type="password"
-             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,0.4);"
              class="class_password0 qxs-icon" placeholder="密码" v-model="reg_password">
       <input type="password"
-             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,40%);"
+             style="box-shadow: 0 0 3px 3px lightblue inset;zoom: 150%;background-color: rgba(158,207,240,0.4);"
              class="class_password qxs-icon" placeholder="确认密码" v-model="reg_password0">
       <p>注：用户名为自己选定，方便以后登录</p>
       <el-button class="login_btn" @click.native="backLogin" type="primary" round :loading="isBtnLoading">已有账号？立即登录

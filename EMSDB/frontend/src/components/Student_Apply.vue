@@ -64,6 +64,7 @@ import Student_Nav from "../components/Student_Nav";
 import qs from "qs";
 
 export default {
+
   name: "exemptionApply",
   components: {
     Student_Nav

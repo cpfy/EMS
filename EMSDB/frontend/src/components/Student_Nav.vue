@@ -95,6 +95,18 @@
 import qs from "qs";
 
 export default {
+  mounted() {
+    const self = this;
+    self.axios({
+      method: 'post',
+      url: 'http://localhost:8000/site/status/',
+      data: qs.stringify({
+      }),
+      headers: {
+        'X-CSRFToken': this.getCookie('csrftoken')
+      },
+    })
+  },
   name: "stu",
   props: {
     activeIndex2: {
