@@ -61,18 +61,13 @@
 <script>
 import Student_Nav from "../../components/Student_Nav";
 import qs from "qs";
-function setCookie(name,value) {
-    var days = 14;
-    var exp = new Date();
-    exp.setTime(exp.getTime() + days*24*60*60*1000);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString()+"; path=/";
-}
 export default {
   name: "Student_CourseSelect",
   components: {
     Student_Nav
   },
   mounted() {
+    console.log("courseSelect "+document.cookie)
     const self = this;
     self.axios({
       method: 'get',
@@ -82,7 +77,7 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-      setCookie("sessionid", res.data.session_id)
+
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj={};
         obj.num = i;
@@ -307,7 +302,7 @@ export default {
       const self = this;
       self.axios({
         method: 'post',
-        url: 'http://localhost:8000/site/course/selectCourse',
+        url: 'http://localhost:8000/site/course/selectCourse/',
         data: qs.stringify({
           'courseId': row.courseId,
         }),

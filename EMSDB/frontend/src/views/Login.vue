@@ -65,12 +65,7 @@
 import router from "../router";
 import axios from "axios";
 import qs from "qs";
-function setCookie(name,value) {
-    var days = 14;
-    var exp = new Date();
-    exp.setTime(exp.getTime() + days*24*60*60*1000);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString()+"; path=/";
-}
+
 export default {
   data() {
     return {
@@ -103,7 +98,7 @@ export default {
           method: 'post',
           url: 'http://localhost:8000/site/register/',
           //TODO: to revise url
-          data: qs.stringify( {
+          data: qs.stringify({
             'studentId': this.reg_scNum,
             'userName': this.reg_userName,
             'password': this.reg_password,
@@ -151,7 +146,7 @@ export default {
 
             console.log("登陆返回信息：" + res)
             if (res.data.result === true) {
-              setCookie("sessionid", res.data.session_id)
+
               this.$store.state.id = res.data.id;
               this.$store.state.userType = this.userType;
               this.$store.state.userName = this.userName;
@@ -172,6 +167,7 @@ export default {
       }
 
     },
+
     getCookie(name) {
       var value = '; ' + document.cookie;
       var parts = value.split('; ' + name + '=');

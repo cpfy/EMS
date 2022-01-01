@@ -18,7 +18,7 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'http://localhost:8000/site/info/Teacher_Schedule',
+      url: 'http://localhost:8000/site/info/Teacher_Schedule/',
       data: qs.stringify({
       }),
       headers: {
