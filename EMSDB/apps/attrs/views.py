@@ -68,14 +68,14 @@ def user_login(request):
 
         print("登录成功！当前用户：", request.user.username)
 
-        #session_id = request.session.session_key
-        #print("s id: ", session_id)
+        # session_id = request.session.session_key
+        # print("s id: ", session_id)
 
         retdata = {
             'result': True,
             'id': myusername,
             'info': "登录成功！",
-            #'session_id': session_id,
+            # 'session_id': session_id,
         }
 
         return JsonResponse(retdata)
@@ -177,7 +177,7 @@ def check_status(request):
 
 
 # 改密码
-@login_required
+# @login_required
 def change_pwd(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -210,7 +210,7 @@ def change_pwd(request):
 
 
 # 改username
-@login_required
+# @login_required
 def change_username(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -242,7 +242,7 @@ def change_username(request):
 
 
 # 改email
-@login_required
+# @login_required
 def change_email(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -274,7 +274,7 @@ def change_email(request):
 
 
 # 获取个人info
-@login_required
+# @login_required
 def get_user_info(request):
     current_user = request.user
     account = Account.objects.get(user=current_user)
@@ -337,15 +337,14 @@ def get_user_info(request):
 #####  课程相关操作  #####
 
 # 获取可选课程
-# @login_required
+# #@login_required
 def get_course_list(request):
-
-    user_id = settings.FAKEUSERID
-    print("userid=", user_id)
+    """user_id = settings.FAKEUSERID
+    print("userid=", user_id)"""
 
     resultList = []
 
-    user = User.objects.get(pk=user_id)
+    user = User.objects.get(pk=settings.FAKEUSERID)
     account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
 
@@ -396,7 +395,7 @@ def get_course_list(request):
 
 
 # select课程
-@login_required
+# @login_required
 def select_course(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -417,7 +416,8 @@ def select_course(request):
         return JsonResponse(retdata)
 
     openc = OpenCourse.objects.get(course=course)
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
 
     Score.objects.create(opencourse=openc, student=student)
@@ -431,9 +431,10 @@ def select_course(request):
 
 
 # 获取已选课程
-@login_required
+# @login_required
 def get_course_selected(request):
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
 
     selected_courses_list = Score.objects.filter(student=student)
@@ -469,7 +470,7 @@ def get_course_selected(request):
 
 
 # 退选课程
-@login_required
+# @login_required
 def unselect_course(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -490,7 +491,8 @@ def unselect_course(request):
         return JsonResponse(retdata)
 
     openc = OpenCourse.objects.get(course=course)
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
 
     sc = Score.objects.get(opencourse=openc, student=student)
@@ -511,13 +513,14 @@ def unselect_course(request):
 
 #####  信息查询相关操作  #####
 # 课表
-@login_required
+# @login_required
 def get_stu_schedule(request):
     if (request.method != "GET"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用GET请求数据")
         return JsonResponse(retdata)
 
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
     mycourseSC = Score.objects.filter(student=student)
     mycourse = mycourseSC.opencourse
@@ -574,7 +577,7 @@ def get_stu_schedule(request):
 
 
 # 推荐课表
-@login_required
+# @login_required
 def get_stu_schedule_recommend(request):
     retdata = {
         'result': True,
@@ -584,13 +587,14 @@ def get_stu_schedule_recommend(request):
 
 
 # 教师课表
-@login_required
+# @login_required
 def get_teacher_schedule(request):
     if (request.method != "GET"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用GET请求数据")
         return JsonResponse(retdata)
 
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     teacher = Teacher.objects.get(id=account)
     mycourseOP = OpenCourse.objects.filter(teacher=teacher)
 
@@ -646,7 +650,7 @@ def get_teacher_schedule(request):
 
 
 # 空教室
-@login_required
+# @login_required
 def get_empty_room(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -690,13 +694,14 @@ def get_empty_room(request):
 
 
 # 考表
-@login_required
+# @login_required
 def get_stu_exam(request):
     if (request.method != "GET"):
         retdata = createVoidListWithInfo("请求方式有误！请使用GET请求数据")
         return JsonResponse(retdata)
 
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
     mycourseSC = Score.objects.filter(student=student)
     mycourse = mycourseSC.opencourse.course
@@ -734,7 +739,7 @@ def get_stu_exam(request):
 #####  事务相关操作  #####
 
 # 学生事务申请
-@login_required
+# @login_required
 def exemption_apply(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -760,13 +765,14 @@ def exemption_apply(request):
 
 ##### 教学评价 #####
 # 进入页面需要信息
-@login_required
+# @login_required
 def get_evaluate_list(request):
     if (request.method != "GET"):
         retdata = createVoidListWithInfo("请求方式有误！请使用GET请求数据")
         return JsonResponse(retdata)
 
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
     courseSC = Score.objects.filter(student=student)
 
@@ -797,7 +803,7 @@ def get_evaluate_list(request):
 
 
 # 进行评价时信息交流
-@login_required
+# @login_required
 def evaluate_course(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -810,7 +816,8 @@ def evaluate_course(request):
         cid = data['courseId']
         mark = data['mark']
 
-        account = Account.objects.get(user=request.user)
+        user = User.objects.get(pk=settings.FAKEUSERID)
+        account = Account.objects.get(user=user)
         student = Student.objects.get(id=account)
         mysc = Score.objects.get(student=student, course__code=cid)
 
@@ -832,9 +839,10 @@ def evaluate_course(request):
 
 ##### 教师操作 #####
 # 得到对应教师所开课程信息
-@login_required
+# @login_required
 def get_course(request):
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     teacher = Teacher.objects.get(id=account)
     mycourseOP = OpenCourse.objects.filter(teacher=teacher)
 
@@ -857,7 +865,7 @@ def get_course(request):
 
 
 # 查看某课程学生信息
-@login_required
+# @login_required
 def get_course_stuinfo(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -902,7 +910,7 @@ def get_course_stuinfo(request):
 
 
 # 获取成绩
-@login_required
+# @login_required
 def get_course_of_score(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -935,7 +943,7 @@ def get_course_of_score(request):
 
 
 # 导入成绩
-@login_required
+# @login_required
 def import_grade_file(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -959,9 +967,10 @@ def import_grade_file(request):
 
 
 # 得到对应教师所开课程detail信息
-@login_required
+# @login_required
 def get_course_detail(request):
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     teacher = Teacher.objects.get(id=account)
     mycourseOP = OpenCourse.objects.filter(teacher=teacher)
 
@@ -989,7 +998,7 @@ def get_course_detail(request):
 
 
 # 修改课程信息
-@login_required
+# @login_required
 def change_course_info(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -1036,7 +1045,7 @@ def change_course_info(request):
 
 
 # 添加课程信息
-@login_required
+# @login_required
 def add_course(request):
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -1082,7 +1091,8 @@ def add_course(request):
         # count = 0,
     )
 
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
     teacher = Teacher.objects.get(id=account)
     OpenCourse.objects.create(
         course=newc,
