@@ -384,8 +384,8 @@ def get_course_list(request):
             "capacity": capacitystr,
             "selected": selected
         }
-        for x in data.values():
-            print(x)
+        """for x in data.values():
+            print(x)"""
         resultList.append(data)
 
     retdata = {
@@ -440,23 +440,26 @@ def get_course_selected(request):
     selected_courses_list = Score.objects.filter(student=student)
     resultList = []
 
-    for select_course in selected_courses_list:
-        openc = OpenCourse.objects.get(course=select_course)
+    for sc in selected_courses_list:
+        #openc = OpenCourse.objects.get(course=select_course)
+        openc = sc.opencourse
+        c = openc.course
+
         if openc.teacher is None:
             teacherstr = "待定"
         else:
             teacherstr = openc.teacher.id.name
 
-        capacitystr = str(select_course.count) + "/" + str(select_course.capacity)
+        capacitystr = str(c.count) + "/" + str(c.capacity)
 
         data = {
-            "courseId": select_course.code,
-            "courseName": select_course.name,
-            "courseCategory": select_course.type,
-            "courseCollege": str(select_course.dept),
+            "courseId": c.code,
+            "courseName": c.name,
+            "courseCategory": c.type,
+            "courseCollege": str(c.dept),
             "courseTeacher": teacherstr,
-            "time": str(select_course.time),
-            "credit": select_course.credit,
+            "time": str(c.time),
+            "credit": c.credit,
             "capacity": capacitystr,
         }
         for x in data.values():
