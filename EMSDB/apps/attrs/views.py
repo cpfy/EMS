@@ -58,6 +58,10 @@ def user_login(request):
         login(request, user)
         print("登录成功！当前用户：", request.user.username)
 
+        request.session['username'] = user.username
+
+
+
         session_id = request.session.session_key
         print("s id: ", session_id)
 
@@ -330,14 +334,17 @@ def get_user_info(request):
 #@login_required
 def get_course_list(request):
 
-    session_id = request.COOKIES['session_id']
+    """session_id = request.COOKIES['session_id']
     print("get s id: ",session_id)
 
     sess=  Session.objects.get(pk=session_id)
 
     sess_data = sess.get_decoded()
 
-    print(sess_data.values)
+    print(sess_data.values)"""
+
+    user_name = request.session['username']
+    print("username=", user_name)
 
 
 
