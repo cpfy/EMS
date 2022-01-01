@@ -71,7 +71,7 @@ class Teacher(models.Model):
     id = models.OneToOneField(Account, on_delete=models.CASCADE, primary_key=True)
 
     # 与学院多对一
-    teacher_dept = models.ForeignKey(
+    dept = models.ForeignKey(
         "Department",
         on_delete=models.CASCADE,
         verbose_name="学院号",
@@ -79,7 +79,7 @@ class Teacher(models.Model):
         blank=True
     )
 
-    teacher_age = models.IntegerField(default=0)
+    age = models.IntegerField(default=0)
 
     # teacher_email = models.CharField(verbose_name='邮箱', max_length=30, null=True, blank=True)
     # Account已经包含
@@ -111,12 +111,12 @@ class Admin(models.Model):
 
 
 class Department(models.Model):
-    dept_id = models.IntegerField(primary_key=True)
-    dept_name = models.CharField(verbose_name='院系名', max_length=10, null=True)
-    dept_leader = models.CharField(verbose_name='系主任', max_length=10, null=True, blank=True)
+    no = models.IntegerField(primary_key=True)
+    name = models.CharField(verbose_name='院系名', max_length=10, null=True)
+    leader = models.CharField(verbose_name='系主任', max_length=10, null=True, blank=True)
 
     # 学院培养方案所需学分
-    dept_credit = models.IntegerField(default=150, verbose_name="所需学分")
+    fullcredit = models.IntegerField(default=150, verbose_name="所需学分")
 
     def __str__(self):
         return str(self.dept_id) + "-" + str(self.dept_name)
@@ -124,7 +124,7 @@ class Department(models.Model):
     class Meta:
         verbose_name = "院系"
         verbose_name_plural = verbose_name
-        ordering = ['dept_id']
+        ordering = ['no']
 
 
 class Class(models.Model):

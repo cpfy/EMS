@@ -276,34 +276,34 @@ def change_email(request):
 # 获取个人info
 # @login_required
 def get_user_info(request):
-    current_user = request.user
-    account = Account.objects.get(user=current_user)
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
+
     type = account.status  # 用户类型
 
     print(type)
 
     retdata = {
         'userType': type,
-        'userName': current_user.username,
+        'userName': user.username,
         'id': account.code,
     }
 
     if (type == "a"):
-        student_obj = Student.objects.get(id=account)
-        dept_obj = Department.objects.get(dept_id=student_obj.dept)
+        curStudent = Student.objects.get(id=account)
 
-        if (current_user.email is None):
+        if (user.email is None):
             myemail = account.code + "@buaa.edu.cn"
         else:
-            myemail = current_user.email
+            myemail = user.email
 
         stu_data = {
             'realName': account.name,
-            'grade': student_obj.student_year,
-            'classNum': student_obj.student_class,
-            'college': student_obj.dept,
-            'creditGot': student_obj.credit,
-            'creditNeed': dept_obj.dept_credit,
+            'grade': curStudent.inyear,
+            'classNum': curStudent.student_class.id,
+            'college': curStudent.dept.name,
+            'creditGot': curStudent.credit,
+            'creditNeed': curStudent.dept.fullcredit,
             'email': myemail
         }
         retdata.update(stu_data)
@@ -311,23 +311,33 @@ def get_user_info(request):
         return JsonResponse(retdata)
 
     elif (type == "b"):
-        teacher_obj = Teacher.objects.get(id=account)
-        dept_obj = Department.objects.get(teacher_obj.teacher_dept)
+        curTeacher = Teacher.objects.get(id=account)
+        #dept_obj = curTeacher.dept
+
+        if (user.email is None):
+            myemail = account.code + "@buaa.edu.cn"
+        else:
+            myemail = user.email
 
         teacher_data = {
             'realName': account.name,
-            'age': teacher_obj.teacher_age,
-            'phone': teacher_obj.student_class,
-            'college': dept_obj.dept_name,
-            'email': teacher_obj.teacher_email
+            'age': curTeacher.age,
+            'phone': curTeacher.telephone,
+            'college': curTeacher.dept.name,
+            'email': myemail
         }
         retdata.update(teacher_data)
 
         return JsonResponse(retdata)
 
     elif (type == "c"):
+        if (user.email is None):
+            myemail = account.code + "@buaa.edu.cn"
+        else:
+            myemail = user.email
+
         admin_data = {
-            'email': current_user.email
+            'email': myemail
         }
         retdata.update(admin_data)
 
@@ -410,7 +420,7 @@ def select_course(request):
     data = user_selectc_form.cleaned_data
     courseId = data['courseId']
 
-    course = Course.objects.filter(code=courseId)
+    course = Course.objects.get(code=courseId)
     if not course:
         retdata = createFalseJsonWithInfo("该课程不存在！请重新检查")
         return JsonResponse(retdata)
@@ -441,7 +451,7 @@ def get_course_selected(request):
     resultList = []
 
     for sc in selected_courses_list:
-        #openc = OpenCourse.objects.get(course=select_course)
+        # openc = OpenCourse.objects.get(course=select_course)
         openc = sc.opencourse
         c = openc.course
 
@@ -1027,7 +1037,7 @@ def change_course_info(request):
         retdata = createFalseJsonWithInfo("该课程不存在")
         return JsonResponse(retdata)
 
-    destdept = Department.objects.get(dept_name=college)
+    destdept = Department.objects.get(name=college)
 
     if not destdept:
         retdata = createFalseJsonWithInfo("学院不存在")
@@ -1069,7 +1079,7 @@ def add_course(request):
 
     # 随机：MyModel.objects.order_by('?').first()
 
-    destdept = Department.objects.get(dept_name=college)
+    destdept = Department.objects.get(name=college)
 
     if not destdept:
         retdata = createFalseJsonWithInfo("学院不存在")
