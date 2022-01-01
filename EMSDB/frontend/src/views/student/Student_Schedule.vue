@@ -25,7 +25,21 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-      this.scheduleData = res.data.schedule;
+      this.scheduleData.splice(0, this.scheduleData.length);
+      for (let i = 0; i < res.data.schedule.length; i++) {
+        let obj = {};
+        obj.num = i;
+        obj.time = res.data.schedule[i].time;
+        obj.Monday = res.data.schedule[i].Monday;
+        obj.Tuesday = res.data.schedule[i].Tuesday;
+        obj.Wednesday = res.data.schedule[i].Wednesday;
+        obj.Thursday = res.data.schedule[i].Thursday;
+        obj.Friday = res.data.schedule[i].Friday;
+        obj.Saturday = res.data.schedule[i].Saturday;
+        obj.Sunday = res.data.schedule[i].Sunday;
+        this.scheduleData.splice(this.scheduleData.length, 0, obj);
+      }
+
     })
   },
   name: "Student_Schedule",
