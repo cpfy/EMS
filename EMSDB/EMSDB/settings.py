@@ -66,8 +66,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 #允许所有方法
 CORS_ALLOW_METHODS = ('*')
 #允许所有请求头
-CORS_ALLOW_HEADERS = ('*')
-
+#CORS_ALLOW_HEADERS = ('*')
+CORS_ALLOW_HEADERS = ('x-csrftoken', 'authorization', 'content-type')
 
 ROOT_URLCONF = 'EMSDB.urls'
 

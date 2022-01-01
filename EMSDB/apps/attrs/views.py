@@ -3,6 +3,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
+from django.contrib.sessions.models import Session
+
 from django.db import models
 
 from django.contrib.auth.decorators import login_required
@@ -55,11 +57,17 @@ def user_login(request):
         # 将用户数据保存在 session 中，即实现了登录动作
         login(request, user)
         print("登录成功！当前用户：", request.user.username)
+
+        session_id = request.session.session_key
+        print("s id: ", session_id)
+
         retdata = {
             'result': True,
             'id': myusername,
-            'info': "登录成功！"
+            'info': "登录成功！",
+            'session_id': session_id,
         }
+
         return JsonResponse(retdata)
 
     else:
@@ -319,8 +327,20 @@ def get_user_info(request):
 #####  课程相关操作  #####
 
 # 获取可选课程
-@login_required
+#@login_required
 def get_course_list(request):
+
+    session_id = request.COOKIES['session_id']
+    print("get s id: ",session_id)
+
+    sess=  Session.objects.get(pk=session_id)
+
+    sess_data = sess.get_decoded()
+
+    print(sess_data.values)
+
+
+
     resultList = []
 
     account = Account.objects.get(user=request.user)
