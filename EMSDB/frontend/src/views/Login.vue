@@ -136,8 +136,9 @@ export default {
               'password': this.password,
               'userType': this.userType
             }),
+            withCredentials: true,
             headers: {
-              //'Content-Type': 'application/x-www-form-urlencoded',
+              //'Content-Type': 'application/json',
               'X-CSRFToken': this.getCookie('csrftoken')
             },
           }).then(res => {

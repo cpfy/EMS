@@ -73,7 +73,10 @@ export default {
       method: 'get',
       url: 'http://localhost:8000/site/course/getCourse/',
       data: qs.stringify({'filter' : this.filter}),
+
+      withCredentials: true,
       headers: {
+      //'Content-Type': 'application/json',
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.redirects',
     'corsheaders',
     #
-    #'apps.userprofile',
+    # 'apps.userprofile',
     'apps.attrs',
 ]
 
@@ -54,20 +54,22 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     #
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware'
 ]
 
-CORS_ALLOW_CREDENTIALS =True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-#允许所有方法
+# 允许所有方法
 CORS_ALLOW_METHODS = ('*')
-#允许所有请求头
-#CORS_ALLOW_HEADERS = ('*')
+# 允许所有请求头
+# CORS_ALLOW_HEADERS = ('*')
 CORS_ALLOW_HEADERS = ('x-csrftoken', 'authorization', 'content-type')
+
+SESSION_SAVE_EVERY_REQUEST = True
 
 ROOT_URLCONF = 'EMSDB.urls'
 
@@ -143,3 +145,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Global
+
+FAKEUSERID = ""

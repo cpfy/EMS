@@ -16,6 +16,8 @@ from .models import Student, Class, Teacher, Admin, Department, Course, Account,
 import random
 import string
 
+from django.conf import settings
+
 
 # Create your views here.
 
@@ -56,20 +58,24 @@ def user_login(request):
     if (checkUserTypeIsFit(account.status, myusertype)):
         # 将用户数据保存在 session 中，即实现了登录动作
         login(request, user)
+
+        # request.session['username'] = user.username
+        # request.session.modified = True
+
+        settings.FAKEUSERID = user.id
+
+        print(settings.FAKEUSERID)
+
         print("登录成功！当前用户：", request.user.username)
 
-        request.session['username'] = user.username
-
-
-
-        session_id = request.session.session_key
-        print("s id: ", session_id)
+        #session_id = request.session.session_key
+        #print("s id: ", session_id)
 
         retdata = {
             'result': True,
             'id': myusername,
             'info': "登录成功！",
-            'session_id': session_id,
+            #'session_id': session_id,
         }
 
         return JsonResponse(retdata)
@@ -331,26 +337,16 @@ def get_user_info(request):
 #####  课程相关操作  #####
 
 # 获取可选课程
-#@login_required
+# @login_required
 def get_course_list(request):
 
-    """session_id = request.COOKIES['session_id']
-    print("get s id: ",session_id)
-
-    sess=  Session.objects.get(pk=session_id)
-
-    sess_data = sess.get_decoded()
-
-    print(sess_data.values)"""
-
-    user_name = request.session['username']
-    print("username=", user_name)
-
-
+    user_id = settings.FAKEUSERID
+    print("userid=", user_id)
 
     resultList = []
 
-    account = Account.objects.get(user=request.user)
+    user = User.objects.get(pk=user_id)
+    account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
 
     # courses_list = Course.objects.filter()
