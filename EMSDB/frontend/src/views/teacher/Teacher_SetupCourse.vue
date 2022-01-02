@@ -143,21 +143,23 @@ export default {
     const self = this;
     self.axios({
       method: 'post',
-      url: 'http://localhost:8000/site/t/getCourseD/',
+      url: 'http://localhost:8000/site/t/getCourseDetail/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+      console.log("setup course")
+      console.log(res)
       this.courseInfo.splice(0,this.courseInfo.length)
-      for (let i = 0; i < res.data.courseInfo.length; i++) {
+      for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
         obj.num = i;
-        obj.name = res.data.courseInfo[i].name;
-        obj.credit = res.data.courseInfo[i].credit;
-        obj.college = res.data.courseInfo[i].college;
-        obj.capacity = res.data.courseInfo[i].capacity;
-        obj.category = res.data.courseInfo[i].category;
+        obj.name = res.data.resultList[i].name;
+        obj.credit = res.data.resultList[i].credit;
+        obj.college = res.data.resultList[i].college;
+        obj.capacity = res.data.resultList[i].capacity;
+        obj.category = res.data.resultList[i].category;
         this.courseInfo.splice(this.courseInfo.length, 0, obj);
       }
 

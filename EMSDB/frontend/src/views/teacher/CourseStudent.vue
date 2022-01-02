@@ -251,6 +251,8 @@ export default {
       }).then(res => {
        this.studentInfo.splice(0, this.studentInfo.length);
       for (let i = 0; i < res.data.studentInfo.length; i++) {
+        console.log("courseInfo")
+        console.log(res)
         let obj = {};
         obj.num = i;
         obj.studentId = res.data.studentInfo[i].studentId;

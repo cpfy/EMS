@@ -80,12 +80,25 @@ export default {
     self.axios({
       method: 'post',
       url: 'http://localhost:8000/site/t/getCourseOfScore/',
-      data: qs.stringify({}),
+      data: qs.stringify({
+        "courseId" : this.courseId
+      }),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-      this.scoreInfos = res.data.scoreInfos;
+
+      console.log(res)
+      this.scoreInfos.splice(0, this.scoreInfos.length);
+      for (let i = 0; i < res.data.scoreInfos.length; i++) {
+        let obj = {};
+        obj.num = i;
+        obj.courseId = res.data.scoreInfos[i].courseId;
+        obj.courseName = res.data.scoreInfos[i].courseName;
+        obj.scoreRecorded = res.data.scoreInfos[i].scoreRecorded;
+        this.scoreInfos.splice(this.scoreInfos.length, 0, obj);
+      }
+
     })
   },
   data() {
