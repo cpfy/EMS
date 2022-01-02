@@ -1177,7 +1177,7 @@ def convertWeeknumToEng(num):
 
 
 def createVoidListWithInfo(str):
-    print("请求方式错误！返回空数据")
+    print("请求方式错误！请使用GET")
     retdata = {
         'resultList': [],
         'info': str

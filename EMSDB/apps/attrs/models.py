@@ -64,7 +64,7 @@ class Student(models.Model):
     class Meta:
         verbose_name = "学生"  # 模型名称
         verbose_name_plural = verbose_name  # 模型复数
-        ordering = []
+        ordering = ['id__code']
 
 
 class Teacher(models.Model):
@@ -94,12 +94,15 @@ class Teacher(models.Model):
         blank=True,
     )"""
 
+    def __str__(self):
+        return self.id.__str__()
+
     class Meta:
         verbose_name = "教师"
         verbose_name_plural = verbose_name
+        ordering = ['id__code']
 
-    def __str__(self):
-        return self.id.__str__()
+
 
 
 class Admin(models.Model):
@@ -119,7 +122,7 @@ class Department(models.Model):
     fullcredit = models.IntegerField(default=150, verbose_name="所需学分")
 
     def __str__(self):
-        return str(self.dept_id) + "-" + str(self.dept_name)
+        return str(self.no) + "-" + str(self.name)
 
     class Meta:
         verbose_name = "院系"
@@ -184,6 +187,7 @@ class Place(models.Model):
     class Meta:
         verbose_name = "地点"
         verbose_name_plural = verbose_name
+        ordering = ['building']
 
 
 class Course(models.Model):
@@ -272,6 +276,7 @@ class OpenCourse(models.Model):  # 开课表
         # db_table = "OpenTable"
         verbose_name = "开课表"
         verbose_name_plural = verbose_name
+        ordering = ['course__code']
 
 
 class Score(models.Model):  # 选课表
