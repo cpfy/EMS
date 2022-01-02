@@ -832,7 +832,9 @@ def get_stu_exam(request):
 
     if myexam:
         for item in myexam:
-            if item.course.teacher is None:
+            opc = OpenCourse.objects.get(course=item.course)
+
+            if opc.teacher:
                 teacherstr = "待定"
             else:
                 teacherstr = item.course.teacher.id.name
