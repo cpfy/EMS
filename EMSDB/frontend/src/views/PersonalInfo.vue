@@ -196,7 +196,7 @@ export default {
       self.axios({
         method: 'post',
         data: qs.stringify({
-          newEmail: this.newEmail,
+          'newEmail': this.newEmail,
         }),
         url: 'http://localhost:8000/site/changeEmail/',
         headers: {'X-CSRFToken': this.getCookie('csrftoken')},
@@ -375,7 +375,7 @@ export default {
 }
 
 .main_body {
-  margin: 0 auto 0 20%;
+  margin: 10vh auto 0 28%;
   padding: 20px 0 70px 60px;
   width: 816px;
   min-height: 540px;

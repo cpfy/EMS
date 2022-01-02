@@ -8,7 +8,7 @@
     <Teacher_Nav active-index2="3-2"></Teacher_Nav>
   </div>
 
-  <div style="position: absolute;top: 20.5vh;opacity: 0.7;left: 8.5vw">
+  <div style="position: absolute;top: 19.5vh;opacity: 0.7;left: 8.5vw">
     <el-date-picker
         @change="renew"
         v-model="date"
@@ -159,13 +159,7 @@ export default {
       for (let i = 0; i < res.data.roomInfo.length; i++) {
         let obj = {};
         obj.room = res.data.roomInfo[i].room;
-        obj.Monday = res.data.roomInfo[i].Monday;
-        obj.Tuesday = res.data.roomInfo[i].Tuesday;
-        obj.Wednesday = res.data.roomInfo[i].Wednesday;
-        obj.Thursday = res.data.roomInfo[i].Thursday;
-        obj.Friday = res.data.roomInfo[i].Friday;
-        obj.Saturday = res.data.roomInfo[i].Saturday;
-        obj.Sunday = res.data.roomInfo[i].Sunday;
+        obj.c = res.data.roomInfo[i].c;
         this.roomInfo.splice(this.roomInfo.length, 0, obj);
       }
 

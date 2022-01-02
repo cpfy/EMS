@@ -95,13 +95,15 @@ export default {
   mounted() {
     const self = this;
     self.axios({
-      method: 'post',
+      method: 'get',
       url: 'http://localhost:8000/site/eva/getEvaInfo/',
       data: qs.stringify({}),
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+      console.log("course evaluate")
+      console.log(res)
       this.courseInfos.splice(0,this.courseInfos.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
         this.courseInfos.splice(0,this.courseInfos.length , obj);

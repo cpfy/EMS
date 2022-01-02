@@ -4,7 +4,7 @@
     <Teacher_Nav active-index2="2-3"></Teacher_Nav>
   </div>
 
-  <div  style="position: absolute;top: 20.5vh;opacity: 0.7;left: 6vw">
+  <div  style="position: absolute;top: 19vh;opacity: 0.7;left: 6vw">
     <el-select @change="renew" v-model="id" placeholder="选择课程">
       <el-option
           v-for="item in courseInfo"
@@ -56,7 +56,7 @@ export default {
   mounted() {
     const self = this;
     self.axios({
-      method: 'post',
+      method: 'get',
       url: 'http://localhost:8000/site/t/getCourse/',
       data: qs.stringify({
       }),
