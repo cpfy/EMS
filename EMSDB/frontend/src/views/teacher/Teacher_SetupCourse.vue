@@ -155,6 +155,7 @@ export default {
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
         obj.num = i+1;
+        obj.id = res.data.resultList[i].id;
         obj.name = res.data.resultList[i].name;
         obj.credit = res.data.resultList[i].credit;
         obj.college = res.data.resultList[i].college;
