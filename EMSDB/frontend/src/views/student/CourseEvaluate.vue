@@ -104,16 +104,15 @@ export default {
     }).then(res => {
       console.log("course evaluate")
       console.log(res)
-      this.courseInfos.splice(0,this.courseInfos.length)
+      this.courseInfos.splice(0, this.courseInfos.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
-        this.courseInfos.splice(0,this.courseInfos.length , obj);
         let obj = {};
-        obj.num = i+1;
+        obj.num = i + 1;
         obj.courseId = res.data.resultList[i].courseId;
         obj.courseTeacher = res.data.resultList[i].courseTeacher;
         obj.courseName = res.data.resultList[i].courseName;
         obj.courseCategory = res.data.resultList[i].courseCategory;
-        obj.courseCollege = res.data.resultList[i].courseCollege;
+        // obj.courseCollege = res.data.resultList[i].courseCollege;
         obj.mark = res.data.resultList[i].mark;
         obj.credit = res.data.resultList[i].credit;
         obj.evaluated = res.data.resultList[i].evaluated;
