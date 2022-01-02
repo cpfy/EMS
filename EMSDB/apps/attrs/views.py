@@ -633,8 +633,15 @@ def get_stu_schedule_recommend(request):
     # mycourseSC = Score.objects.filter(student=student)
     # mycourse = OpenCourse.objects.filter(mycourseSC.opencourse)
 
-    recomc = Course.objects.order_by("?")[:10]
-    recomc = Course.objects.filter(pk__in=list(recomc))
+    recomc = Course.objects.order_by("?")
+
+    """for i in recomc:
+        print(str(i))"""
+
+    #recomc = Course.objects.filter(pk__in=list(recomc))
+
+    for i in recomc:
+        print(str(i))
 
     # print(mycourse)
 
