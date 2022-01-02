@@ -1,6 +1,8 @@
 # /userprofile/forms.py
 
 # 引入表单类
+import datetime
+
 from django import forms
 # 引入 User 模型
 from django.contrib.auth.models import User
@@ -71,7 +73,7 @@ class CourseIdForm(forms.Form):
 
 # 空教师查询表单
 class DateForm(forms.Form):
-    date = forms.DateField()
+    date = forms.DateField(input_formats=['%m %d %Y'], initial=datetime.date.today())
 
 
 # 评教

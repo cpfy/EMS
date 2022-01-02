@@ -607,7 +607,7 @@ def get_stu_schedule(request):
                     onesect[weekstr] = course_str
                     print("Set weekstr: ", course_str)
 
-                    weekschedule.append(onesect)
+            weekschedule.append(onesect)
 
         schedule.append(weekschedule)
 
@@ -671,7 +671,7 @@ def get_stu_schedule_recommend(request):
                     onesect[weekstr] = course_str
                     print("Set weekstr: ", course_str)
 
-                    weekschedule.append(onesect)
+            weekschedule.append(onesect)
 
         schedule.append(weekschedule)
 
@@ -739,7 +739,7 @@ def get_teacher_schedule(request):
                     onesect[weekstr] = course_str
                     print("Set weekstr: ", course_str)
 
-                    weekschedule.append(onesect)
+            weekschedule.append(onesect)
 
         schedule.append(weekschedule)
 
