@@ -146,7 +146,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Global
 
-#Global
-
-FAKEUSERID = ""
+FAKEUSERID = "4"
