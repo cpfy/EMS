@@ -878,9 +878,9 @@ def exemption_apply(request):
 # 进入页面需要信息
 # @login_required
 def get_evaluate_list(request):
-    if (request.method != "GET"):
+    """if (request.method != "GET"):
         retdata = createVoidListWithInfo("请求方式有误！请使用GET请求数据")
-        return JsonResponse(retdata)
+        return JsonResponse(retdata)"""
 
     user = User.objects.get(pk=settings.FAKEUSERID)
     account = Account.objects.get(user=user)
@@ -891,7 +891,7 @@ def get_evaluate_list(request):
 
     if courseSC:
         for sc in courseSC:
-            if sc.opencourse.teacher is None:
+            if not sc.opencourse.teacher:
                 teacherstr = "待定"
             else:
                 teacherstr = sc.opencourse.teacher.id.name
@@ -905,7 +905,9 @@ def get_evaluate_list(request):
                 "courseTeacher": teacherstr,
                 "evaluated": sc.eval,
             }
+
             resultList.append(data)
+            print(data)
 
     retdata = {
         'resultList': resultList,
@@ -978,6 +980,9 @@ def get_course(request):
 # 查看某课程学生信息
 # @login_required
 def get_course_stuinfo(request):
+    print(request.POST)
+    print(request)
+
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
         return JsonResponse(retdata)
@@ -1023,7 +1028,7 @@ def get_course_stuinfo(request):
 # 获取成绩
 # @login_required
 def get_course_of_score(request):
-    if (request.method != "POST"):
+    """if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
         return JsonResponse(retdata)
 
@@ -1034,16 +1039,20 @@ def get_course_of_score(request):
         return JsonResponse(retdata)
 
     data = courseid_form.cleaned_data
-    cid = data['courseId']
-    myOP = OpenCourse.objects.filter(course__code=cid)
+    cid = data['courseId']"""
+
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
+    teacher = Teacher.objects.get(id=account)
+    myOP = OpenCourse.objects.filter(teacher=teacher)
 
     scoreInfos = []
 
     for opc in myOP:
         data = {
             'courseId': opc.course.code,
-            'courseName': opc.course,
-            'recorded': opc.recorded,
+            'courseName': opc.course.name,
+            'recorded': opc.record,
         }
         scoreInfos.append(data)
 
@@ -1244,6 +1253,7 @@ def createFalseJsonWithInfo(str):
         'result': False,
         'info': str
     }
+    print(str)
     return retdata
 
 
