@@ -694,7 +694,7 @@ def get_teacher_schedule(request):
     teacher = Teacher.objects.get(id=account)
     mycourseOP = OpenCourse.objects.filter(teacher=teacher)
 
-    print(mycourseOP)
+    # print(mycourseOP)
 
     schedule = []
 
@@ -727,11 +727,15 @@ def get_teacher_schedule(request):
 
             if sectweekcourse:
                 for c in sectweekcourse:
-                    course_str = str(c.course.name) + " " \
-                                 + str(c.teacher.id.name) + " " \
-                                 + str(c.course.place)
+                    if not c.course.place:
+                        placestr = "待定"
+                    else:
+                        placestr = str(c.course.place)
 
-                    weekstr = convertWeeknumToEng(int(c.course.time.week))
+                    course_str = str(c.course.name) + " " \
+                                 + str(c.teacher.id.name) + " " + placestr
+
+                    weekstr = convertWeeknumToEng(int(c.course.time.weekday))
                     onesect[weekstr] = course_str
                     print("Set weekstr: ", course_str)
 
