@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
 
@@ -775,7 +777,8 @@ def get_empty_room(request):
     # 与数据库中匹配的星期
     data = date_form.cleaned_data
     search_date = data['date']
-    weeknum = search_date.weekday() + 1
+
+    weeknum = getWeeknumOfDate(search_date)
 
     roomInfo = []
 
@@ -903,7 +906,7 @@ def get_evaluate_list(request):
                 "mark": sc.mark,
                 "credit": sc.opencourse.course.credit,
                 "courseTeacher": teacherstr,
-                "courseCollege":str(sc.opencourse.course.dept),
+                "courseCollege": str(sc.opencourse.course.dept),
                 "evaluated": sc.eval,
             }
 
@@ -1300,8 +1303,8 @@ def generateRandCourseCode():
     letters = string.ascii_lowercase
     digits = string.digits
     str1 = ''.join(random.choice(letters) for i in range(1))
-    str2 = str1.join(random.choice(digits) for i in range(2))
-    return str2
+    str2 = ''.join(random.choice(digits) for i in range(2))
+    return str1 + str2
 
 
 # category对应码
@@ -1343,3 +1346,16 @@ def getUserTypeStr(str):
         return "教师"
     elif (str == 'c'):
         return "管理员"
+
+
+# 日期--星期
+def getWeeknumOfDate(str):
+    # year = str[0:3]
+    year = "2022"
+    month = str[0:2]
+    day = str[3:5]
+    w = datetime.date(int(year), int(month), int(day))
+
+    print("查询日期：", str(w), "; 星期：", w.weekday() + 1)
+
+    return w.weekday() + 1
