@@ -1,13 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
-from django.contrib.auth.models import User
-
-from django.contrib.sessions.models import Session
 
 from django.db import models
-
-from django.contrib.auth.decorators import login_required
 
 from .forms import *
 from .models import Student, Class, Teacher, Admin, Department, Course, Account, CourseTime, Score, OpenCourse, Score, \
@@ -281,10 +275,10 @@ def get_user_info(request):
 
     type = account.status  # 用户类型
 
-    print(type)
+    print("type = ", type)
 
     retdata = {
-        'userType': type,
+        'userType': getUserTypeStr(type),
         'userName': user.username,
         'id': account.code,
     }
@@ -292,7 +286,7 @@ def get_user_info(request):
     if (type == "a"):
         curStudent = Student.objects.get(id=account)
 
-        if (user.email is None):
+        if not user.email:
             myemail = account.code + "@buaa.edu.cn"
         else:
             myemail = user.email
@@ -314,7 +308,7 @@ def get_user_info(request):
         curTeacher = Teacher.objects.get(id=account)
         # dept_obj = curTeacher.dept
 
-        if (user.email is None):
+        if not user.email:
             myemail = account.code + "@buaa.edu.cn"
         else:
             myemail = user.email
@@ -331,7 +325,7 @@ def get_user_info(request):
         return JsonResponse(retdata)
 
     elif (type == "c"):
-        if (user.email is None):
+        if not user.email:
             myemail = account.code + "@buaa.edu.cn"
         else:
             myemail = user.email
@@ -351,6 +345,9 @@ def get_user_info(request):
 def get_course_list(request):
     """user_id = settings.FAKEUSERID
     print("userid=", user_id)"""
+
+    print(request.POST)
+    print(request)
 
     if (request.method != "POST"):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
@@ -562,6 +559,71 @@ def get_stu_schedule(request):
     account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
     mycourseSC = Score.objects.filter(student=student)
+    # mycourse = OpenCourse.objects.filter(mycourseSC.opencourse)
+
+    # print(mycourse)
+
+    schedule = []
+
+    for i in range(16):
+        weekschedule = []
+        week = i + 1
+
+        # 本周课程
+        weekcourse = mycourseSC.filter(opencourse__course__time__startweek__lte=week).filter(
+            opencourse__course__time__startweek__gte=week - models.F('opencourse__course__time__duringweek'))
+
+        for j in range(6):
+            # 1,2节
+            timestr = str(2 * j + 1) + "," + str(2 * j + 2) + "节"
+
+            # 示例：编译技术 锌小子 (一)215
+            onesect = {
+                'time': timestr,
+                'Monday': '',
+                'Tuesday': '',
+                'Wednesday': '',
+                'Thursday': '',
+                'Friday': '',
+                'Saturday': '',
+                'Sunday': ''
+            }
+
+            sectweekcourse = weekcourse.filter(opencourse__course__time__startsection__lte=2 * j).filter(
+                opencourse__course__time__startsection__gte=2 * j + 1 - models.F(
+                    'opencourse__course__time__duringsection'))
+
+            if sectweekcourse:
+                for c in sectweekcourse:
+                    course_str = str(c.course.name) + " " \
+                                 + str(c.teacher.id.name) + " " \
+                                 + str(c.course.place)
+
+                    weekstr = convertWeeknumToEng(int(c.course.time.week))
+                    onesect[weekstr] = course_str
+                    print("Set weekstr: ", course_str)
+
+                    weekschedule.append(onesect)
+
+        schedule.append(weekschedule)
+
+    retdata = {
+        'schedule': schedule,
+    }
+    return JsonResponse(retdata)
+
+
+# 推荐课表
+# @login_required
+def get_stu_schedule_recommend(request):
+    if (request.method != "GET"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用GET请求数据")
+        return JsonResponse(retdata)
+
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
+    student = Student.objects.get(id=account)
+    mycourseSC = Score.objects.filter(student=student)
     mycourse = mycourseSC.opencourse
 
     print(mycourse)
@@ -613,15 +675,6 @@ def get_stu_schedule(request):
         'schedule': schedule,
     }
     return JsonResponse(retdata)
-
-
-# 推荐课表
-# @login_required
-def get_stu_schedule_recommend(request):
-    retdata = {
-        'result': True,
-        'info': "退课成功！"
-    }
     return JsonResponse(retdata)
 
 
@@ -1250,3 +1303,13 @@ def getRandomProvince():
         '交州',
     ]
     return random.choice(province)
+
+
+# usertype
+def getUserTypeStr(str):
+    if (str == 'a'):
+        return "学生"
+    elif (str == 'b'):
+        return "教师"
+    elif (str == 'c'):
+        return "管理员"
