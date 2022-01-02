@@ -12,6 +12,8 @@
     <el-date-picker
         @change="renew"
         v-model="date"
+        value-format="MM-DD"
+        format="MM-DD"
         type="date"
         placeholder="选择要查询的日期"
         style="width: 75%"
@@ -143,7 +145,7 @@ export default {
     },
     renew() {
       const self = this;
-      alert(this.date)
+      // alert(this.date)
       self.axios({
         method: 'post',
         url: 'http://localhost:8000/site/info/getEmptyRoom/',
