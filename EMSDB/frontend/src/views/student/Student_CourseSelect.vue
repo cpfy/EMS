@@ -303,7 +303,6 @@ export default {
       return ''
     },
     select(index, row) {
-      alert(index)
       const self = this;
       self.axios({
         method: 'post',
@@ -315,7 +314,6 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
-        alert(res.data.result)
         if (res.data.result === true) {
           this.courseInfos[index + (this.newPage - 1) * 9].selected = true;
           this.$message({

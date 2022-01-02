@@ -16,17 +16,16 @@ export default {
   mounted() {
     const self = this;
     self.axios({
-      method: 'post',
+      method: 'get',
       url: 'http://localhost:8000/site/info/Student_ScheduleRecommend/',
-      data: {
 
-      },
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+      console.log(res)
       this.scheduleData.splice(0, this.scheduleData.length);
-      for (let i = 0; i < res.data.schedule.length; i++) {
+      for (let i = 0; i < res.data.scheduleRecommend.length; i++) {
         let obj = {};
         obj.num = i;
         obj.time = res.data.scheduleRecommend[i].time;

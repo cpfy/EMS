@@ -102,7 +102,7 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-      this.courseInfos.splice(0,this.courseInfo.length)
+      this.courseInfos.splice(0,this.courseInfos.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
         this.courseInfos.splice(0,this.courseInfos.length , obj);
         let obj = {};
