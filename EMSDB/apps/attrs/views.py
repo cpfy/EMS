@@ -483,7 +483,7 @@ def get_course_selected(request):
         else:
             teacherstr = openc.teacher.id.name
 
-        capacitystr = str(c.count) + "/" + str(c.capacity)
+        capacitystr = str(c.capacity - c.count) + "/" + str(c.capacity)
 
         data = {
             "courseId": c.code,
@@ -595,11 +595,11 @@ def get_stu_schedule(request):
 
             if sectweekcourse:
                 for c in sectweekcourse:
-                    course_str = str(c.course.name) + " " \
-                                 + str(c.teacher.id.name) + " " \
-                                 + str(c.course.place)
+                    course_str = str(c.opencourse.course.name) + " " \
+                                 + str(c.opencourse.teacher.id.name) + " " \
+                                 + str(c.opencourse.course.place)
 
-                    weekstr = convertWeeknumToEng(int(c.course.time.week))
+                    weekstr = convertWeeknumToEng(int(c.opencourse.course.time.weekday))
                     onesect[weekstr] = course_str
                     print("Set weekstr: ", course_str)
 
