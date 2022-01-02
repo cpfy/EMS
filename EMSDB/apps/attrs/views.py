@@ -626,11 +626,15 @@ def get_stu_schedule_recommend(request):
 
     user = User.objects.get(pk=settings.FAKEUSERID)
     account = Account.objects.get(user=user)
-    student = Student.objects.get(id=account)
-    mycourseSC = Score.objects.filter(student=student)
-    mycourse = mycourseSC.opencourse
 
-    print(mycourse)
+    # student = Student.objects.get(id=account)
+    # mycourseSC = Score.objects.filter(student=student)
+    # mycourse = OpenCourse.objects.filter(mycourseSC.opencourse)
+
+    recomc = Course.objects.order_by("?")[:10]
+    recomc = Course.objects.filter(pk__in=list(recomc))
+
+    # print(mycourse)
 
     schedule = []
 
@@ -639,8 +643,8 @@ def get_stu_schedule_recommend(request):
         week = i + 1
 
         # 本周课程
-        weekcourse = mycourse.filter(course__time__startweek__lte=week).filter(
-            course__time__startweek__gte=week - models.F('course__time__duringweek'))
+        weekcourse = recomc.filter(time__startweek__lte=week).filter(
+            time__startweek__gte=week - models.F('time__duringweek'))
 
         for j in range(6):
             # 1,2节
@@ -658,18 +662,25 @@ def get_stu_schedule_recommend(request):
                 'Sunday': ''
             }
 
-            sectweekcourse = weekcourse.filter(course__time__startsection__lte=2 * j).filter(
-                course__time__startsection__gte=2 * j + 1 - models.F('course__time__duringsection'))
+            sectweekcourse = weekcourse.filter(time__startsection__lte=2 * j).filter(
+                time__startsection__gte=2 * j + 1 - models.F(
+                    'time__duringsection'))
 
             if sectweekcourse:
                 for c in sectweekcourse:
-                    course_str = str(c.course.name) + " " \
-                                 + str(c.teacher.id.name) + " " \
-                                 + str(c.course.place)
+                    if not c.place:
+                        placestr = "待定"
+                    else:
+                        placestr = str(c.place)
 
-                    weekstr = convertWeeknumToEng(int(c.course.time.week))
+                    openc = OpenCourse.objects.get(course=c)
+
+                    course_str = str(c.name) + " " \
+                                 + str(openc.teacher.id.name) + " " + placestr
+
+                    weekstr = convertWeeknumToEng(int(c.time.weekday))
                     onesect[weekstr] = course_str
-                    print("Set weekstr: ", course_str)
+                    print("Set Commend weekstr: ", course_str)
 
             weekschedule.append(onesect)
 
@@ -678,7 +689,6 @@ def get_stu_schedule_recommend(request):
     retdata = {
         'schedule': schedule,
     }
-    return JsonResponse(retdata)
     return JsonResponse(retdata)
 
 
@@ -803,9 +813,10 @@ def get_stu_exam(request):
     user = User.objects.get(pk=settings.FAKEUSERID)
     account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
-    mycourseSC = Score.objects.filter(student=student)
-    mycourse = mycourseSC.opencourse.course
-    myexam = Exam.objects.filter(course=mycourse)
+    mycourseSC = Score.objects.filter(student=student).values_list('opencourse__course', flat=True)
+    # mycourse = mycourseSC.opencourse.course
+
+    myexam = Exam.objects.filter(course__in=mycourseSC)
 
     resultList = []
 
@@ -879,20 +890,20 @@ def get_evaluate_list(request):
     resultList = []
 
     if courseSC:
-        for item in courseSC:
-            if item.course.teacher is None:
+        for sc in courseSC:
+            if sc.opencourse.teacher is None:
                 teacherstr = "待定"
             else:
-                teacherstr = item.opencourse.course.teacher.id.name
+                teacherstr = sc.opencourse.teacher.id.name
 
             data = {
-                "courseId": item.opencourse.course.code,
-                "courseName": item.opencourse.course.name,
-                "courseCategory": item.opencourse.course.type,
-                "mark": item.mark,
-                "credit": item.opencourse.course.credit,
+                "courseId": sc.opencourse.course.code,
+                "courseName": sc.opencourse.course.name,
+                "courseCategory": sc.opencourse.course.type,
+                "mark": sc.mark,
+                "credit": sc.opencourse.course.credit,
                 "courseTeacher": teacherstr,
-                "evaluated": item.eval,
+                "evaluated": sc.eval,
             }
             resultList.append(data)
 
