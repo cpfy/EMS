@@ -93,7 +93,7 @@ class ChangeCourseInfoForm(forms.Form):
 
 
 # 课程信息创建
-class ChangeCourseForm(forms.Form):
+class CreateCourseForm(forms.Form):
     # courseId = forms.CharField()
     name = forms.CharField()
     college = forms.IntegerField()
