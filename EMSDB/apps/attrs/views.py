@@ -937,30 +937,31 @@ def evaluate_course(request):
 
     course_eval_form = EvaluateCourseForm(data=request.POST)
 
-    if course_eval_form.is_valid():
-        data = course_eval_form.cleaned_data
-        cid = data['courseId']
-        mark = data['mark']
-
-        user = User.objects.get(pk=settings.FAKEUSERID)
-        account = Account.objects.get(user=user)
-        student = Student.objects.get(id=account)
-        mysc = Score.objects.get(student=student, opencourse__course__code=cid)
-
-        if not mysc:
-            retdata = createFalseJsonWithInfo("请核对学生与课程信息后重新尝试！")
-            return JsonResponse(retdata)
-
-        mysc.mark = float(mark)
-        retdata = {
-            'result': True,
-            'info': '评价成功！'
-        }
-        return JsonResponse(retdata)
-
-    else:
+    if not course_eval_form.is_valid():
         retdata = createFalseJsonWithInfo("json格式有误")
         return JsonResponse(retdata)
+
+    data = course_eval_form.cleaned_data
+    cid = data['courseId']
+    mark = data['mark']
+
+    user = User.objects.get(pk=settings.FAKEUSERID)
+    account = Account.objects.get(user=user)
+    student = Student.objects.get(id=account)
+    mysc = Score.objects.get(student=student, opencourse__course__code=cid)
+
+    if not mysc:
+        retdata = createFalseJsonWithInfo("请核对学生与课程信息后重新尝试！")
+        return JsonResponse(retdata)
+
+    mysc.mark = float(mark)
+    mysc.save()
+
+    retdata = {
+        'result': True,
+        'info': '评价成功！'
+    }
+    return JsonResponse(retdata)
 
 
 ##### 教师操作 #####
@@ -1163,7 +1164,7 @@ def change_course_info(request):
         retdata = createFalseJsonWithInfo("学院不存在")
         return JsonResponse(retdata)
 
-    #destc.name = name
+    # destc.name = name
     destc.dept = destdept
     destc.capacity = capacity
     destc.type = getCategoryType(category)
