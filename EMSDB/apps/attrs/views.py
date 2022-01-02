@@ -521,7 +521,7 @@ def unselect_course(request):
     data = user_courseid_form.cleaned_data
     courseId = data['courseId']
 
-    course = Course.objects.filter(code=courseId)
+    course = Course.objects.get(code=courseId)
     if not course:
         retdata = createFalseJsonWithInfo("该课程不存在！请重新检查")
         return JsonResponse(retdata)
@@ -595,9 +595,13 @@ def get_stu_schedule(request):
 
             if sectweekcourse:
                 for c in sectweekcourse:
+                    if not c.opencourse.course.place:
+                        placestr = "待定"
+                    else:
+                        placestr = str(c.opencourse.course.place)
+
                     course_str = str(c.opencourse.course.name) + " " \
-                                 + str(c.opencourse.teacher.id.name) + " " \
-                                 + str(c.opencourse.course.place)
+                                 + str(c.opencourse.teacher.id.name) + " " + placestr
 
                     weekstr = convertWeeknumToEng(int(c.opencourse.course.time.weekday))
                     onesect[weekstr] = course_str
