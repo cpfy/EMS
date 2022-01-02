@@ -249,6 +249,8 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
+        console.log("courseStudent ")
+        console.log(res)
        this.studentInfo.splice(0, this.studentInfo.length);
       for (let i = 0; i < res.data.studentInfo.length; i++) {
         console.log("courseInfo")

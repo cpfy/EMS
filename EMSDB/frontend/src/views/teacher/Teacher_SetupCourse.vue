@@ -142,7 +142,7 @@ export default {
   mounted() {
     const self = this;
     self.axios({
-      method: 'post',
+      method: 'get',
       url: 'http://localhost:8000/site/t/getCourseDetail/',
       data: qs.stringify({}),
       headers: {

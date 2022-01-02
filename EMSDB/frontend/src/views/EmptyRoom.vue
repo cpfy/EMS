@@ -153,6 +153,22 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
+
+        console.log(res)
+      this.roomInfo.splice(0, this.roomInfo.length);
+      for (let i = 0; i < res.data.roomInfo.length; i++) {
+        let obj = {};
+        obj.room = res.data.roomInfo[i].room;
+        obj.Monday = res.data.roomInfo[i].Monday;
+        obj.Tuesday = res.data.roomInfo[i].Tuesday;
+        obj.Wednesday = res.data.roomInfo[i].Wednesday;
+        obj.Thursday = res.data.roomInfo[i].Thursday;
+        obj.Friday = res.data.roomInfo[i].Friday;
+        obj.Saturday = res.data.roomInfo[i].Saturday;
+        obj.Sunday = res.data.roomInfo[i].Sunday;
+        this.roomInfo.splice(this.roomInfo.length, 0, obj);
+      }
+
         this.roomInfo = res.data.roomInfo;
       })
     }

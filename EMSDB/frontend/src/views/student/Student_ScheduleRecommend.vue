@@ -18,7 +18,9 @@ export default {
     self.axios({
       method: 'get',
       url: 'http://localhost:8000/site/info/Student_ScheduleRecommend/',
+      data: {
 
+      },
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
@@ -26,16 +28,17 @@ export default {
       console.log(res)
       this.scheduleData.splice(0, this.scheduleData.length);
       for (let i = 0; i < res.data.scheduleRecommend.length; i++) {
-        let obj = {};
-        obj.num = i;
-        obj.time = res.data.scheduleRecommend[i].time;
-        obj.Monday = res.data.scheduleRecommend[i].Monday;
-        obj.Tuesday = res.data.scheduleRecommend[i].Tuesday;
-        obj.Wednesday = res.data.scheduleRecommend[i].Wednesday;
-        obj.Thursday = res.data.scheduleRecommend[i].Thursday;
-        obj.Friday = res.data.scheduleRecommend[i].Friday;
-        obj.Saturday = res.data.scheduleRecommend[i].Saturday;
-        obj.Sunday = res.data.scheduleRecommend[i].Sunday;
+        let obj = [];
+        obj = res.data.scheduleRecommend[i];
+        // obj.num = i;
+        // obj.time = res.data.scheduleRecommend[i].time;
+        // obj.Monday = res.data.scheduleRecommend[i].Monday;
+        // obj.Tuesday = res.data.scheduleRecommend[i].Tuesday;
+        // obj.Wednesday = res.data.scheduleRecommend[i].Wednesday;
+        // obj.Thursday = res.data.scheduleRecommend[i].Thursday;
+        // obj.Friday = res.data.scheduleRecommend[i].Friday;
+        // obj.Saturday = res.data.scheduleRecommend[i].Saturday;
+        // obj.Sunday = res.data.scheduleRecommend[i].Sunday;
         this.scheduleData.splice(this.scheduleData.length, 0, obj);
       }
     })
