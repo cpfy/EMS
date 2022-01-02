@@ -1142,26 +1142,26 @@ def change_course_info(request):
         return JsonResponse(retdata)
 
     data = create_course_form.cleaned_data
-    cid = data['id']
+    # cid = data['id']
     name = data['name']
     college = data['college']
     capacity = data['capacity']
-    category = data[' category']
+    category = data['category']
     credit = data['credit']
 
-    destc = Course.objects.get(courseId=cid)
+    destc = Course.objects.get(name=name)
 
     if not destc:
         retdata = createFalseJsonWithInfo("该课程不存在")
         return JsonResponse(retdata)
 
-    destdept = Department.objects.get(name=college)
+    destdept = Department.objects.get(no=college)
 
     if not destdept:
         retdata = createFalseJsonWithInfo("学院不存在")
         return JsonResponse(retdata)
 
-    destc.name = name
+    #destc.name = name
     destc.dept = destdept
     destc.capacity = capacity
     destc.type = getCategoryType(category)
@@ -1363,6 +1363,6 @@ def getWeeknumOfDate(str):
     day = str[3:5]
     w = datetime.date(int(year), int(month), int(day))
 
-    print("查询日期：", str(w), "; 星期：", w.weekday() + 1)
+    print("查询日期：", w, "; 星期：", w.weekday() + 1)
 
     return w.weekday() + 1

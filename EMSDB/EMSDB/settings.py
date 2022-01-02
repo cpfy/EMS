@@ -148,4 +148,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Global
 
-FAKEUSERID = "4"
+FAKEUSERID = "2"

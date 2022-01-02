@@ -73,7 +73,8 @@ class CourseIdForm(forms.Form):
 
 # 空教师查询表单
 class DateForm(forms.Form):
-    date = forms.DateField(input_formats=['%m %d %Y'], initial=datetime.date.today())
+    #date = forms.DateField(input_formats=['%m %d %Y'], initial=datetime.date.today())
+    date = forms.CharField()
 
 
 # 评教
@@ -85,7 +86,7 @@ class EvaluateCourseForm(forms.Form):
 
 # 课程信息更改
 class ChangeCourseInfoForm(forms.Form):
-    id = forms.CharField()
+    #id = forms.CharField()
     name = forms.CharField()
     college = forms.IntegerField()
     capacity = forms.IntegerField()  # 课程容量
