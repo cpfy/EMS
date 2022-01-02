@@ -71,8 +71,9 @@ export default {
   mounted() {
     console.log("courseSelect " + document.cookie)
     const self = this;
+    console.log("filter " + this.filter)
     self.axios({
-      method: 'get',
+      method: 'post',
       url: 'http://localhost:8000/site/course/getCourse/',
       data: qs.stringify({'filter': this.filter}),
 
@@ -82,6 +83,8 @@ export default {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
+
+      console.log(res)
       this.courseInfos.splice(0, this.courseInfos.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
@@ -101,7 +104,7 @@ export default {
   },
   data() {
     return {
-      filter: false,
+      filter: true,
       newPage: 1,
       index1: 0,
       index2: 9,
@@ -259,7 +262,7 @@ export default {
     renew() {
       const self = this;
       self.axios({
-        method: 'get',
+        method: 'post',
         url: 'http://localhost:8000/site/course/getCourse/',
         data: qs.stringify({
           'filter': this.filter
@@ -268,6 +271,7 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
+        console.log(res)
         this.courseInfos.splice(0, this.courseInfos.length)
         for (let i = 0; i < res.data.resultList.length; i++) {
           let obj = {};
