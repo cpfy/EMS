@@ -178,11 +178,11 @@ def change_pwd(request):
         return JsonResponse(retdata)
 
     user_cpwd_form = UserChangePwdForm(data=request.POST)
-    owner = request.user
+    owner = User.objects.get(pk=settings.FAKEUSERID)
 
     if user_cpwd_form.is_valid():
         data = user_cpwd_form.cleaned_data
-        oldpwd = User.objects.filter(username=data['oldPassword'])
+        oldpwd = data['oldPassword']
         validuser = authenticate(username=owner.username, password=oldpwd)
 
         if validuser is None:
@@ -224,7 +224,7 @@ def change_username(request):
         return JsonResponse(retdata)
 
     else:
-        owner = request.user
+        owner = User.objects.get(pk=settings.FAKEUSERID)
         owner.username = data['newUserName']
         owner.save()
 
@@ -256,7 +256,7 @@ def change_email(request):
         return JsonResponse(retdata)
 
     else:
-        owner = request.user
+        owner = User.objects.get(pk=settings.FAKEUSERID)
         owner.email = data['newEmail']
         owner.save()
 
@@ -1004,16 +1004,16 @@ def get_course_stuinfo(request):
     studentInfo = []
 
     for sc in mySC:
-        if sc.grade == 0:
-            gradestr = "待录入"
+        if sc.score == 0:
+            scorestr = "待录入"
         else:
-            gradestr = sc.grade
+            scorestr = sc.score
 
         data = {
             'studentId': sc.student.id.code,
             'studentName': sc.student.id.name,
             'class': str(sc.student.student_class.id),
-            'grade': gradestr,
+            'grade': scorestr,
             'college': str(sc.student.dept),
             'email': sc.student.id.user.email,
         }
