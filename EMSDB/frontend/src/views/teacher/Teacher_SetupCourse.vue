@@ -72,7 +72,7 @@
       </el-table-column>
     </el-table>
   </div>
-  <div style=" zoom: 90%;right: 8vw;bottom: 2vh;position: absolute">
+  <div style=" zoom: 90%;right: 8vw;bottom: 3vh;position: absolute">
     <el-pagination background layout="prev, pager, next" :total="this.courseInfo.length"
                    v-model:current-page="newPage"
                    :page-size=9
@@ -80,7 +80,7 @@
                    @current-change="change_page(newPage)">
     </el-pagination>
   </div>
-  <el-button style="position: absolute;left: 7vw;bottom: 1.5vh" size="small" type="success"
+  <el-button style="position: absolute;left: 7vw;bottom: 3vh" size="small" type="success"
              @click="dialogVisible2 = true">添加新课程
   </el-button>
 
@@ -154,7 +154,7 @@ export default {
       this.courseInfo.splice(0,this.courseInfo.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
-        obj.num = i;
+        obj.num = i+1;
         obj.name = res.data.resultList[i].name;
         obj.credit = res.data.resultList[i].credit;
         obj.college = res.data.resultList[i].college;

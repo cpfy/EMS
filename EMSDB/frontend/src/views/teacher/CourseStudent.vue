@@ -256,7 +256,7 @@ export default {
         console.log("courseInfo")
         console.log(res)
         let obj = {};
-        obj.num = i;
+        obj.num = i+1;
         obj.studentId = res.data.studentInfo[i].studentId;
         obj.studentName = res.data.studentInfo[i].studentName;
         obj.class = res.data.studentInfo[i].class;

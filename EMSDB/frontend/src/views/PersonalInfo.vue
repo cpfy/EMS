@@ -14,6 +14,8 @@
   <div style="height: 60px">
   </div>
 
+  <div style="margin-bottom: 10vh"></div>
+
   <div class="main_body"></div>
     <div class="left_part">
       <div v-if="this.$store.state.userType==='管理员'" class="icon admin-icon">
@@ -375,7 +377,7 @@ export default {
 }
 
 .main_body {
-  margin: 10vh auto 0 28%;
+  margin: 0 auto 0 20%;
   padding: 20px 0 70px 60px;
   width: 816px;
   min-height: 540px;

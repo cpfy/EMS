@@ -204,7 +204,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      alert(this.ruleForm.beginDate)
+      // alert(this.ruleForm.beginDate)
       this.$refs[formName].validate((valid) => {
         if (!valid) {
           console.log('error submit!!')

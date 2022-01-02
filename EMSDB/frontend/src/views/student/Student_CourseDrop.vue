@@ -70,7 +70,7 @@ export default {
       this.courseInfos.splice(0,this.courseInfos.length)
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
-        obj.num = i;
+        obj.num = i+1;
         obj.courseId = res.data.resultList[i].courseId;
         obj.courseName = res.data.resultList[i].courseName;
         obj.courseCategory = res.data.resultList[i].courseCategory;

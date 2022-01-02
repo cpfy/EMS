@@ -143,6 +143,7 @@ export default {
     },
     renew() {
       const self = this;
+      alert(this.date)
       self.axios({
         method: 'post',
         url: 'http://localhost:8000/site/info/getEmptyRoom/',
