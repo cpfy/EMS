@@ -115,7 +115,7 @@ export default {
     },
     renew() {
       const self = this;
-      alert(this.id)
+      // alert(this.id)
       self.axios({
         method: 'post',
         url: 'http://localhost:8000/site/t/getStudentInfo/',
@@ -128,8 +128,12 @@ export default {
       }).then(res => {
         console.log("courseStudent ")
         console.log(res)
-       this.studentInfo.splice(0, this.studentInfo.length);
-      for (let i = 0; i < res.data.studentInfo.length; i++) {
+        this.studentInfo.splice(0, this.studentInfo.length);
+        if (!res.data.studentInfo) {
+          alert('当前无选课学生')
+        } else {
+
+        for (let i = 0; i < res.data.studentInfo.length; i++) {
         console.log("courseInfo")
         console.log(res)
         let obj = {};
@@ -142,6 +146,8 @@ export default {
         obj.email = res.data.studentInfo[i].email;
         this.studentInfo.splice(this.studentInfo.length, 0, obj);
       }
+        }
+
 
         //TODO: splice?
       })
