@@ -98,3 +98,8 @@ class ChangeCourseForm(forms.Form):
     capacity = forms.IntegerField()  # 课程容量
     category = forms.CharField()  # 课程类别
     credit = forms.IntegerField()  # 课程学分
+
+
+# 选课过滤
+class FilterCourseForm(forms.Form):
+    filter = forms.BooleanField()
