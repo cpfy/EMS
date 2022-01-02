@@ -119,9 +119,9 @@ export default {
       self.axios({
         method: 'post',
         url: 'http://localhost:8000/site/t/getStudentInfo/',
-        data: {
+        data: qs.stringify({
           'courseId': this.id,
-        },
+        }),
         headers: {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
