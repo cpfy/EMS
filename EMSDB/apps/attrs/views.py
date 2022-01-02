@@ -312,7 +312,7 @@ def get_user_info(request):
 
     elif (type == "b"):
         curTeacher = Teacher.objects.get(id=account)
-        #dept_obj = curTeacher.dept
+        # dept_obj = curTeacher.dept
 
         if (user.email is None):
             myemail = account.code + "@buaa.edu.cn"
@@ -352,7 +352,18 @@ def get_course_list(request):
     """user_id = settings.FAKEUSERID
     print("userid=", user_id)"""
 
-    resultList = []
+    if (request.method != "POST"):
+        retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
+        return JsonResponse(retdata)
+
+    course_filter_form = FilterCourseForm(data=request.POST)
+
+    if not course_filter_form.is_valid():
+        retdata = createFalseJsonWithInfo("json格式有误")
+        return JsonResponse(retdata)
+
+    data = course_filter_form.cleaned_data
+    filter = data['filter']
 
     user = User.objects.get(pk=settings.FAKEUSERID)
     account = Account.objects.get(user=user)
@@ -360,6 +371,9 @@ def get_course_list(request):
 
     # courses_list = Course.objects.filter()
     courses_list = Course.objects.all()
+
+    resultList = []
+    allchoose = Score.objects.filter(student=student)
 
     for course in courses_list:
         """thisteacher = course.courseTeacher
@@ -372,14 +386,26 @@ def get_course_list(request):
         ifselected = Score.objects.filter(course=course, student=student)
         selected = ifselected is None"""
 
+        if (filter):
+            mayConflict = allchoose.filter(opencourse__course__time=course.time)
+            if mayConflict:
+                print("当前课程冲突：", str(course))
+                continue
+
         openc = OpenCourse.objects.get(course=course)
         if openc.teacher is None:
             teacherstr = "待定"
         else:
             teacherstr = openc.teacher.id.name
 
-        ifselected = Score.objects.filter(opencourse=openc, student=student)
-        selected = ifselected is None
+        chooseThis = Score.objects.filter(opencourse=openc, student=student)
+        # print("openc = ",openc.__str__(), "; stu = ",student.__str__())
+
+        if chooseThis:
+            selected = True
+        else:
+            selected = False
+        # print("if selected = ",)
 
         capacitystr = str(course.capacity - course.count) + "/" + str(course.capacity)
 
@@ -394,8 +420,8 @@ def get_course_list(request):
             "capacity": capacitystr,
             "selected": selected
         }
-        """for x in data.values():
-            print(x)"""
+        for x in data.values():
+            print(x)
         resultList.append(data)
 
     retdata = {
