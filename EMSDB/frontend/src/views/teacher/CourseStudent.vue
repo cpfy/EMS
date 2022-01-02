@@ -65,7 +65,13 @@ export default {
       },
     }).then(res => {
 
-      this.courseInfo = res.data.courseInfo;
+      this.courseInfo.splice(0, this.courseInfo.length);
+      for (let i = 0; i < res.data.courseInfo.length; i++) {
+        let obj = {};
+        obj.courseId = res.data.courseInfo[i].courseId;
+        obj.courseName = res.data.courseInfo[i].courseName;
+        this.courseInfo.splice(this.courseInfo.length, 0, obj);
+      }
     })
   },
   name: "CourseStudent",
@@ -243,7 +249,19 @@ export default {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
-        this.studentInfo = res.data.studentInfo;
+       this.studentInfo.splice(0, this.studentInfo.length);
+      for (let i = 0; i < res.data.studentInfo.length; i++) {
+        let obj = {};
+        obj.num = i;
+        obj.studentId = res.data.studentInfo[i].studentId;
+        obj.studentName = res.data.studentInfo[i].studentName;
+        obj.class = res.data.studentInfo[i].class;
+        obj.grade = res.data.studentInfo[i].grade;
+        obj.college = res.data.studentInfo[i].college;
+        obj.email = res.data.studentInfo[i].email;
+        this.studentInfo.splice(this.studentInfo.length, 0, obj);
+      }
+
         //TODO: splice?
       })
     }

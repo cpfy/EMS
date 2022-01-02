@@ -562,7 +562,7 @@ def get_stu_schedule(request):
     account = Account.objects.get(user=user)
     student = Student.objects.get(id=account)
     mycourseSC = Score.objects.filter(student=student)
-    mycourse = mycourseSC.opencourse
+    #mycourse = OpenCourse.objects.value_list(opencourse = mycourseSC.opencourse)
 
     print(mycourse)
 
