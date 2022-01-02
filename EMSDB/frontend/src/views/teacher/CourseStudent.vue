@@ -115,6 +115,7 @@ export default {
     },
     renew() {
       const self = this;
+      alert(this.id)
       self.axios({
         method: 'post',
         url: 'http://localhost:8000/site/t/getStudentInfo/',
