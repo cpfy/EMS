@@ -118,12 +118,16 @@ export default {
     self.axios({
       method: 'post',
       url: 'http://localhost:8000/site/my/info/',
-      data: {},
+      data: {
+
+      },
       headers: {
         'X-CSRFToken': this.getCookie('csrftoken')
       },
     }).then(res => {
-      var obj1 = JSON.parse(res.data);
+      // var obj1 = JSON.parse(res.data);
+      let obj1 = res.data
+      console.log(obj1)
       this.$store.state.studentId = obj1.id;
       this.$store.state.userType = obj1.userType;
       this.$store.state.userName = obj1.userName;
