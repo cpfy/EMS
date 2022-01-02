@@ -409,7 +409,7 @@ def get_course_list(request):
         data = {
             "courseId": course.code,
             "courseName": course.name,
-            "courseCategory": course.type,
+            "courseCategory": getCategoryType(course.type),
             "courseCollege": str(course.dept),
             "courseTeacher": teacherstr,
             "time": str(course.time),
@@ -488,7 +488,7 @@ def get_course_selected(request):
         data = {
             "courseId": c.code,
             "courseName": c.name,
-            "courseCategory": c.type,
+            "courseCategory": getCategoryType(c.type),
             "courseCollege": str(c.dept),
             "courseTeacher": teacherstr,
             "time": str(c.time),
@@ -832,7 +832,7 @@ def get_stu_exam(request):
             data = {
                 "courseId": item.course.code,
                 "courseName": item.course.name,
-                "courseCategory": item.course.type,
+                "courseCategory": getCategoryType(item.course.type),
                 "courseCollege": str(item.course.dept),
                 "courseTeacher": teacherstr,
                 "time": str(item.time),
@@ -899,10 +899,11 @@ def get_evaluate_list(request):
             data = {
                 "courseId": sc.opencourse.course.code,
                 "courseName": sc.opencourse.course.name,
-                "courseCategory": sc.opencourse.course.type,
+                "courseCategory": getCategoryType(sc.opencourse.course.type),
                 "mark": sc.mark,
                 "credit": sc.opencourse.course.credit,
                 "courseTeacher": teacherstr,
+                "courseCollege":str(sc.opencourse.course.dept),
                 "evaluated": sc.eval,
             }
 
@@ -1104,7 +1105,7 @@ def get_course_detail(request):
                 'capacity': openc.course.capacity,
                 'college': str(openc.course.dept),
                 'credit': openc.course.credit,
-                'category': openc.course.type,
+                'category': getCategoryType(openc.course.type),
             }
             # for x in data.values():
             # print(x)
@@ -1124,7 +1125,7 @@ def change_course_info(request):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
         return JsonResponse(retdata)
 
-    create_course_form = ChangeCourseForm(data=request.POST)
+    create_course_form = ChangeCourseInfoForm(data=request.POST)
 
     if not create_course_form.is_valid():
         retdata = createFalseJsonWithInfo("json格式有误")
@@ -1171,7 +1172,7 @@ def add_course(request):
         retdata = createFalseJsonWithInfo("请求方式有误！请使用POST请求数据")
         return JsonResponse(retdata)
 
-    create_course_form = ChangeCourseForm(data=request.POST)
+    create_course_form = CreateCourseForm(data=request.POST)
 
     if not create_course_form.is_valid():
         retdata = createFalseJsonWithInfo("json格式有误")
@@ -1186,7 +1187,7 @@ def add_course(request):
 
     # 随机：MyModel.objects.order_by('?').first()
 
-    destdept = Department.objects.get(name=college)
+    destdept = Department.objects.get(no=college)
 
     if not destdept:
         retdata = createFalseJsonWithInfo("学院不存在")
@@ -1194,7 +1195,7 @@ def add_course(request):
 
     # Random+不重复 课程号
     randomcodestr = generateRandCourseCode()
-    while (Course.objects.filter(courseId=randomcodestr)):
+    while (Course.objects.filter(code=randomcodestr)):
         randomcodestr = generateRandCourseCode()
 
     newc = Course.objects.create(
