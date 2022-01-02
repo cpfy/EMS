@@ -334,6 +334,7 @@ class Exam(models.Model):
     class Meta:
         verbose_name = "考试表"
         verbose_name_plural = verbose_name
+        ordering = ['course__code']
 
 
 class Message(models.Model):

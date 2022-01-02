@@ -943,7 +943,7 @@ def evaluate_course(request):
         user = User.objects.get(pk=settings.FAKEUSERID)
         account = Account.objects.get(user=user)
         student = Student.objects.get(id=account)
-        mysc = Score.objects.get(student=student, course__code=cid)
+        mysc = Score.objects.get(student=student, opencourse__course__code=cid)
 
         if not mysc:
             retdata = createFalseJsonWithInfo("请核对学生与课程信息后重新尝试！")
