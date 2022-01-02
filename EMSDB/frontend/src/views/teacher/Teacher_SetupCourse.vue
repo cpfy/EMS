@@ -35,7 +35,7 @@
                   :model=temp
               >
                 <el-form-item label="修改课程名称">
-                  <el-input placeholder="修改课程名称" v-model="temp.tempName"
+                  <el-input disabled placeholder="修改课程名称" v-model="temp.tempName"
                             style="margin-bottom: 10px; width: 85%"></el-input>
                 </el-form-item>
                 <el-form-item label="修改课程容量">
@@ -97,7 +97,7 @@
     >
 
       <el-form-item label="添加课程名称" prop="tempName">
-        <el-input placeholder="课程名称" v-model="temp2.tempName"
+        <el-input  placeholder="课程名称" v-model="temp2.tempName"
                   style="margin-bottom: 10px; width: 85%"></el-input>
       </el-form-item>
       <el-form-item label="添加课程容量" prop="tempCapacity">
@@ -155,6 +155,7 @@ export default {
       for (let i = 0; i < res.data.resultList.length; i++) {
         let obj = {};
         obj.num = i+1;
+        obj.id = res.data.resultList[i].id;
         obj.name = res.data.resultList[i].name;
         obj.credit = res.data.resultList[i].credit;
         obj.college = res.data.resultList[i].college;
@@ -201,94 +202,7 @@ export default {
 
       layer: 0,
       courseInfo: [
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'database',
-          capacity: 182,
-          college: 'computer',
-          credit: '1.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'co',
-          capacity: 120,
-          college: 'computer',
-          credit: '5.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'oo',
-          capacity: 203,
-          college: 'computer',
-          credit: '4.5',
-          category: 'must'
-        },
-        {
-          num: 22,
-          name: 'os',
-          capacity: 186,
-          college: 'computer',
-          credit: '1.5',
-          category: 'select'
-        },
+
       ],
       rules: {
         tempName: [
@@ -414,6 +328,7 @@ export default {
     },
     confirmAdd() {
       let obj = {
+        num : this.courseInfo.length + 1,
         credit: this.temp2.tempCredit,
         name: this.temp2.tempName,
         capacity: this.temp2.tempCapacity,

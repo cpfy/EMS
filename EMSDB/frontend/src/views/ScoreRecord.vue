@@ -111,51 +111,6 @@ export default {
       rowNum: '',
       scoreInfos: [
 
-        {
-          num: 0,
-          courseId: '#22222',
-          courseName: 'database22',
-          scoreRecorded: '已录入',
-        },{
-          num: 0,
-          courseId: '#22',
-          courseName: 'database',
-          scoreRecorded: '未录入',
-        },{
-          num: 0,
-          courseId: '#22',
-          courseName: 'database',
-          scoreRecorded: '未录入',
-        },{
-          num: 0,
-          courseId: '#22',
-          courseName: 'database',
-          scoreRecorded: '未录入',
-        },
-        {
-          num: 0,
-          courseId: '#22',
-          courseName: 'database',
-          scoreRecorded: '未录入',
-        },
-        {
-          num: 0,
-          courseId: '#22222',
-          courseName: 'database22',
-          scoreRecorded: '已录入',
-        },
-        {
-          num: 0,
-          courseId: '#22222',
-          courseName: 'database22',
-          scoreRecorded: '已录入',
-        },
-        {
-          num: 0,
-          courseId: '#22222',
-          courseName: 'database22',
-          scoreRecorded: '已录入',
-        }
       ],
       fileList: [],
     }

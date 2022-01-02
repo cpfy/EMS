@@ -86,132 +86,8 @@ export default {
       index1: 0,
       index2: 10,
       courseInfo: [
-        {
-          courseId: '#23012',
-          courseName: 'compile'
-        },
-        {
-          courseId: '#88997',
-          courseName: 'database'
-        },
-        {
-          courseId: '#887',
-          courseName: 'database'
-        },
-        {
-          courseId: '#897',
-          courseName: 'database'
-        },
-        {
-          courseId: '#8997',
-          courseName: 'database'
-        },
-        {
-          courseId: '#8899',
-          courseName: 'database'
-        }
+
       ],
-      /*studentInfo: [
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 1,
-          studentId: '30',
-          studentName: 'sb',
-          class: '3',
-          grade: '19',
-          college: 'computer',
-          email: '11@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        },
-        {
-          num: 0,
-          studentId: '333',
-          studentName: '22',
-          class: '3',
-          grade: '19',
-          college: 'sea',
-          email: '666@qq.com'
-        }
-      ],*/
       studentInfo: [
         {
           num: '--',
@@ -239,20 +115,25 @@ export default {
     },
     renew() {
       const self = this;
+      // alert(this.id)
       self.axios({
         method: 'post',
         url: 'http://localhost:8000/site/t/getStudentInfo/',
-        data: {
+        data: qs.stringify({
           'courseId': this.id,
-        },
+        }),
         headers: {
           'X-CSRFToken': this.getCookie('csrftoken')
         },
       }).then(res => {
         console.log("courseStudent ")
         console.log(res)
-       this.studentInfo.splice(0, this.studentInfo.length);
-      for (let i = 0; i < res.data.studentInfo.length; i++) {
+        this.studentInfo.splice(0, this.studentInfo.length);
+        if (!res.data.studentInfo) {
+          alert('当前无选课学生')
+        } else {
+
+        for (let i = 0; i < res.data.studentInfo.length; i++) {
         console.log("courseInfo")
         console.log(res)
         let obj = {};
@@ -265,6 +146,8 @@ export default {
         obj.email = res.data.studentInfo[i].email;
         this.studentInfo.splice(this.studentInfo.length, 0, obj);
       }
+        }
+
 
         //TODO: splice?
       })

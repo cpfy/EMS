@@ -107,6 +107,7 @@ import Admin_Nav from "../components/Admin_Nav";
 import Teacher_Nav from "../components/Teacher_Nav";
 import Student_Nav from "../components/Student_Nav";
 import axios from "axios";
+import qs from "qs";
 
 export default {
   name: "personalInfo",
@@ -179,7 +180,7 @@ export default {
         data: qs.stringify({
           'newUserName': this.newUserName,
         }),
-        url: 'http://localhost:8000/site/changeUsername/',
+        url: 'http://localhost:8000/site/my/changeUsername/',
         headers: {'X-CSRFToken': this.getCookie('csrftoken')},
       }).then(res => {
         if (res.result === false) {
@@ -200,7 +201,7 @@ export default {
         data: qs.stringify({
           'newEmail': this.newEmail,
         }),
-        url: 'http://localhost:8000/site/changeEmail/',
+        url: 'http://localhost:8000/site/my/changeEmail/',
         headers: {'X-CSRFToken': this.getCookie('csrftoken')},
       }).then(res => {
         if (res.result === false) {

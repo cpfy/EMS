@@ -82,7 +82,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'JohnCena',
           time: 'everyDay',
-          location: 'nmb nmb',
+          location: '新主楼 B102',
         },
         {
           num: 1,
@@ -92,7 +92,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 A101',
         },
         {
           num: 1,
@@ -102,7 +102,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 C101',
         },
         {
           num: 1,
@@ -112,7 +112,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 D205',
         },
         {
           num: 1,
@@ -122,7 +122,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 F101',
         },
         {
           num: 1,
@@ -132,7 +132,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 G833',
         },
         {
           num: 1,
@@ -142,7 +142,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 G105',
         },
         {
           num: 1,
@@ -152,7 +152,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 B210',
         },
         {
           num: 1,
@@ -162,7 +162,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '新主楼 C120',
         },
         {
           num: 1,
@@ -172,7 +172,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '主M 102',
         },
         {
           num: 1,
@@ -182,7 +182,7 @@ export default {
           courseCollege: 'sexCollege',
           courseTeacher: 'van',
           time: 'everyDay',
-          location: 'nmb A 101',
+          location: '主M 101',
         }
 
       ],
