@@ -35,7 +35,7 @@
                   :model=temp
               >
                 <el-form-item label="修改课程名称">
-                  <el-input placeholder="修改课程名称" v-model="temp.tempName"
+                  <el-input disabled placeholder="修改课程名称" v-model="temp.tempName"
                             style="margin-bottom: 10px; width: 85%"></el-input>
                 </el-form-item>
                 <el-form-item label="修改课程容量">
@@ -97,7 +97,7 @@
     >
 
       <el-form-item label="添加课程名称" prop="tempName">
-        <el-input placeholder="课程名称" v-model="temp2.tempName"
+        <el-input  placeholder="课程名称" v-model="temp2.tempName"
                   style="margin-bottom: 10px; width: 85%"></el-input>
       </el-form-item>
       <el-form-item label="添加课程容量" prop="tempCapacity">
@@ -328,6 +328,7 @@ export default {
     },
     confirmAdd() {
       let obj = {
+        num : this.courseInfo.length + 1,
         credit: this.temp2.tempCredit,
         name: this.temp2.tempName,
         capacity: this.temp2.tempCapacity,
