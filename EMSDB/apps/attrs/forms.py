@@ -27,7 +27,7 @@ class UserRegisterForm(forms.Form):
     # password = forms.CharField()
     # password2 = forms.CharField()
 
-    class Meta:
+    """class Meta:
         model = User
         fields = ('username', 'email')
 
@@ -37,7 +37,7 @@ class UserRegisterForm(forms.Form):
         if data.get('password') == data.get('password2'):
             return data.get('password')
         else:
-            raise forms.ValidationError("密码输入不一致,请重试。")
+            raise forms.ValidationError("密码输入不一致,请重试。")"""
 
 
 # 修改密码表单

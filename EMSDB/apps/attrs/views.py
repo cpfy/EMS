@@ -955,6 +955,7 @@ def evaluate_course(request):
         return JsonResponse(retdata)
 
     mysc.mark = float(mark)
+    mysc.eval = True
     mysc.save()
 
     retdata = {
