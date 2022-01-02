@@ -102,4 +102,4 @@ class ChangeCourseForm(forms.Form):
 
 # 选课过滤
 class FilterCourseForm(forms.Form):
-    filter = forms.BooleanField()
+    filter = forms.BooleanField(required=False)
