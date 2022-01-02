@@ -79,7 +79,8 @@ class DateForm(forms.Form):
 # 评教
 class EvaluateCourseForm(forms.Form):
     courseId = forms.CharField()
-    mark = forms.IntegerField()
+    #mark = forms.IntegerField()
+    mark = forms.CharField()
 
 
 # 课程信息更改

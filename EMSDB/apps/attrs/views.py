@@ -638,7 +638,7 @@ def get_stu_schedule_recommend(request):
     """for i in recomc:
         print(str(i))"""
 
-    #recomc = Course.objects.filter(pk__in=list(recomc))
+    # recomc = Course.objects.filter(pk__in=list(recomc))
 
     for i in recomc:
         print(str(i))
@@ -949,7 +949,7 @@ def evaluate_course(request):
             retdata = createFalseJsonWithInfo("请核对学生与课程信息后重新尝试！")
             return JsonResponse(retdata)
 
-        mysc.mark = mark
+        mysc.mark = float(mark)
         retdata = {
             'result': True,
             'info': '评价成功！'
