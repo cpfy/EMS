@@ -25,7 +25,7 @@
       <el-table-column prop="courseName" label="课程名称"/>
       <el-table-column prop="courseTeacher" label="任课教师"/>
       <el-table-column prop="courseId" label="课程编号"/>
-      <el-table-column prop="courseCategory" label="课程类别"/>
+<!--      <el-table-column prop="courseCategory" label="课程类别"/>-->
       <el-table-column width="80%" prop="credit" label="学分"/>
       <el-table-column prop="courseCollege" label="开课院系"/>
       <el-table-column prop="evaluated" label="评价状态"/>
@@ -111,11 +111,16 @@ export default {
         obj.courseId = res.data.resultList[i].courseId;
         obj.courseTeacher = res.data.resultList[i].courseTeacher;
         obj.courseName = res.data.resultList[i].courseName;
-        obj.courseCategory = res.data.resultList[i].courseCategory;
-        // obj.courseCollege = res.data.resultList[i].courseCollege;
+        // obj.courseCategory = res.data.resultList[i].courseCategory;
+        obj.courseCollege = res.data.resultList[i].courseCollege;
         obj.mark = res.data.resultList[i].mark;
         obj.credit = res.data.resultList[i].credit;
-        obj.evaluated = res.data.resultList[i].evaluated;
+        if  (res.data.resultList[i].evaluated===true) {
+          obj.evaluated = "已评价";
+        } else  {
+          obj.evaluated = "未评价";
+
+        }
         this.courseInfos.splice(this.courseInfos.length, 0, obj);
       }
     })
