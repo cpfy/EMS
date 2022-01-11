@@ -1,0 +1,11 @@
+/EMSDB/frontend/frontend/dist/
+/EMSDB/frontend/frontend/node_modules/
+/docs/系统实现总结报告.md
+/docs/工作量分配.md
+/docs/*.pptx
+/docs/*.pdf
+/img/dataflowdraw.eddx
+package-lock.json
+/EMS/
+/.idea/
+*.zip
